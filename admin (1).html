@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>لوحة التحكم</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1630;--bg2:#141f42;--card:#18254f;--ink:#f3f5ff;--muted:#a9b3d6;--line:#26356b;--o:#ff8a3d;--y:#ffc94d;--ok:#22c55e;--bad:#f43f5e}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Cairo',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 120px}
+h1{font-size:26px;margin:10px 0 4px;background:linear-gradient(90deg,var(--y),var(--o));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:14px 0}
+.card h2{font-size:18px;margin:0 0 8px}
+label{display:block;font-weight:700;font-size:14px;margin:10px 0 4px;color:var(--muted)}
+input{font-family:inherit;font-size:16px;width:100%;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg2);color:var(--ink)}
+input:focus{outline:none;border-color:var(--o)}
+.ltr{direction:ltr;text-align:left}
+.btn{font-family:inherit;font-weight:800;font-size:16px;border:none;border-radius:14px;padding:12px 20px;cursor:pointer;background:linear-gradient(90deg,var(--o),var(--y));color:#2a1300}
+.btn.ghost{background:var(--bg2);color:var(--ink);border:1px solid var(--line)}
+.btn.red{background:var(--bad);color:#fff}
+.btn.small{font-size:14px;padding:7px 12px}
+.btn:disabled{opacity:.5}
+.subj{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}
+.row{display:grid;grid-template-columns:70px 1fr;gap:8px}
+.row2{display:grid;grid-template-columns:1fr 120px;gap:8px}
+.bar{position:fixed;bottom:0;left:0;right:0;background:rgba(14,22,48,.95);border-top:1px solid var(--line);padding:12px 16px;display:flex;gap:10px;justify-content:center;align-items:center}
+.msg{text-align:center;font-weight:700;margin-top:8px}
+.msg.ok{color:var(--ok)}.msg.err{color:var(--bad)}
+.hide{display:none}
+a{color:var(--y)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>⚙️ لوحة التحكم</h1>
+  <p class="sub">من هنا تعدّل كل حاجة في موقعك، والتعديل يظهر للناس بعد دقيقة.</p>
+
+  <!-- login -->
+  <div class="card" id="login">
+    <h2>🔐 الدخول</h2>
+    <p class="sub">حط مفتاح الدخول اللي عملته من جيت هب. هتحطه مرة واحدة بس على الجهاز ده.</p>
+    <input id="tok" class="ltr" type="password" placeholder="github_pat_..." autocomplete="off">
+    <div style="margin-top:12px"><button class="btn" id="go">دخول</button></div>
+    <div class="msg" id="lmsg"></div>
+  </div>
+
+  <!-- editor -->
+  <div id="ed" class="hide">
+    <div class="card">
+      <h2>🏷️ بيانات الموقع</h2>
+      <label>اسم الموقع</label><input id="f_name">
+      <label>الجملة اللي تحت الاسم</label><input id="f_slogan">
+      <label>العملة</label><input id="f_currency">
+    </div>
+    <div class="card">
+      <h2>📱 فودافون كاش</h2>
+      <label>الرقم</label><input id="f_vodafoneCash" class="ltr" inputmode="tel">
+      <label>الاسم اللي على الرقم</label><input id="f_vodafoneName">
+    </div>
+    <div class="card">
+      <h2>🏦 انستاباي</h2>
+      <label>العنوان</label><input id="f_instapay" class="ltr">
+      <label>رابط انستاباي، لو مش عندك سيبه فاضي</label><input id="f_instapayLink" class="ltr">
+    </div>
+    <div class="card">
+      <h2>💬 واتساب</h2>
+      <label>الرقم بكود مصر، يعني يبدأ باتنين وعشرين ومن غير الصفر الأولاني</label>
+      <input id="f_whatsapp" class="ltr" inputmode="tel" placeholder="201012345678">
+    </div>
+    <div class="card">
+      <h2>🎁 عرض كل المواد</h2>
+      <label>سعر العرض، ولو مش عايز عرض اكتب صفر</label><input id="f_bundlePrice" type="number" inputmode="numeric">
+    </div>
+    <div class="card">
+      <h2>📚 المواد</h2>
+      <div id="subs"></div>
+      <button class="btn ghost small" id="addS">＋ ضيف مادة</button>
+    </div>
+    <div class="card">
+      <button class="btn ghost small" id="logout">خروج من الجهاز ده</button>
+    </div>
+  </div>
+</div>
+
+<div class="bar hide" id="bar">
+  <a href="./" target="_blank" class="btn ghost">👀 افتح الموقع</a>
+  <button class="btn" id="save">💾 حفظ التعديلات</button>
+</div>
+<div class="msg" id="smsg" style="position:fixed;bottom:70px;left:0;right:0"></div>
+
+<script>
+const host=location.hostname;
+const OWNER = host.endsWith('.github.io') ? host.split('.')[0] : 'dentalprogramming';
+const REPO  = host.endsWith('.github.io') ? host : 'dentalprogramming.github.io';
+const API = `https://api.github.com/repos/${OWNER}/${REPO}/contents/data.json`;
+const $=id=>document.getElementById(id);
+const FIELDS=['name','slogan','currency','vodafoneCash','vodafoneName','instapay','instapayLink','whatsapp','bundlePrice'];
+let token='', sha='', data=null;
+const store={get(){try{return localStorage.getItem('dp_tok')||''}catch(e){return ''}},set(v){try{localStorage.setItem('dp_tok',v)}catch(e){}},del(){try{localStorage.removeItem('dp_tok')}catch(e){}}};
+
+const b64dec=s=>decodeURIComponent(escape(atob(s.replace(/\n/g,''))));
+const b64enc=s=>btoa(unescape(encodeURIComponent(s)));
+const hdr=()=>({'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'});
+
+async function login(t){
+  token=t.trim(); $('lmsg').className='msg'; $('lmsg').textContent='جاري الدخول...';
+  try{
+    const r=await fetch(API+'?t='+Date.now(),{headers:hdr(),cache:'no-store'});
+    if(r.status===401||r.status===403) throw 'key';
+    if(r.status===404) throw 'nf';
+    if(!r.ok) throw 'x';
+    const j=await r.json(); sha=j.sha; data=JSON.parse(b64dec(j.content));
+    store.set(token); fill();
+    $('login').classList.add('hide'); $('ed').classList.remove('hide'); $('bar').classList.remove('hide');
+  }catch(e){
+    $('lmsg').className='msg err';
+    $('lmsg').textContent= e==='key'?'المفتاح غلط أو انتهى، اعمل مفتاح جديد': e==='nf'?'المفتاح مش معاه صلاحية على الموقع ده، أو ملف البيانات مش مرفوع':'حصلت مشكلة، اتأكد من النت وجرب تاني';
+    store.del();
+  }
+}
+function fill(){
+  FIELDS.forEach(k=>$('f_'+k).value=data.site[k]??'');
+  renderSubs();
+}
+function renderSubs(){
+  $('subs').innerHTML=data.subjects.map((s,i)=>`<div class="subj" data-i="${i}">
+    <div class="row"><div><label>إيموجي</label><input data-k="icon" value="${attr(s.icon)}"></div><div><label>اسم المادة</label><input data-k="name" value="${attr(s.name)}"></div></div>
+    <label>الوصف</label><input data-k="desc" value="${attr(s.desc)}">
+    <div class="row2"><div><label>السعر</label><input data-k="price" type="number" inputmode="numeric" value="${attr(s.price)}"></div>
+    <div style="display:flex;align-items:end"><button class="btn red small" data-del="${i}" style="width:100%">🗑️ امسح</button></div></div>
+  </div>`).join('');
+}
+const attr=v=>String(v??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+$('subs').addEventListener('input',e=>{const box=e.target.closest('.subj'),k=e.target.dataset.k; if(!box||!k) return;
+  const s=data.subjects[+box.dataset.i]; s[k]= k==='price'?Number(e.target.value||0):e.target.value;});
+$('subs').addEventListener('click',e=>{const d=e.target.closest('[data-del]'); if(!d) return;
+  if(d.dataset.sure){data.subjects.splice(+d.dataset.del,1);renderSubs();}
+  else{d.dataset.sure='1';d.textContent='متأكد؟ دوس تاني';setTimeout(()=>{if(d.isConnected){delete d.dataset.sure;d.textContent='🗑️ امسح';}},3000);}});
+$('addS').onclick=()=>{data.subjects.push({name:'مادة جديدة',desc:'ملخص كامل + بنك أسئلة',price:100,icon:'📘'});renderSubs();};
+
+$('save').onclick=async()=>{
+  FIELDS.forEach(k=>data.site[k]= k==='bundlePrice'?Number($('f_'+k).value||0):$('f_'+k).value.trim());
+  data.site.whatsapp=data.site.whatsapp.replace(/\D/g,'').replace(/^0/,'20');
+  $('f_whatsapp').value=data.site.whatsapp;
+  $('save').disabled=true; $('smsg').className='msg'; $('smsg').textContent='جاري الحفظ...';
+  try{
+    const r=await fetch(API,{method:'PUT',headers:{...hdr(),'Content-Type':'application/json'},
+      body:JSON.stringify({message:'تعديل من لوحة التحكم',content:b64enc(JSON.stringify(data,null,2)),sha})});
+    if(r.status===409){ throw 'conf'; }
+    if(!r.ok) throw 'x';
+    const j=await r.json(); sha=j.content.sha;
+    $('smsg').className='msg ok'; $('smsg').textContent='✓ اتحفظ، هيظهر في الموقع خلال دقيقة';
+  }catch(e){
+    $('smsg').className='msg err'; $('smsg').textContent= e==='conf'?'الملف اتغير من مكان تاني، حدّث الصفحة وجرب تاني':'الحفظ ما نجحش، اتأكد من النت وإن المفتاح ليه صلاحية الكتابة';
+  }
+  $('save').disabled=false; setTimeout(()=>{$('smsg').textContent=''},5000);
+};
+$('go').onclick=()=>{ if($('tok').value.trim()) login($('tok').value); };
+$('tok').addEventListener('keydown',e=>{if(e.key==='Enter') $('go').click();});
+$('logout').onclick=()=>{store.del();location.reload();};
+const saved=store.get(); if(saved) login(saved);
+</script>
+</body>
+</html>
