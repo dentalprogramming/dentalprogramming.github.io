@@ -1,50 +1,50 @@
 {
   "site": {
-    "name": "Dental Programming",
+    "name": "Dental Program",
     "slogan": "ملخصات مركزة وبنوك أسئلة تجهزك للامتحان",
     "currency": "جنيه",
-    "vodafoneCash": "01000000000",
-    "vodafoneName": "اسم صاحب الرقم",
-    "instapay": "username@instapay",
+    "vodafoneCash": "01043976416",
+    "vodafoneName": "khaled",
+    "instapay": "ibrahimali571975@instapay",
     "instapayLink": "",
-    "whatsapp": "201000000000",
-    "bundlePrice": 500
+    "whatsapp": "201043169689",
+    "bundlePrice": 300
   },
   "subjects": [
     {
-      "name": "المادة الأولى",
+      "name": "histology",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 100,
+      "price": 50,
       "icon": "🌐"
     },
     {
-      "name": "المادة التانية",
+      "name": "physiology",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 100,
+      "price": 50,
       "icon": "💻"
     },
     {
-      "name": "المادة التالتة",
+      "name": "biophysics",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 100,
+      "price": 50,
       "icon": "🧮"
     },
     {
-      "name": "المادة الرابعة",
+      "name": "general anatomy",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 100,
+      "price": 50,
       "icon": "📊"
     },
     {
-      "name": "المادة الخامسة",
+      "name": "dental anatomy",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 100,
+      "price": 50,
       "icon": "🔐"
     },
     {
-      "name": "المادة السادسة",
+      "name": "dental biomaterials",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 100,
+      "price": 50,
       "icon": "🧠"
     }
   ]
