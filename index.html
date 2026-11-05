@@ -3,37 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ملخصات وأسئلة</title>
+<title>Dental Programming</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<script>
-/* =====================================================================
-   عدّل البيانات هنا بس — كل اللي بين علامتي التنصيص "..." تقدر تغيره
-   ===================================================================== */
-const SITE = {
-  name: "ملخصات وأسئلة",                         // اسم الموقع
-  slogan: "ملخصات مركزة وبنوك أسئلة تجهزك للامتحان", // جملة تحت الاسم
-  currency: "جنيه",
-
-  vodafoneCash: "01000000000",                   // رقم فودافون كاش
-  vodafoneName: "اسم صاحب الرقم",                 // الاسم اللي هيظهر عند التحويل
-  instapay: "username@instapay",                 // عنوان انستاباي
-  instapayLink: "",                              // رابط انستاباي لو عندك (اختياري)
-
-  whatsapp: "201000000000",                      // رقم واتساب بكود الدولة من غير + (مثلًا 201012345678)
-
-  bundlePrice: 500,                              // سعر كل المواد مع بعض (حط 0 لو مش عايز العرض)
-};
-
-/* المواد الست: الاسم، وصف قصير، السعر، وإيموجي */
-const SUBJECTS = [
-  { name: "المادة الأولى",  desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "🌐" },
-  { name: "المادة التانية", desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "💻" },
-  { name: "المادة التالتة", desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "🧮" },
-  { name: "المادة الرابعة", desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "📊" },
-  { name: "المادة الخامسة", desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "🔐" },
-  { name: "المادة السادسة", desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "🧠" },
-];
-</script>
 <style>
 :root{--bg:#0e1630;--bg2:#141f42;--card:#18254f;--ink:#f3f5ff;--muted:#a9b3d6;--line:#26356b;--o:#ff8a3d;--y:#ffc94d;--vf:#e60000;--ip:#7b2cbf;--ok:#22c55e}
 *{box-sizing:border-box}
@@ -153,6 +124,15 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:24px;border-t
 <div class="toast" id="toast">اتنسخ ✓</div>
 
 <script>
+let SITE, SUBJECTS;
+(async()=>{
+  try{
+    const d=await fetch('data.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json());
+    SITE=d.site; SUBJECTS=d.subjects||[];
+  }catch(e){ document.body.innerHTML='<p style="text-align:center;padding:40px">حصلت مشكلة في تحميل الموقع، حدّث الصفحة</p>'; return; }
+  init();
+})();
+function init(){
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>`${n} <small>${esc(SITE.currency)}</small>`;
@@ -203,6 +183,7 @@ document.addEventListener('click',e=>{
 });
 $('mClose').onclick=()=>$('m').classList.remove('on');
 $('m').onclick=e=>{if(e.target.id==='m')$('m').classList.remove('on');};
+}
 </script>
 </body>
 </html>
