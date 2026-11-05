@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ملخصات وأسئلة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+/* =====================================================================
+   عدّل البيانات هنا بس — كل اللي بين علامتي التنصيص "..." تقدر تغيره
+   ===================================================================== */
+const SITE = {
+  name: "ملخصات وأسئلة",                         // اسم الموقع
+  slogan: "ملخصات مركزة وبنوك أسئلة تجهزك للامتحان", // جملة تحت الاسم
+  currency: "جنيه",
+
+  vodafoneCash: "01000000000",                   // رقم فودافون كاش
+  vodafoneName: "اسم صاحب الرقم",                 // الاسم اللي هيظهر عند التحويل
+  instapay: "username@instapay",                 // عنوان انستاباي
+  instapayLink: "",                              // رابط انستاباي لو عندك (اختياري)
+
+  whatsapp: "201000000000",                      // رقم واتساب بكود الدولة من غير + (مثلًا 201012345678)
+
+  bundlePrice: 500,                              // سعر كل المواد مع بعض (حط 0 لو مش عايز العرض)
+};
+
+/* المواد الست: الاسم، وصف قصير، السعر، وإيموجي */
+const SUBJECTS = [
+  { name: "المادة الأولى",  desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "🌐" },
+  { name: "المادة التانية", desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "💻" },
+  { name: "المادة التالتة", desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "🧮" },
+  { name: "المادة الرابعة", desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "📊" },
+  { name: "المادة الخامسة", desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "🔐" },
+  { name: "المادة السادسة", desc: "ملخص كامل + بنك أسئلة", price: 100, icon: "🧠" },
+];
+</script>
+<style>
+:root{--bg:#0e1630;--bg2:#141f42;--card:#18254f;--ink:#f3f5ff;--muted:#a9b3d6;--line:#26356b;--o:#ff8a3d;--y:#ffc94d;--vf:#e60000;--ip:#7b2cbf;--ok:#22c55e}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Cairo',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75}
+a{color:inherit}
+.hero{padding:56px 20px 40px;text-align:center;background:radial-gradient(800px 400px at 50% -20%,rgba(255,138,61,.35),transparent 70%)}
+.hero h1{margin:0;font-size:clamp(30px,6vw,48px);font-weight:900;background:linear-gradient(90deg,var(--y),var(--o));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:18px;margin:6px 0 22px}
+.btn{font-family:inherit;font-weight:800;font-size:16px;border:none;border-radius:14px;padding:12px 22px;cursor:pointer;background:linear-gradient(90deg,var(--o),var(--y));color:#2a1300;text-decoration:none;display:inline-block}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.small{font-size:14px;padding:8px 14px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px 50px}
+h2{font-size:26px;text-align:center;margin:40px 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:6px;transition:transform .15s}
+.card:hover{transform:translateY(-4px);border-color:var(--o)}
+.card .ic{font-size:38px}
+.card h3{margin:0;font-size:20px}
+.card .d{color:var(--muted);font-size:15px}
+.price{font-size:26px;font-weight:900;color:var(--y);margin:6px 0}
+.price small{font-size:14px;color:var(--muted);font-weight:600}
+.bundle{margin-top:20px;background:linear-gradient(120deg,#3a1d6e,#7a2e3a);border-radius:22px;padding:24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.bundle h3{margin:0;font-size:22px}
+.bundle .old{text-decoration:line-through;color:#ffd0d0;opacity:.8}
+.pays{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.pay{border-radius:20px;padding:20px;color:#fff}
+.pay.vf{background:linear-gradient(135deg,#b30000,var(--vf))}
+.pay.ip{background:linear-gradient(135deg,#4a148c,var(--ip))}
+.pay h3{margin:0 0 8px;font-size:21px}
+.num{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.25);border-radius:12px;padding:10px 14px;margin:8px 0;direction:ltr;justify-content:space-between}
+.num b{font-size:19px;letter-spacing:.5px;font-family:system-ui,sans-serif}
+.copy{font-family:'Cairo';font-weight:700;border:none;border-radius:10px;padding:6px 12px;cursor:pointer;background:#fff;color:#222}
+.steps{counter-reset:s;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;position:relative}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-14px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--o);color:#2a1300;font-weight:900;display:grid;place-items:center}
+.step h4{margin:6px 0 4px}
+.step p{margin:0;color:var(--muted);font-size:15px}
+.modal{position:fixed;inset:0;background:rgba(5,8,20,.7);display:none;align-items:center;justify-content:center;padding:16px;z-index:30}
+.modal.on{display:flex}
+.box{background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:22px;width:100%;max-width:460px;max-height:92vh;overflow:auto}
+.box h3{margin:0 0 4px;font-size:21px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.opt{font-family:inherit;font-weight:800;font-size:16px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:14px;cursor:pointer}
+.opt.on.vf{border-color:var(--vf);background:rgba(230,0,0,.18)}
+.opt.on.ip{border-color:#b06cff;background:rgba(123,44,191,.25)}
+.payinfo{display:none}.payinfo.on{display:block}
+.total{display:flex;justify-content:space-between;font-weight:800;font-size:18px;background:var(--card);border-radius:12px;padding:10px 14px;margin-top:10px}
+.close{float:left;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;font-weight:700;padding:10px 20px;border-radius:12px;display:none;z-index:40}
+.wa{position:fixed;bottom:18px;left:18px;width:58px;height:58px;border-radius:50%;background:#25d366;display:grid;place-items:center;font-size:28px;text-decoration:none;box-shadow:0 8px 20px rgba(0,0,0,.35);z-index:20}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:24px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <h1 id="sName"></h1>
+  <p id="sSlogan"></p>
+  <a class="btn" href="#subjects">شوف المواد</a>
+  <a class="btn ghost" href="#pay">طرق الدفع</a>
+</section>
+
+<div class="wrap">
+  <h2 id="subjects">📚 المواد</h2>
+  <div class="grid" id="grid"></div>
+  <div class="bundle" id="bundle"></div>
+
+  <h2 id="pay">💳 طرق الدفع</h2>
+  <div class="pays">
+    <div class="pay vf">
+      <h3>📱 فودافون كاش</h3>
+      <div>حوّل على الرقم ده</div>
+      <div class="num"><b id="vfNum"></b><button class="copy" data-copy="vf">نسخ</button></div>
+      <div id="vfName" style="opacity:.9"></div>
+    </div>
+    <div class="pay ip">
+      <h3>🏦 انستاباي</h3>
+      <div>حوّل على العنوان ده</div>
+      <div class="num"><b id="ipNum"></b><button class="copy" data-copy="ip">نسخ</button></div>
+      <a id="ipLink" class="copy" style="display:none;text-decoration:none;width:fit-content" target="_blank" rel="noopener">افتح انستاباي</a>
+    </div>
+  </div>
+
+  <h2>✅ إزاي تطلب؟</h2>
+  <div class="steps">
+    <div class="step"><h4>اختار المادة</h4><p>دوس اطلب على المادة اللي محتاجها، أو خد العرض الكامل.</p></div>
+    <div class="step"><h4>حوّل المبلغ</h4><p>حوّل بفودافون كاش أو انستاباي على البيانات اللي فوق.</p></div>
+    <div class="step"><h4>ابعت صورة التحويل</h4><p>ابعت صورة التحويل على واتساب، والزرار هيكتبلك الرسالة جاهزة.</p></div>
+    <div class="step"><h4>استلم ملفاتك</h4><p>هتوصلك الملخصات والأسئلة على واتساب بعد التأكد من التحويل.</p></div>
+  </div>
+</div>
+
+<footer id="foot"></footer>
+<a class="wa" id="waFloat" target="_blank" rel="noopener" title="واتساب">💬</a>
+
+<div class="modal" id="m"><div class="box">
+  <button class="close" id="mClose">✕</button>
+  <h3 id="mTitle"></h3>
+  <div style="color:var(--muted)">اختار طريقة الدفع</div>
+  <div class="opts">
+    <button class="opt vf on" data-m="vf">📱 فودافون كاش</button>
+    <button class="opt ip" data-m="ip">🏦 انستاباي</button>
+  </div>
+  <div class="payinfo on" id="pi-vf">
+    <div>حوّل على الرقم ده</div>
+    <div class="num" style="background:var(--card)"><b id="mVf"></b><button class="copy" data-copy="vf">نسخ</button></div>
+  </div>
+  <div class="payinfo" id="pi-ip">
+    <div>حوّل على العنوان ده</div>
+    <div class="num" style="background:var(--card)"><b id="mIp"></b><button class="copy" data-copy="ip">نسخ</button></div>
+  </div>
+  <div class="total"><span>المطلوب</span><span id="mPrice"></span></div>
+  <p style="color:var(--muted);font-size:14px">بعد ما تحوّل، دوس الزرار اللي تحت وابعت صورة التحويل في نفس المحادثة.</p>
+  <a class="btn" id="mWa" target="_blank" rel="noopener" style="width:100%;text-align:center;background:#25d366;color:#fff">💬 ابعت صورة التحويل على واتساب</a>
+</div></div>
+
+<div class="toast" id="toast">اتنسخ ✓</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>`${n} <small>${esc(SITE.currency)}</small>`;
+document.title=SITE.name;
+$('sName').textContent=SITE.name; $('sSlogan').textContent=SITE.slogan;
+$('vfNum').textContent=$('mVf').textContent=SITE.vodafoneCash;
+$('vfName').textContent=SITE.vodafoneName?('باسم: '+SITE.vodafoneName):'';
+$('ipNum').textContent=$('mIp').textContent=SITE.instapay;
+if(SITE.instapayLink){$('ipLink').href=SITE.instapayLink;$('ipLink').style.display='inline-block';}
+$('foot').textContent='© '+new Date().getFullYear()+' '+SITE.name;
+const wa=t=>'https://wa.me/'+SITE.whatsapp+'?text='+encodeURIComponent(t);
+$('waFloat').href=wa('السلام عليكم، عندي استفسار عن الملخصات');
+
+$('grid').innerHTML=SUBJECTS.map((s,i)=>`<div class="card">
+  <div class="ic">${esc(s.icon)}</div><h3>${esc(s.name)}</h3><div class="d">${esc(s.desc)}</div>
+  <div class="price">${money(s.price)}</div>
+  <button class="btn small" data-buy="${i}">اطلب دلوقتي</button></div>`).join('');
+
+const total=SUBJECTS.reduce((a,s)=>a+Number(s.price||0),0);
+if(SITE.bundlePrice>0){
+  $('bundle').innerHTML=`<div><h3>🎁 عرض المواد الست مع بعض</h3>
+    <div>بدل <span class="old">${total} ${esc(SITE.currency)}</span> بس <b style="color:var(--y);font-size:22px">${SITE.bundlePrice} ${esc(SITE.currency)}</b></div></div>
+    <button class="btn" data-buy="all">خد العرض</button>`;
+} else $('bundle').style.display='none';
+
+let method='vf', item=null;
+function openBuy(k){
+  item = k==='all' ? {name:'المواد الست (العرض الكامل)',price:SITE.bundlePrice} : SUBJECTS[+k];
+  $('mTitle').textContent=item.name;
+  $('mPrice').innerHTML=money(item.price);
+  setMethod('vf'); $('m').classList.add('on');
+}
+function setMethod(m){
+  method=m;
+  document.querySelectorAll('.opt').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+  $('pi-vf').classList.toggle('on',m==='vf'); $('pi-ip').classList.toggle('on',m==='ip');
+  const how=m==='vf'?'فودافون كاش':'انستاباي';
+  $('mWa').href=wa(`السلام عليكم، حوّلت ${item.price} ${SITE.currency} عن طريق ${how} علشان: ${item.name}\nودي صورة التحويل:`);
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-buy]'); if(b) openBuy(b.dataset.buy);
+  const o=e.target.closest('.opt'); if(o) setMethod(o.dataset.m);
+  const c=e.target.closest('[data-copy]');
+  if(c){const t=c.dataset.copy==='vf'?SITE.vodafoneCash:SITE.instapay;
+    const done=()=>{$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',1400);};
+    try{navigator.clipboard.writeText(t).then(done,()=>{});}catch(err){}
+  }
+});
+$('mClose').onclick=()=>$('m').classList.remove('on');
+$('m').onclick=e=>{if(e.target.id==='m')$('m').classList.remove('on');};
+</script>
+</body>
+</html>
