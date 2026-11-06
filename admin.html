@@ -57,6 +57,7 @@ a{color:var(--y)}
       <label>اسم الموقع</label><input id="f_name">
       <label>الجملة اللي تحت الاسم</label><input id="f_slogan">
       <label>العملة</label><input id="f_currency">
+      <label>الموقع ده لمين؟ بيظهر فوق الاسم، زي: لطلبة الفرقة الأولى طب أسنان. ولو مش عايزه سيبه فاضي</label><input id="f_audience">
     </div>
     <div class="card">
       <h2>📱 فودافون كاش</h2>
@@ -76,6 +77,11 @@ a{color:var(--y)}
     <div class="card">
       <h2>🎁 عرض كل المواد</h2>
       <label>سعر العرض، ولو مش عايز عرض اكتب صفر</label><input id="f_bundlePrice" type="number" inputmode="numeric">
+    </div>
+    <div class="card">
+      <h2>⭐ آراء الطلبة</h2>
+      <label>كل رأي في سطر لوحده، بالشكل ده: الاسم | الرأي. واكتب بس آراء حقيقية من طلبة اشتروا. ولو سبتها فاضية القسم مش هيظهر</label>
+      <textarea id="f_reviews" rows="5" style="font-family:inherit;font-size:15px;width:100%;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg2);color:var(--ink)" placeholder="أحمد | الملخصات وفرت عليا وقت كتير"></textarea>
     </div>
     <div class="card">
       <h2>📚 المواد</h2>
@@ -100,7 +106,7 @@ const OWNER = host.endsWith('.github.io') ? host.split('.')[0] : 'dentalprogramm
 const REPO  = host.endsWith('.github.io') ? host : 'dentalprogramming.github.io';
 const API = `https://api.github.com/repos/${OWNER}/${REPO}/contents/data.json`;
 const $=id=>document.getElementById(id);
-const FIELDS=['name','slogan','currency','vodafoneCash','vodafoneName','instapay','instapayLink','whatsapp','bundlePrice'];
+const FIELDS=['name','slogan','currency','audience','vodafoneCash','vodafoneName','instapay','instapayLink','whatsapp','bundlePrice','reviews'];
 const NUMS=['bundlePrice'];
 let token='', sha='', data=null;
 const store={get(){try{return localStorage.getItem('dp_tok')||''}catch(e){return ''}},set(v){try{localStorage.setItem('dp_tok',v)}catch(e){}},del(){try{localStorage.removeItem('dp_tok')}catch(e){}}};
@@ -146,7 +152,7 @@ $('subs').addEventListener('click',e=>{const d=e.target.closest('[data-del]'); i
 $('addS').onclick=()=>{data.subjects.push({name:'مادة جديدة',desc:'ملخص كامل + بنك أسئلة',price:100,icon:'📘'});renderSubs();};
 
 $('save').onclick=async()=>{
-  FIELDS.forEach(k=>data.site[k]= NUMS.includes(k)?Number($('f_'+k).value||0):$('f_'+k).value.trim());
+  FIELDS.forEach(k=>data.site[k]= NUMS.includes(k)?Number($('f_'+k).value||0):k==='reviews'?$('f_'+k).value.split('\n').map(s=>s.trim()).filter(Boolean).join('\n'):$('f_'+k).value.trim());
   data.site.whatsapp=data.site.whatsapp.replace(/\D/g,'').replace(/^0/,'20');
   $('f_whatsapp').value=data.site.whatsapp;
   $('save').disabled=true; $('smsg').className='msg'; $('smsg').textContent='جاري الحفظ...';

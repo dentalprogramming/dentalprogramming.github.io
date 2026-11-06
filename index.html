@@ -144,7 +144,7 @@ footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
 .pay::before{content:"";position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06);bottom:-50px;left:40%}
 .pay>*{position:relative;z-index:1}
 .student{position:relative;overflow:hidden}
-.student::after{content:"🔐";position:absolute;font-size:120px;opacity:.06;left:20px;top:-20px}
+.student::after{content:"";position:absolute;width:140px;height:140px;opacity:.06;left:20px;top:-20px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8'%3E%3Crect x='4.5' y='10.5' width='15' height='10' rx='2'/%3E%3Cpath d='M8 10.5V7.5a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E") center/contain no-repeat}
 .faq details{transition:border-color .2s}
 .faq details[open]{border-color:var(--o)}
 footer.foot{border-top:none;margin-top:50px;padding:0;text-align:start;background:linear-gradient(180deg,transparent,rgba(0,0,0,.25))}
@@ -185,6 +185,30 @@ footer.foot{border-top:none;margin-top:50px;padding:0;text-align:start;backgroun
 @media(prefers-reduced-motion:reduce){#deco i{animation:none}}
 .wrap,.hero,footer,.nav{position:relative;z-index:1}
 .nav{z-index:15}
+
+/* ---------- icons ---------- */
+svg.uic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
+.aud svg.uic{width:18px;height:18px}
+.rev .stars svg.uic{width:16px;height:16px}
+.ic{display:inline-grid;place-items:center;width:1.15em;height:1.15em;vertical-align:-.2em}
+.ic svg{width:100%;height:100%}
+.em .ic{width:24px;height:24px;color:#2a1300}
+.feat .fi .ic{width:28px;height:28px;color:var(--y)}
+.step .si .ic{width:30px;height:30px;color:var(--y)}
+.chip .ic{color:var(--y)}
+.wa .ic{width:28px;height:28px;color:#fff}
+.foot-links .ic{color:var(--o)}
+.aud{display:inline-flex;align-items:center;gap:6px;background:rgba(255,201,77,.12);border:1px solid rgba(255,201,77,.4);color:var(--y);border-radius:999px;padding:5px 14px;font-weight:800;font-size:14px;margin-bottom:6px}
+.free{margin-top:40px;border-radius:24px;padding:26px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;background:linear-gradient(120deg,rgba(255,138,61,.18),rgba(255,201,77,.08));border:1px dashed rgba(255,201,77,.55)}
+.free h3{margin:0;font-size:22px;display:flex;align-items:center;gap:8px}
+.free h3 .ic{width:28px;height:28px;color:var(--y)}
+.free p{margin:4px 0 0;color:var(--muted)}
+.revs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.rev{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;position:relative}
+.rev .stars{color:var(--y);display:flex;gap:2px;margin-bottom:6px}
+.rev .stars .ic{width:16px;height:16px}
+.rev p{margin:0 0 10px;line-height:1.8}
+.rev b{color:var(--muted);font-size:14px}
 </style>
 </head>
 <body>
@@ -193,7 +217,7 @@ footer.foot{border-top:none;margin-top:50px;padding:0;text-align:start;backgroun
   <a class="logo" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc94d"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs><path fill="url(#tg)" d="M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z"/><path fill="#fff" opacity=".35" d="M18 13c-4 1-6 4-6 8 0 2 1 3 2 3s2-1 2-3c0-3 1-4 3-5 1-1 1-3-1-3z"/></svg><span id="navName"></span></a>
   <div class="links">
     <a href="#subjects">المواد</a><a href="#how">إزاي تطلب</a><a href="#pay">الدفع</a><a href="#faq">أسئلة</a>
-    <a class="cta" href="learn.html">🔐 دخول الطلبة</a>
+    <a class="cta" href="learn.html"><i class="ic" data-i="lock"></i> دخول الطلبة</a>
   </div>
 </nav>
 
@@ -206,54 +230,59 @@ footer.foot{border-top:none;margin-top:50px;padding:0;text-align:start;backgroun
   <span class="ht" style="top:45%;left:30%;width:22px;--d:-3s"></span>
   <span class="ht" style="top:40%;right:32%;width:24px;--d:-5s"></span>
   <svg class="tooth-hero" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="tg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc94d"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs><path fill="url(#tg2)" d="M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z"/><path fill="#fff" opacity=".35" d="M18 13c-4 1-6 4-6 8 0 2 1 3 2 3s2-1 2-3c0-3 1-4 3-5 1-1 1-3-1-3z"/></svg>
+  <div id="aud"></div>
   <h1 id="sName"></h1>
   <p id="sSlogan"></p>
-  <div class="chips"><span class="chip">📘 ملخصات</span><span class="chip">🧑‍🏫 شرح</span><span class="chip">✅ صح وغلط</span><span class="chip">🔘 اختيار من متعدد</span><span class="chip">✍️ كتابي</span><span class="chip">🧩 كومبليت</span></div>
+  <div class="chips"><span class="chip"><i class="ic" data-i="book"></i> ملخصات</span><span class="chip"><i class="ic" data-i="teach"></i> شرح</span><span class="chip"><i class="ic" data-i="tf"></i> صح وغلط</span><span class="chip"><i class="ic" data-i="mcq"></i> اختيار من متعدد</span><span class="chip"><i class="ic" data-i="pen"></i> كتابي</span><span class="chip"><i class="ic" data-i="puzzle"></i> كومبليت</span></div>
   <div class="btns">
     <a class="btn" href="#subjects">شوف المواد</a>
-    <a class="btn ghost" href="learn.html">🔐 عندي كود</a>
+    <a class="btn ghost" href="learn.html#free"><i class="ic" data-i="eye"></i> جرّب ببلاش</a>
   </div>
 </section>
 
 <div class="wrap">
-  <h2 class="reveal"><span class="em">🎁</span>هتاخد إيه في كل مادة؟</h2>
+  <h2 class="reveal"><span class="em"><i class="ic" data-i="gift"></i></span>هتاخد إيه في كل مادة؟</h2>
   <p class="sec-sub reveal">كل محاضرة فيها ست حاجات، تذاكرها كلها من مكان واحد</p>
   <div class="feats reveal">
-    <div class="feat"><div class="fi">📘</div><b>ملخص</b><span>أهم النقط مركزة</span></div>
-    <div class="feat"><div class="fi">🧑‍🏫</div><b>شرح</b><span>تفهم مش بس تحفظ</span></div>
-    <div class="feat"><div class="fi">✅</div><b>صح وغلط</b><span>بنك أسئلة كامل</span></div>
-    <div class="feat"><div class="fi">🔘</div><b>اختيار من متعدد</b><span>زي الامتحان بالظبط</span></div>
-    <div class="feat"><div class="fi">✍️</div><b>كتابي</b><span>تدريب على الإجابة</span></div>
-    <div class="feat"><div class="fi">🧩</div><b>كومبليت</b><span>كمّل الجملة صح</span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="book"></i></div><b>ملخص</b><span>أهم النقط مركزة</span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="teach"></i></div><b>شرح</b><span>تفهم مش بس تحفظ</span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="tf"></i></div><b>صح وغلط</b><span>بنك أسئلة كامل</span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="mcq"></i></div><b>اختيار من متعدد</b><span>زي الامتحان بالظبط</span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="pen"></i></div><b>كتابي</b><span>تدريب على الإجابة</span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="puzzle"></i></div><b>كومبليت</b><span>كمّل الجملة صح</span></div>
   </div>
 
   <div class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ff8a3d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
-  <h2 id="subjects" class="reveal"><span class="em">📚</span>المواد</h2>
+  <h2 id="subjects" class="reveal"><span class="em"><i class="ic" data-i="book"></i></span>المواد</h2>
   <div class="grid" id="grid"></div>
   <div class="bundle reveal" id="bundle"></div>
   <div class="offers reveal" id="offers"></div>
 
+  <div class="free reveal">
+    <div><h3><i class="ic" data-i="eye"></i> جرّب قبل ما تشتري</h3><p>فيه محاضرات مفتوحة ببلاش، شوف المستوى بنفسك من غير كود.</p></div>
+    <a class="btn" href="learn.html#free"><i class="ic" data-i="play"></i> افتح محاضرة ببلاش</a>
+  </div>
   <div class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ff8a3d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
-  <h2 id="how" class="reveal"><span class="em">✅</span>إزاي تطلب وتذاكر؟</h2>
+  <h2 id="how" class="reveal"><span class="em"><i class="ic" data-i="check"></i></span>إزاي تطلب وتذاكر؟</h2>
   <div class="steps reveal">
-    <div class="step"><div class="si">🛒</div><h4>اختار المادة</h4><p>دوس "اطلب دلوقتي" على المادة اللي محتاجها، أو خد العرض الكامل.</p></div>
-    <div class="step"><div class="si">💸</div><h4>حوّل المبلغ</h4><p>حوّل بفودافون كاش أو انستاباي على البيانات اللي تحت.</p></div>
-    <div class="step"><div class="si">📸</div><h4>ابعت صورة التحويل</h4><p>على واتساب، والزرار هيكتبلك الرسالة جاهزة.</p></div>
-    <div class="step"><div class="si">🎟️</div><h4>استلم الكود بتاعك</h4><p>بعد التأكد من التحويل، هيوصلك كود خاص بيك على واتساب.</p></div>
-    <div class="step"><div class="si">🔐</div><h4>ادخل وذاكر</h4><p>افتح "دخول الطلبة" وحط الكود من الجهاز اللي هتذاكر عليه، وهتلاقي موادك كلها.</p></div>
+    <div class="step"><div class="si"><i class="ic" data-i="cart"></i></div><h4>اختار المادة</h4><p>دوس "اطلب دلوقتي" على المادة اللي محتاجها، أو خد العرض الكامل.</p></div>
+    <div class="step"><div class="si"><i class="ic" data-i="cash"></i></div><h4>حوّل المبلغ</h4><p>حوّل بفودافون كاش أو انستاباي على البيانات اللي تحت.</p></div>
+    <div class="step"><div class="si"><i class="ic" data-i="camera"></i></div><h4>ابعت صورة التحويل</h4><p>على واتساب، والزرار هيكتبلك الرسالة جاهزة.</p></div>
+    <div class="step"><div class="si"><i class="ic" data-i="ticket"></i></div><h4>استلم الكود بتاعك</h4><p>بعد التأكد من التحويل، هيوصلك كود خاص بيك على واتساب.</p></div>
+    <div class="step"><div class="si"><i class="ic" data-i="lock"></i></div><h4>ادخل وذاكر</h4><p>افتح "دخول الطلبة" وحط الكود من الجهاز اللي هتذاكر عليه، وهتلاقي موادك كلها.</p></div>
   </div>
 
   <div class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ff8a3d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
-  <h2 id="pay" class="reveal"><span class="em">💳</span>طرق الدفع</h2>
+  <h2 id="pay" class="reveal"><span class="em"><i class="ic" data-i="card"></i></span>طرق الدفع</h2>
   <div class="pays reveal">
     <div class="pay vf">
-      <h3>📱 فودافون كاش</h3>
+      <h3><i class="ic" data-i="phone"></i> فودافون كاش</h3>
       <div>حوّل على الرقم ده</div>
       <div class="num"><b id="vfNum"></b><button class="copy" data-copy="vf">نسخ</button></div>
       <div id="vfName" style="opacity:.9"></div>
     </div>
     <div class="pay ip">
-      <h3>🏦 انستاباي</h3>
+      <h3><i class="ic" data-i="bank"></i> انستاباي</h3>
       <div>حوّل على العنوان ده</div>
       <div class="num"><b id="ipNum"></b><button class="copy" data-copy="ip">نسخ</button></div>
       <a id="ipLink" class="copy" style="display:none;text-decoration:none;width:fit-content" target="_blank" rel="noopener">افتح انستاباي</a>
@@ -261,12 +290,15 @@ footer.foot{border-top:none;margin-top:50px;padding:0;text-align:start;backgroun
   </div>
 
   <div class="student reveal">
-    <div><h3>🔐 عندك كود بالفعل؟</h3><p>ادخل منطقة الطلبة وكمّل مذاكرة من مكان ما وقفت.</p></div>
+    <div><h3><i class="ic" data-i="lock"></i> عندك كود بالفعل؟</h3><p>ادخل منطقة الطلبة وكمّل مذاكرة من مكان ما وقفت.</p></div>
     <a class="btn" href="learn.html">دخول الطلبة</a>
   </div>
 
+  <div class="sep" id="revSep" style="display:none" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ff8a3d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
+  <h2 id="reviews" class="reveal" style="display:none"><span class="em"><i class="ic" data-i="star"></i></span>قالوا عننا</h2>
+  <div class="revs reveal" id="revs"></div>
   <div class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ff8a3d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
-  <h2 id="faq" class="reveal"><span class="em">❓</span>أسئلة بتتكرر</h2>
+  <h2 id="faq" class="reveal"><span class="em"><i class="ic" data-i="help"></i></span>أسئلة بتتكرر</h2>
   <div class="faq reveal">
     <details><summary>الكود بيشتغل على كام جهاز؟</summary><p>على جهاز واحد بس، أول جهاز تدخل منه. فادخله من الموبايل أو اللابتوب اللي هتذاكر عليه، ومن متصفح عادي مش متخفي.</p></details>
     <details><summary>لو غيّرت موبايلي أعمل إيه؟</summary><p>كلّمنا على واتساب، وهنفك الكود من الجهاز القديم عشان تدخل من الجديد.</p></details>
@@ -286,27 +318,27 @@ footer.foot{border-top:none;margin-top:50px;padding:0;text-align:start;backgroun
     <div>
       <h5>روابط سريعة</h5>
       <div class="foot-links">
-        <a href="#subjects">📚 المواد</a><a href="#how">✅ إزاي تطلب</a><a href="#pay">💳 طرق الدفع</a><a href="#faq">❓ أسئلة بتتكرر</a><a href="learn.html">🔐 دخول الطلبة</a>
+        <a href="#subjects"><i class="ic" data-i="book"></i> المواد</a><a href="#how"><i class="ic" data-i="check"></i> إزاي تطلب</a><a href="#pay"><i class="ic" data-i="card"></i> طرق الدفع</a><a href="#faq"><i class="ic" data-i="help"></i> أسئلة بتتكرر</a><a href="learn.html#free"><i class="ic" data-i="eye"></i> جرّب ببلاش</a><a href="learn.html"><i class="ic" data-i="lock"></i> دخول الطلبة</a>
       </div>
     </div>
     <div>
       <h5>تواصل معانا</h5>
       <p style="margin-bottom:10px">عندك سؤال قبل ما تشترك؟ كلّمنا وهنرد عليك بسرعة.</p>
-      <a class="foot-wa" id="footWa" target="_blank" rel="noopener">💬 كلّمنا على واتساب</a>
+      <a class="foot-wa" id="footWa" target="_blank" rel="noopener"><i class="ic" data-i="chat"></i> كلّمنا على واتساب</a>
     </div>
   </div>
-  <div class="foot-bot"><span id="foot"></span><span>صُنع بحب لطلبة طب الأسنان 🦷</span></div>
+  <div class="foot-bot"><span id="foot"></span><span>صُنع بحب لطلبة طب الأسنان</span></div>
 </footer>
 <button class="totop" id="totop" aria-label="لفوق">↑</button>
-<a class="wa" id="waFloat" target="_blank" rel="noopener" title="واتساب">💬</a>
+<a class="wa" id="waFloat" target="_blank" rel="noopener" title="واتساب"><i class="ic" data-i="chat"></i></a>
 
 <div class="modal" id="m"><div class="box">
   <button class="close" id="mClose">✕</button>
   <h3 id="mTitle"></h3>
   <div style="color:var(--muted)">اختار طريقة الدفع</div>
   <div class="opts">
-    <button class="opt vf on" data-m="vf">📱 فودافون كاش</button>
-    <button class="opt ip" data-m="ip">🏦 انستاباي</button>
+    <button class="opt vf on" data-m="vf"><i class="ic" data-i="phone"></i> فودافون كاش</button>
+    <button class="opt ip" data-m="ip"><i class="ic" data-i="bank"></i> انستاباي</button>
   </div>
   <div class="payinfo on" id="pi-vf">
     <div>حوّل على الرقم ده</div>
@@ -318,7 +350,7 @@ footer.foot{border-top:none;margin-top:50px;padding:0;text-align:start;backgroun
   </div>
   <div class="total"><span>المطلوب</span><span id="mPrice"></span></div>
   <p style="color:var(--muted);font-size:14px">بعد ما تحوّل، دوس الزرار اللي تحت وابعت صورة التحويل في نفس المحادثة، وهيوصلك كود الدخول بعد التأكد.</p>
-  <a class="btn" id="mWa" target="_blank" rel="noopener" style="width:100%;text-align:center;background:#25d366;color:#fff">💬 ابعت صورة التحويل على واتساب</a>
+  <a class="btn" id="mWa" target="_blank" rel="noopener" style="width:100%;text-align:center;background:#25d366;color:#fff"><i class="ic" data-i="chat"></i> ابعت صورة التحويل على واتساب</a>
 </div></div>
 
 <div class="modal" id="mPick"><div class="box">
@@ -346,7 +378,11 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>`${n} <small>${esc(SITE.currency)}</small>`;
 document.title=SITE.name;
-$('sName').textContent=SITE.name; $('sSlogan').textContent=SITE.slogan; $('navName').textContent=SITE.name; $('footName').textContent=SITE.name; $('footSlogan').textContent=SITE.slogan;
+$('sName').textContent=SITE.name;
+if(SITE.audience) $('aud').innerHTML=`<span class="aud">${UI('users')} ${esc(SITE.audience)}</span>`;
+const RV=String(SITE.reviews||'').split('\n').map(l=>l.split('|')).filter(x=>x.length>=2&&x[1].trim());
+if(RV.length){ $('reviews').style.display=''; $('revSep').style.display='';
+  $('revs').innerHTML=RV.map(([n,t])=>`<div class="rev"><div class="stars">${UI('star').repeat(5)}</div><p>${esc(t.trim())}</p><b>— ${esc(n.trim())}</b></div>`).join(''); } $('sSlogan').textContent=SITE.slogan; $('navName').textContent=SITE.name; $('footName').textContent=SITE.name; $('footSlogan').textContent=SITE.slogan;
 $('vfNum').textContent=$('mVf').textContent=SITE.vodafoneCash;
 $('vfName').textContent=SITE.vodafoneName?('باسم: '+SITE.vodafoneName):'';
 $('ipNum').textContent=$('mIp').textContent=SITE.instapay;
@@ -368,7 +404,7 @@ const cur=esc(SITE.currency), launchOn=Number(SITE.launchPrice)>0&&Number(SITE.l
 const bundleNow=launchOn?Number(SITE.launchPrice):Number(SITE.bundlePrice);
 if(SITE.bundlePrice>0){
   const spots=Number(SITE.launchSpots)||0, left=Number(SITE.launchLeft)||0;
-  $('bundle').innerHTML=`<div>${launchOn?'<span class="launch">🔥 عرض الافتتاح</span>':''}<h3>🎁 المواد الست مع بعض</h3>
+  $('bundle').innerHTML=`<div>${launchOn?'<span class="launch">🔥 عرض الافتتاح</span>':''}<h3><i class="ic" data-i="gift"></i> المواد الست مع بعض</h3>
     <div>بدل <span class="old">${total} ${cur}</span> بس <b style="color:var(--y);font-size:26px">${bundleNow} ${cur}</b> <span style="font-size:14px;opacity:.85">هتوفّر ${total-bundleNow} ${cur}</span></div>
     ${launchOn?`<div style="font-size:13px;opacity:.8">بعد العرض هيبقى ${SITE.bundlePrice} ${cur}</div>`:''}
     ${launchOn?`<div class="left">فاضل ${left} مكان بس بالسعر ده</div>${spots>left?`<div class="bar"><i style="width:${Math.round((spots-left)*100/spots)}%"></i></div>`:''}`:''}</div>
@@ -414,6 +450,7 @@ document.addEventListener('click',e=>{
     try{navigator.clipboard.writeText(t).then(done,()=>{});}catch(err){}
   }
 });
+fillIcons();
 const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12}):null;
 document.querySelectorAll('.reveal').forEach(el=>io?io.observe(el):el.classList.add('in'));
 setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in')),2500);

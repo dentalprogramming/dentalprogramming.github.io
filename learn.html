@@ -30,6 +30,8 @@ input:focus{outline:none;border-color:var(--o)}
 .tile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;cursor:pointer;transition:.15s}
 .tile:hover{border-color:var(--o);transform:translateY(-3px)}
 .tile .ic{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,rgba(255,138,61,.25),rgba(255,201,77,.15));border:1px solid rgba(255,201,77,.35);margin-bottom:6px}
+html{min-height:100%}
+body{min-height:100vh;background-attachment:fixed!important}
 body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),transparent 60%),radial-gradient(700px 500px at 0% 40%,rgba(123,44,191,.12),transparent 60%),var(--bg)}
 .tile .ic svg{width:32px;height:32px;color:var(--y)}
 .lec .n{background:linear-gradient(135deg,var(--o),var(--y))}
@@ -66,6 +68,29 @@ body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),tran
 #wm span{position:absolute;white-space:nowrap;transform:rotate(-25deg);font-weight:700;font-size:15px;color:#ff8a3d;font-family:'Inter','Cairo',sans-serif}
 .spin{text-align:center;padding:40px;color:var(--muted)}
 @media print{body{display:none}}
+svg.uic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
+.aud svg.uic{width:18px;height:18px}
+.rev .stars svg.uic{width:16px;height:16px}
+.ic{display:inline-grid;place-items:center;width:1.1em;height:1.1em;vertical-align:-.18em}
+.ic svg{width:100%;height:100%}
+.bigic .ic{width:54px;height:54px;color:var(--y)}
+h1 .ic{color:var(--y)}
+.tabs .ic{width:18px;height:18px;margin-inline-end:4px}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);margin:16px 0 10px;font-size:13px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.freebar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:linear-gradient(120deg,rgba(255,138,61,.18),rgba(255,201,77,.08));border:1px dashed rgba(255,201,77,.55);border-radius:16px;padding:14px 16px;margin:6px 0 10px}
+.contc{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--o);border-radius:16px;padding:12px 16px;cursor:pointer;margin:8px 0 6px}
+.contc .ic{width:30px;height:30px;color:var(--y);flex:none}
+.contc small{color:var(--muted);display:block}
+.newb{font-size:11px;font-weight:900;background:#ff3d6e;color:#fff;border-radius:999px;padding:1px 9px;margin-inline-start:8px}
+.freeb{font-size:11px;font-weight:800;background:rgba(255,201,77,.2);color:var(--y);border-radius:999px;padding:1px 9px;margin-inline-start:8px}
+.lec.done .n{background:var(--ok);color:#fff}
+.lec .tick{margin-inline-start:auto;color:var(--ok);display:none}
+.lec.done .tick{display:inline-grid}
+.prog{height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--o),var(--y))}
+.donebtn{font-family:inherit;font-weight:800;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:8px 14px;cursor:pointer;margin-bottom:6px}
+.donebtn.on{background:rgba(34,197,94,.15);border-color:var(--ok);color:#86efac}
 .bgt{position:fixed;inset:0;pointer-events:none;z-index:0}
 .bgt i{position:absolute;aspect-ratio:1;opacity:.07;animation:fl 8s ease-in-out infinite;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff8a3d' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z'/%3E%3C/svg%3E") no-repeat center/contain}
 .bgt i:nth-child(2n){animation-delay:-3s;transform:rotate(-15deg)}
@@ -90,18 +115,22 @@ body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),tran
   <!-- code entry -->
   <div id="vCode" class="hide">
     <div class="card" style="max-width:460px;margin:30px auto;text-align:center">
-      <div style="font-size:46px">🔐</div>
+      <div class="bigic"><i class="ic" data-i="lock"></i></div>
       <h1>ادخل الكود بتاعك</h1>
       <p class="muted">الكود ده وصلك على واتساب بعد ما دفعت. الكود بيشتغل على جهاز واحد بس، فادخله من الجهاز اللي هتذاكر عليه.</p>
       <input id="code" placeholder="DP-XXXX-XXXX" autocomplete="off" maxlength="20">
       <div style="margin-top:14px"><button class="btn" id="go" style="width:100%">دخول</button></div>
       <div class="msg" id="cmsg"></div>
+      <div class="or"><span>أو</span></div>
+      <button class="btn ghost" id="tryFree" style="width:100%"><i class="ic" data-i="eye"></i> جرّب المحاضرات المجانية</button>
     </div>
   </div>
 
   <!-- subjects -->
   <div id="vHome" class="hide">
-    <h1>📚 موادك</h1>
+    <div id="freeBar" class="freebar hide"><div><b>دي محاضرات مجانية عشان تجرب المستوى</b><div class="muted">عجبتك؟ اشترك وافتح كل المحاضرات، وكل جديد هيوصلك أول بأول.</div></div><a class="btn small" href="./#subjects">اشترك دلوقتي</a></div>
+    <div id="cont"></div>
+    <h1 id="homeTitle"><i class="ic" data-i="book"></i> موادك</h1>
     <div class="grid" id="subs"></div>
   </div>
 
@@ -116,6 +145,7 @@ body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),tran
   <div id="vLec" class="hide">
     <button class="back" data-go="sub">→ رجوع للمحاضرات</button>
     <h1 id="lecTitle"></h1>
+    <button class="donebtn" id="doneBtn"></button>
     <div class="tabs" id="tabs"></div>
     <div id="tPdf" class="hide"><div id="pdfMsg" class="spin"></div><div id="pages"></div></div>
     <div id="tSum"></div>
@@ -145,6 +175,10 @@ document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['p','s','c']
 
 if(!firebaseConfig.apiKey){ $('loading').textContent='الموقع لسه بيتجهز، جرب كمان شوية'; throw 0; }
 const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+let freeMode=false;
+const LS={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const isDone=id=>!!LS.get('dp_done',{})[id];
+const isNew=l=>l.createdAt&&Date.now()-l.createdAt<7*864e5;
 let me=null, code=null, codeInfo=null, subjects=[], lectures=[], curSub=null, curLec=null;
 
 onAuthStateChanged(auth, async u=>{
@@ -161,7 +195,8 @@ async function boot(){
       if(cd.exists() && cd.data().uid){ $('cmsg').className='msg err'; $('cmsg').textContent='الكود بتاعك اتوقف، كلّمنا على واتساب'; }
     }
   }catch(e){}
-  show('vCode');
+  if(location.hash==='#free') return enterFree();
+  show('vCode'); fillIcons();
 }
 
 $('go').onclick=async()=>{
@@ -181,6 +216,22 @@ $('go').onclick=async()=>{
   $('go').disabled=false;
 };
 $('code').addEventListener('keydown',e=>{if(e.key==='Enter')$('go').click();});
+$('tryFree').onclick=()=>enterFree();
+function freeWatermark(){
+  $('who').textContent='عينة مجانية';
+  const t='Dental Programming  •  عينة مجانية';
+  let h='';for(let y=-100;y<window.innerHeight+300;y+=210)for(let x=-200;x<window.innerWidth+200;x+=440)h+=`<span style="top:${y}px;left:${x+(Math.round(y/210)%2)*220}px">${esc(t)}</span>`;
+  $('wm').innerHTML=h; $('wm').style.display='block';
+}
+async function enterFree(){
+  freeMode=true; freeWatermark(); show('loading');
+  try{
+    const [s,l]=await Promise.all([getDocs(collection(db,'subjects')),getDocs(collection(db,'lectures'))]);
+    lectures=l.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.free).sort((a,b)=>(a.order||0)-(b.order||0));
+    subjects=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>lectures.some(l=>l.subjectId===x.id)).sort((a,b)=>(a.order||0)-(b.order||0));
+  }catch(e){ subjects=[]; lectures=[]; }
+  renderHome();
+}
 
 function watermark(){
   const t=`${codeInfo.name||''}  ${codeInfo.phone||''}  ${code}`;
@@ -188,7 +239,7 @@ function watermark(){
   let h='';for(let y=-100;y<window.innerHeight+300;y+=210)for(let x=-200;x<window.innerWidth+200;x+=440)h+=`<span style="top:${y}px;left:${x+(Math.round(y/210)%2)*220}px">${esc(t)}</span>`;
   $('wm').innerHTML=h; $('wm').style.display='block';
 }
-window.addEventListener('resize',()=>{if(codeInfo)watermark();});
+window.addEventListener('resize',()=>{if(codeInfo)watermark(); else if(freeMode)freeWatermark();});
 
 async function home(){
   watermark(); show('loading');
@@ -197,18 +248,30 @@ async function home(){
     subjects=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>codeInfo.subjects.includes(x.id)).sort((a,b)=>(a.order||0)-(b.order||0));
     lectures=l.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
   }catch(e){}
-  $('subs').innerHTML=subjects.length?subjects.map(s=>`<div class="tile" data-s="${esc(s.id)}"><div class="ic">${subjectIcon(s.name,s.icon)}</div><h3>${esc(s.name)}</h3><div class="muted">${lectures.filter(l=>l.subjectId===s.id).length} محاضرة</div></div>`).join(''):'<div class="card muted">لسه مفيش مواد متاحة ليك</div>';
-  show('vHome');
+  renderHome();
 }
+function renderHome(){
+  $('freeBar').classList.toggle('hide',!freeMode);
+  $('homeTitle').innerHTML=freeMode?'<i class="ic" data-i="gift"></i> محاضرات مجانية':'<i class="ic" data-i="book"></i> موادك';
+  const last=LS.get('dp_last',null), ll=last&&lectures.find(l=>l.id===last.id);
+  $('cont').innerHTML=(!freeMode&&ll)?`<div class="contc" data-l="${esc(ll.id)}"><i class="ic" data-i="play"></i><div><small>كمّل من مكان ما وقفت</small><b>${esc(ll.title)}</b></div></div>`:'';
+  $('subs').innerHTML=subjects.length?subjects.map(s=>{const ls=lectures.filter(l=>l.subjectId===s.id), d=ls.filter(l=>isDone(l.id)).length, nw=ls.some(isNew);
+    return `<div class="tile" data-s="${esc(s.id)}"><div class="ic">${subjectIcon(s.name,s.icon)}</div><h3>${esc(s.name)}${nw?'<span class="newb">جديد</span>':''}</h3><div class="muted">${ls.length} محاضرة${!freeMode&&ls.length?` · خلّصت ${d}`:''}</div>${!freeMode&&ls.length?`<div class="prog"><i style="width:${Math.round(d*100/ls.length)}%"></i></div>`:''}</div>`}).join('')
+    : `<div class="card muted">${freeMode?'لسه مفيش محاضرات مجانية، ارجع قريب':'لسه مفيش مواد متاحة ليك'}</div>`;
+  show('vHome'); fillIcons();
+}
+$('cont').onclick=e=>{const t=e.target.closest('[data-l]'); if(!t) return; const l=lectures.find(x=>x.id===t.dataset.l); curSub=subjects.find(s=>s.id===l.subjectId)||{id:l.subjectId,name:''}; openLec(l.id);};
 $('subs').onclick=e=>{const t=e.target.closest('[data-s]');if(t)openSub(t.dataset.s);};
 function openSub(id){
   curSub=subjects.find(s=>s.id===id); $('subTitle').textContent=curSub.name;
   const ls=lectures.filter(l=>l.subjectId===id);
-  $('lecs').innerHTML=ls.length?ls.map((l,i)=>`<div class="lec" data-l="${esc(l.id)}"><span class="n">${i+1}</span><div>${esc(l.title)}</div></div>`).join(''):'<div class="card muted">المحاضرات هتنزل هنا قريب</div>';
-  show('vSub');
+  $('lecs').innerHTML=ls.length?ls.map((l,i)=>`<div class="lec${isDone(l.id)?' done':''}" data-l="${esc(l.id)}"><span class="n">${i+1}</span><div>${esc(l.title)}${isNew(l)?'<span class="newb">جديد</span>':''}${l.free&&!freeMode?'<span class="freeb">مجانية</span>':''}</div><i class="ic tick" data-i="check"></i></div>`).join(''):'<div class="card muted">المحاضرات هتنزل هنا قريب</div>';
+  show('vSub'); fillIcons();
 }
 $('lecs').onclick=e=>{const t=e.target.closest('[data-l]');if(t)openLec(t.dataset.l);};
-document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{ $('wm').style.display='block'; b.dataset.go==='home'?show('vHome'):openSub(curSub.id); });
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{ $('wm').style.display='block'; b.dataset.go==='home'?renderHome():openSub(curSub.id); });
+function doneUI(){ const on=isDone(curId); $('doneBtn').className='donebtn'+(on?' on':''); $('doneBtn').innerHTML=on?'<i class="ic" data-i="check"></i> خلّصت المحاضرة دي':'علّم إنك خلّصتها'; fillIcons($('doneBtn')); }
+$('doneBtn').onclick=()=>{ const d=LS.get('dp_done',{}); if(d[curId]) delete d[curId]; else d[curId]=1; LS.set('dp_done',d); doneUI(); };
 
 async function openLec(id){
   curLec=lectures.find(l=>l.id===id); $('lecTitle').textContent=curLec.title; show('loading');
@@ -218,21 +281,23 @@ async function openLec(id){
     const d=c.data();
     $('tSum').innerHTML='<div class="sum">'+md(d.summary||'')+'</div>';
     QS=d.questions||[]; renderQuiz(); curPdfs=d.pdfs||{}; curId=id;
+    if(!freeMode) LS.set('dp_last',{id}); doneUI();
     const T=[];
     SLOTS.forEach(s=>{ if(curPdfs[s.k]) T.push({t:'pdf:'+s.k,l:s.t}); });
-    if((d.summary||'').trim()) T.push({t:'sum',l:'📝 ملخص مكتوب'});
-    if(QS.length) T.push({t:'quiz',l:'🎯 اختبر نفسك'});
-    $('tabs').innerHTML=T.map(x=>`<button data-t="${x.t}">${x.l}</button>`).join('');
+    if((d.summary||'').trim()) T.push({t:'sum',l:'<i class="ic" data-i="file"></i>ملخص مكتوب'});
+    if(QS.length) T.push({t:'quiz',l:'<i class="ic" data-i="target"></i>اختبر نفسك'});
+    $('tabs').innerHTML=T.map(x=>`<button data-t="${x.t}">${x.l}</button>`).join(''); fillIcons($('tabs'));
     show('vLec');
     if(T.length) tab(T[0].t); else { $('tabs').innerHTML='<div class="card muted">المحتوى هينزل هنا قريب</div>'; ['tPdf','tSum','tQuiz'].forEach(x=>$(x).classList.add('hide')); }
-  }catch(e){ alertBox('مش قادر يفتح المحاضرة دي. لو الكود بتاعك شغال، كلّمنا على واتساب'); show('vSub'); }
+  }catch(e){ show('vSub'); alertBox(freeMode?'مش قادر يفتح المحاضرة دي دلوقتي، جرب تاني':'مش قادر يفتح المحاضرة دي. لو الكود بتاعك شغال، كلّمنا على واتساب'); }
 }
-const SLOTS=[{k:'summary',t:'📘 الملخص'},{k:'explain',t:'🧑‍🏫 الشرح'},{k:'tf',t:'✅ صح وغلط'},{k:'mcq',t:'🔘 اختيار من متعدد'},{k:'written',t:'✍️ كتابي'},{k:'complete',t:'🧩 كومبليت'}];
+const SI=(i,t)=>`<i class="ic" data-i="${i}"></i>${t}`;
+const SLOTS=[{k:'summary',t:SI('book','الملخص')},{k:'explain',t:SI('teach','الشرح')},{k:'tf',t:SI('tf','صح وغلط')},{k:'mcq',t:SI('mcq','اختيار من متعدد')},{k:'written',t:SI('pen','كتابي')},{k:'complete',t:SI('puzzle','كومبليت')}];
 let curPdfs={}, curId=null;
 let pdfToken=0;
 function stamp(c){
   const ctx=c.getContext('2d'), w=c.width, H=c.height;
-  const t=`${codeInfo.name||''}   ${codeInfo.phone||''}   ${code}`;
+  const t=codeInfo?`${codeInfo.name||''}   ${codeInfo.phone||''}   ${code}`:'Dental Programming   •   عينة مجانية';
   const fs=Math.max(14,Math.round(w/42));
   ctx.save(); ctx.globalAlpha=.075; ctx.fillStyle='#e8681f'; ctx.font=`700 ${fs}px Inter, Cairo, sans-serif`;
   ctx.translate(w/2,H/2); ctx.rotate(-25*Math.PI/180);

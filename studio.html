@@ -44,6 +44,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--o)}
 .newcode{background:linear-gradient(135deg,#1f3b5a,#2a2350);border-radius:14px;padding:14px;margin-top:12px}
 .newcode .big{font-size:26px}
 pre{white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:10px;font-family:inherit;margin:8px 0}
+.freebox{display:flex!important;align-items:center;gap:10px;background:rgba(255,201,77,.1);border:1px dashed rgba(255,201,77,.5);border-radius:12px;padding:10px 12px;color:var(--ink)!important;cursor:pointer;margin-top:12px!important}
+.freebox input{width:20px;height:20px;accent-color:#ff8a3d}
+.badge-free{font-size:11px;font-weight:800;background:rgba(255,201,77,.2);color:#ffc94d;border-radius:999px;padding:1px 8px;margin-inline-start:6px}
 </style>
 </head>
 <body>
@@ -91,9 +94,15 @@ pre{white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:10px;fo
         <label>المادة</label><select id="lSub"></select>
         <label>اسم المحاضرة</label><input id="lTitle">
         <label>ترتيبها</label><input id="lOrder" type="number" inputmode="numeric" value="1">
+        <label class="freebox"><input type="checkbox" id="lFree"> 🎁 محاضرة مجانية: أي حد يقدر يفتحها من غير كود، عشان يجرب المستوى</label>
         <div class="muted" style="margin-top:10px">ارفع ملف بي دي إف في كل خانة عايزها، والخانة اللي تسيبها فاضية مش هتظهر للطالب. الملف بيتحوّل لصور عليها اسم الموقع محفور جواها، والطالب بيشوفها واسمه مرسوم عليها.</div>
         <div id="slots"></div>
-        <details style="margin-top:12px"><summary class="muted" style="cursor:pointer">إضافات اختيارية: ملخص مكتوب أو أسئلة تفاعلية</summary>
+        <div class="item" style="margin-top:12px"><b>🎯 أسئلة تفاعلية</b>
+          <div class="muted" style="font-size:13px;margin:4px 0 8px">الطالب بيحلها جوه الموقع ويعرف إجابته على طول. اكتب كل سؤال وتحته اختياراته، وحط علامة * قبل الإجابة الصح، وسيب سطر فاضي بين كل سؤال والتاني. ولو عايز تكتب شرح للإجابة، اكتب سطر يبدأ بكلمة Explanation.</div>
+          <textarea id="lQtext" rows="8" class="ltr" placeholder="The mandible is the movable jaw.&#10;*True&#10;False&#10;&#10;Which tooth has the longest root?&#10;a) Central incisor&#10;*b) Maxillary canine&#10;c) First molar&#10;Explanation: The maxillary canine has the longest root."></textarea>
+          <div class="muted" id="lQcount" style="font-size:13px;margin-top:6px"></div>
+        </div>
+        <details style="margin-top:12px"><summary class="muted" style="cursor:pointer">إضافات اختيارية: ملخص مكتوب أو ملف أسئلة جاهز</summary>
         <label>📦 ملف الأسئلة التفاعلية اللي بعمله ليك</label>
         <input type="file" id="lFile" accept=".json,application/json">
         <div class="muted" id="lQinfo" style="margin-top:6px">مفيش أسئلة</div>
@@ -228,13 +237,35 @@ async function pdfToImages(file,label){
   }
   return out;
 }
+function parseQ(src){
+  const out=[]; const blocks=String(src||'').replace(/\r/g,'').split(/\n\s*\n/);
+  for(const b of blocks){
+    const lines=b.split('\n').map(s=>s.trim()).filter(Boolean); if(lines.length<3) continue;
+    let q=lines[0].replace(/^(q\s*[:.)-]|\d+\s*[.)-])\s*/i,''), opts=[], ans=-1, exp='';
+    for(const l of lines.slice(1)){
+      const m=l.match(/^(explanation|الشرح|تفسير)\s*[:：-]\s*(.*)$/i); if(m){ exp=m[2]; continue; }
+      let t=l, star=false;
+      if(t.startsWith('*')){ star=true; t=t.slice(1).trim(); }
+      t=t.replace(/^([a-hA-H]|[أ-ي])\s*(\)\s*|[.-]\s+)/,'').replace(/^[-•]\s*/,'');
+      if(t.startsWith('*')){ star=true; t=t.slice(1).trim(); }
+      if(star) ans=opts.length; opts.push(t);
+    }
+    if(opts.length>=2&&ans>=0) out.push({q,options:opts,answer:ans,explanation:exp});
+  }
+  return out;
+}
+function serQ(qs){ return (qs||[]).map(x=>[x.q,...x.options.map((o,i)=>(i===x.answer?'*':'')+o),...(x.explanation?['Explanation: '+x.explanation]:[])].join('\n')).join('\n\n'); }
+function qCount(){ const n=parseQ($('lQtext').value).length, raw=$('lQtext').value.trim();
+  const blocks=raw?raw.split(/\n\s*\n/).filter(b=>b.trim()).length:0;
+  $('lQcount').textContent= raw ? `اتقرا ${n} سؤال`+(blocks>n?`، و${blocks-n} سؤال مش مظبوطين، اتأكد إن فيهم علامة * قدام الإجابة الصح`:'') : ''; }
+$('lQtext').addEventListener('input',qCount);
 async function delChunks(id,k,n){ for(let i=0;i<n;i++) await deleteDoc(doc(db,'chunks',`${id}_${k}_${i}`)).catch(()=>{}); }
 function renderLecs(){
   $('lList').innerHTML=subjects.map(s=>{const ls=lectures.filter(l=>l.subjectId===s.id);
-    return `<div style="margin-top:10px;font-weight:800">${esc(s.icon)} ${esc(s.name)}</div>`+(ls.map(l=>`<div class="item"><div class="top"><span>${esc(l.order)}. ${esc(l.title)}</span>
+    return `<div style="margin-top:10px;font-weight:800">${esc(s.icon)} ${esc(s.name)}</div>`+(ls.map(l=>`<div class="item"><div class="top"><span>${esc(l.order)}. ${esc(l.title)}${l.free?'<span class="badge-free">مجانية</span>':''}</span>
       <div class="acts"><button class="btn ghost small" data-ledit="${l.id}">تعديل</button><button class="btn red small" data-ldel="${l.id}">مسح</button></div></div></div>`).join('')||'<div class="muted">مفيش محاضرات</div>');}).join('')||'<div class="muted">ضيف مادة الأول</div>';
 }
-function resetLec(){ editLec=null; pendingQ=[]; curPdfs={}; removed={}; $('lTitle').value=''; $('lSum').value=''; $('lFile').value='';
+function resetLec(){ editLec=null; pendingQ=[]; curPdfs={}; removed={}; $('lFree').checked=false; $('lQtext').value=''; $('lQcount').textContent=''; $('lTitle').value=''; $('lSum').value=''; $('lFile').value='';
   SLOTS.forEach(s=>$('f_'+s.k).value=''); slotInfo(); $('lQinfo').textContent='مفيش أسئلة'; $('lFormTitle').textContent='➕ محاضرة جديدة';
   $('lOrder').value=lectures.filter(l=>l.subjectId===$('lSub').value).length+1; }
 $('lCancel').onclick=resetLec;
@@ -245,6 +276,7 @@ $('lFile').onchange=async()=>{
     if(d.title&&!$('lTitle').value) $('lTitle').value=d.title;
     if(d.summary) $('lSum').value=d.summary;
     pendingQ=Array.isArray(d.questions)?d.questions:[];
+    $('lQtext').value=serQ(pendingQ); qCount();
     $('lQinfo').textContent=pendingQ.length?`فيه ${pendingQ.length} سؤال جاهزين`:'مفيش أسئلة';
     say('lmsg2','الملف اتقرا ✓ راجع ودوس حفظ',true);
   }catch(e){ say('lmsg2','الملف ده مش مظبوط'); }
@@ -269,8 +301,10 @@ $('lSave').onclick=async()=>{
       } else if(cur&&removed[s.k]){ await delChunks(id,s.k,cur.n); }
       else if(cur){ pdfs[s.k]=cur; }
     }
-    await setDoc(doc(db,'lectures',id),{subjectId,title,order});
-    await setDoc(doc(db,'content',id),{subjectId,summary:$('lSum').value,questions:pendingQ,pdfs});
+    const free=$('lFree').checked, old=lectures.find(x=>x.id===id), createdAt=(old&&old.createdAt)||Date.now();
+    const questions=$('lQtext').value.trim()?parseQ($('lQtext').value):[];
+    await setDoc(doc(db,'lectures',id),{subjectId,title,order,free,createdAt});
+    await setDoc(doc(db,'content',id),{subjectId,summary:$('lSum').value,questions,pdfs,free});
     say('lmsg2','اتحفظت ✓',true); resetLec(); await loadAll();
   }catch(e){ say('lmsg2','الحفظ ما نجحش، جرب تاني'); }
   $('lSave').disabled=false;
@@ -278,7 +312,7 @@ $('lSave').onclick=async()=>{
 $('lList').onclick=async e=>{
   const ed=e.target.closest('[data-ledit]'), dl=e.target.closest('[data-ldel]');
   if(ed){ const l=lectures.find(x=>x.id===ed.dataset.ledit); const c=await getDoc(doc(db,'content',l.id)); const d=c.exists()?c.data():{};
-    resetLec(); editLec=l.id; $('lSub').value=l.subjectId; $('lTitle').value=l.title; $('lOrder').value=l.order; $('lSum').value=d.summary||''; pendingQ=d.questions||[];
+    resetLec(); editLec=l.id; $('lSub').value=l.subjectId; $('lTitle').value=l.title; $('lOrder').value=l.order; $('lSum').value=d.summary||''; pendingQ=d.questions||[]; $('lFree').checked=!!l.free; $('lQtext').value=serQ(pendingQ); qCount();
     curPdfs=d.pdfs||{}; slotInfo();
     $('lQinfo').textContent=pendingQ.length?`فيه ${pendingQ.length} سؤال`:'مفيش أسئلة'; $('lFormTitle').textContent='✏️ تعديل المحاضرة'; window.scrollTo({top:0,behavior:'smooth'}); }
   if(dl) confirm2(dl,async()=>{ const id=dl.dataset.ldel; const c=await getDoc(doc(db,'content',id));
