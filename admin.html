@@ -139,6 +139,7 @@ function renderSubs(){
   $('subs').innerHTML=data.subjects.map((s,i)=>`<div class="subj" data-i="${i}">
     <div class="row"><div><label>إيموجي</label><input data-k="icon" value="${attr(s.icon)}"></div><div><label>اسم المادة</label><input data-k="name" value="${attr(s.name)}"></div></div>
     <label>الوصف</label><input data-k="desc" value="${attr(s.desc)}">
+    <label>المتاح دلوقتي (اختياري)</label><input data-k="avail" placeholder="مثلاً: متاح محاضرتين، والباقي بينزل أول بأول" value="${attr(s.avail)}">
     <div class="row2"><div><label>السعر</label><input data-k="price" type="number" inputmode="numeric" value="${attr(s.price)}"></div>
     <div style="display:flex;align-items:end"><button class="btn red small" data-del="${i}" style="width:100%">🗑️ امسح</button></div></div>
   </div>`).join('');
