@@ -199,14 +199,16 @@ $('sList').onclick=e=>{const b=e.target.closest('[data-sdel]'); if(!b) return; c
 
 /* ---------- lectures ---------- */
 const SLOTS=[{k:'summary',t:'📘 الملخص'},{k:'explain',t:'🧑‍🏫 الشرح'},{k:'tf',t:'✅ أسئلة صح وغلط'},{k:'mcq',t:'🔘 أسئلة اختيار من متعدد'},{k:'written',t:'✍️ أسئلة كتابي'},{k:'complete',t:'🧩 أسئلة كومبليت'}];
-let curPdfs={}, removed={};
+let curPdfs={}, removed={}, curExams={};
+const EX=['tf','mcq','complete'];
 $('slots').innerHTML=SLOTS.map(s=>`<div class="item"><b>${s.t}</b>
-  <input type="file" id="f_${s.k}" accept="application/pdf,.pdf" style="margin-top:8px">
+  ${EX.includes(s.k)?'<div class="muted" style="font-size:12px;margin-top:4px">ارفع بي دي إف عشان يظهر كملف، أو ملف الامتحان الجاهز اللي بعمله ليك عشان يبقى امتحان إلكتروني</div>':''}
+  <input type="file" id="f_${s.k}" accept="${EX.includes(s.k)?'application/pdf,.pdf,.txt,text/plain':'application/pdf,.pdf'}" style="margin-top:8px">
   <div style="display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap"><span class="muted" id="i_${s.k}" style="font-size:13px">مفيش ملف</span>
   <button class="btn red small hide" id="r_${s.k}" type="button">شيل الملف</button></div></div>`).join('');
 SLOTS.forEach(s=>{ $('r_'+s.k).onclick=()=>{ removed[s.k]=true; $('f_'+s.k).value=''; slotInfo(); }; $('f_'+s.k).onchange=()=>{ delete removed[s.k]; slotInfo(); }; });
 function slotInfo(){ SLOTS.forEach(s=>{ const cur=curPdfs[s.k], f=$('f_'+s.k).files[0];
-  $('i_'+s.k).textContent= f?'هيترفع: '+f.name : (cur&&!removed[s.k])?'الملف الحالي: '+cur.name:'مفيش ملف';
+  $('i_'+s.k).textContent= f?'هيترفع: '+f.name : (cur&&!removed[s.k])?(cur.type==='exam'?`امتحان إلكتروني فيه ${cur.n} سؤال: `:'الملف الحالي: ')+cur.name:'مفيش ملف';
   $('r_'+s.k).classList.toggle('hide',!(cur&&!removed[s.k]&&!f)); }); }
 function burnBrand(c){
   const ctx=c.getContext('2d'), w=c.width, H=c.height, fs=Math.round(w/26), t='Dental Programming';
@@ -240,21 +242,23 @@ async function pdfToImages(file,label){
 function parseQ(src){
   const out=[]; const blocks=String(src||'').replace(/\r/g,'').split(/\n\s*\n/);
   for(const b of blocks){
-    const lines=b.split('\n').map(s=>s.trim()).filter(Boolean); if(lines.length<3) continue;
-    let q=lines[0].replace(/^(q\s*[:.)-]|\d+\s*[.)-])\s*/i,''), opts=[], ans=-1, exp='';
+    const lines=b.split('\n').map(s=>s.trim()).filter(Boolean); if(lines.length<2) continue;
+    let q=lines[0].replace(/^(q\s*[:.)-]|\d+\s*[.)-])\s*/i,''), opts=[], ans=-1, exp='', typed=null;
     for(const l of lines.slice(1)){
       const m=l.match(/^(explanation|الشرح|تفسير)\s*[:：-]\s*(.*)$/i); if(m){ exp=m[2]; continue; }
+      if(l.startsWith('=')){ typed=l.slice(1).split('|').map(s=>s.trim()).filter(Boolean); continue; }
       let t=l, star=false;
       if(t.startsWith('*')){ star=true; t=t.slice(1).trim(); }
       t=t.replace(/^([a-hA-H]|[أ-ي])\s*(\)\s*|[.-]\s+)/,'').replace(/^[-•]\s*/,'');
       if(t.startsWith('*')){ star=true; t=t.slice(1).trim(); }
       if(star) ans=opts.length; opts.push(t);
     }
-    if(opts.length>=2&&ans>=0) out.push({q,options:opts,answer:ans,explanation:exp});
+    if(typed&&typed.length) out.push({q,type:'type',answers:typed,explanation:exp});
+    else if(opts.length>=2&&ans>=0) out.push({q,options:opts,answer:ans,explanation:exp});
   }
   return out;
 }
-function serQ(qs){ return (qs||[]).map(x=>[x.q,...x.options.map((o,i)=>(i===x.answer?'*':'')+o),...(x.explanation?['Explanation: '+x.explanation]:[])].join('\n')).join('\n\n'); }
+function serQ(qs){ return (qs||[]).map(x=>[x.q,...(x.type==='type'?['= '+x.answers.join(' | ')]:x.options.map((o,i)=>(i===x.answer?'*':'')+o)),...(x.explanation?['Explanation: '+x.explanation]:[])].join('\n')).join('\n\n'); }
 function qCount(){ const n=parseQ($('lQtext').value).length, raw=$('lQtext').value.trim();
   const blocks=raw?raw.split(/\n\s*\n/).filter(b=>b.trim()).length:0;
   $('lQcount').textContent= raw ? `اتقرا ${n} سؤال`+(blocks>n?`، و${blocks-n} سؤال مش مظبوطين، اتأكد إن فيهم علامة * قدام الإجابة الصح`:'') : ''; }
@@ -265,7 +269,7 @@ function renderLecs(){
     return `<div style="margin-top:10px;font-weight:800">${esc(s.icon)} ${esc(s.name)}</div>`+(ls.map(l=>`<div class="item"><div class="top"><span>${esc(l.order)}. ${esc(l.title)}${l.free?'<span class="badge-free">مجانية</span>':''}</span>
       <div class="acts"><button class="btn ghost small" data-ledit="${l.id}">تعديل</button><button class="btn red small" data-ldel="${l.id}">مسح</button></div></div></div>`).join('')||'<div class="muted">مفيش محاضرات</div>');}).join('')||'<div class="muted">ضيف مادة الأول</div>';
 }
-function resetLec(){ editLec=null; pendingQ=[]; curPdfs={}; removed={}; $('lFree').checked=false; $('lQtext').value=''; $('lQcount').textContent=''; $('lTitle').value=''; $('lSum').value=''; $('lFile').value='';
+function resetLec(){ editLec=null; pendingQ=[]; curPdfs={}; curExams={}; removed={}; $('lFree').checked=false; $('lQtext').value=''; $('lQcount').textContent=''; $('lTitle').value=''; $('lSum').value=''; $('lFile').value='';
   SLOTS.forEach(s=>$('f_'+s.k).value=''); slotInfo(); $('lQinfo').textContent='مفيش أسئلة'; $('lFormTitle').textContent='➕ محاضرة جديدة';
   $('lOrder').value=lectures.filter(l=>l.subjectId===$('lSub').value).length+1; }
 $('lCancel').onclick=resetLec;
@@ -289,34 +293,38 @@ $('lSave').onclick=async()=>{
   const id=editLec||('l'+Date.now().toString(36)), order=Number($('lOrder').value||1);
   $('lSave').disabled=true; say('lmsg2','جاري الحفظ...',true);
   try{
-    const pdfs={};
+    const pdfs={}, exams={};
     for(const s of SLOTS){
       const cur=curPdfs[s.k], f=$('f_'+s.k).files[0];
-      if(f){
+      if(f&&/\.txt$/i.test(f.name)){
+        const qs=parseQ(await f.text()); if(!qs.length) throw 'exam:'+s.t;
+        if(cur&&cur.type!=='exam') await delChunks(id,s.k,cur.n);
+        pdfs[s.k]={type:'exam',n:qs.length,name:f.name}; exams[s.k]=qs;
+      } else if(f){
         const imgs=await pdfToImages(f,s.t), n=imgs.length;
         for(let i=0;i<n;i++){ say('lmsg2',`جاري رفع ${s.t}... ${Math.round((i+1)*100/n)}%`,true);
           await setDoc(doc(db,'chunks',`${id}_${s.k}_${i}`),{subjectId,lecture:id,i,data:imgs[i]}); }
-        if(cur&&cur.n>n) for(let i=n;i<cur.n;i++) await deleteDoc(doc(db,'chunks',`${id}_${s.k}_${i}`)).catch(()=>{});
+        if(cur&&cur.type!=='exam'&&cur.n>n) for(let i=n;i<cur.n;i++) await deleteDoc(doc(db,'chunks',`${id}_${s.k}_${i}`)).catch(()=>{});
         pdfs[s.k]={n,name:f.name,type:'img'};
-      } else if(cur&&removed[s.k]){ await delChunks(id,s.k,cur.n); }
-      else if(cur){ pdfs[s.k]=cur; }
+      } else if(cur&&removed[s.k]){ if(cur.type!=='exam') await delChunks(id,s.k,cur.n); }
+      else if(cur){ pdfs[s.k]=cur; if(cur.type==='exam') exams[s.k]=curExams[s.k]||[]; }
     }
     const free=$('lFree').checked, old=lectures.find(x=>x.id===id), createdAt=(old&&old.createdAt)||Date.now();
     const questions=$('lQtext').value.trim()?parseQ($('lQtext').value):[];
     await setDoc(doc(db,'lectures',id),{subjectId,title,order,free,createdAt});
-    await setDoc(doc(db,'content',id),{subjectId,summary:$('lSum').value,questions,pdfs,free});
+    await setDoc(doc(db,'content',id),{subjectId,summary:$('lSum').value,questions,pdfs,exams,free});
     say('lmsg2','اتحفظت ✓',true); resetLec(); await loadAll();
-  }catch(e){ say('lmsg2','الحفظ ما نجحش، جرب تاني'); }
+  }catch(e){ say('lmsg2', String(e).startsWith('exam:')?`ملف ${String(e).slice(5)} مش مكتوب بالشكل المظبوط، مفيهوش ولا سؤال`:'الحفظ ما نجحش، جرب تاني'); }
   $('lSave').disabled=false;
 };
 $('lList').onclick=async e=>{
   const ed=e.target.closest('[data-ledit]'), dl=e.target.closest('[data-ldel]');
   if(ed){ const l=lectures.find(x=>x.id===ed.dataset.ledit); const c=await getDoc(doc(db,'content',l.id)); const d=c.exists()?c.data():{};
     resetLec(); editLec=l.id; $('lSub').value=l.subjectId; $('lTitle').value=l.title; $('lOrder').value=l.order; $('lSum').value=d.summary||''; pendingQ=d.questions||[]; $('lFree').checked=!!l.free; $('lQtext').value=serQ(pendingQ); qCount();
-    curPdfs=d.pdfs||{}; slotInfo();
+    curPdfs=d.pdfs||{}; curExams=d.exams||{}; slotInfo();
     $('lQinfo').textContent=pendingQ.length?`فيه ${pendingQ.length} سؤال`:'مفيش أسئلة'; $('lFormTitle').textContent='✏️ تعديل المحاضرة'; window.scrollTo({top:0,behavior:'smooth'}); }
   if(dl) confirm2(dl,async()=>{ const id=dl.dataset.ldel; const c=await getDoc(doc(db,'content',id));
-    if(c.exists()){ const d=c.data(); for(const [k,v] of Object.entries(d.pdfs||{})) await delChunks(id,k,v.n); }
+    if(c.exists()){ const d=c.data(); for(const [k,v] of Object.entries(d.pdfs||{})) if(v.type!=='exam') await delChunks(id,k,v.n); }
     await deleteDoc(doc(db,'content',id)); await deleteDoc(doc(db,'lectures',id)); await loadAll(); });
 };
 

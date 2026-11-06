@@ -68,6 +68,51 @@ body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),tran
 #wm span{position:absolute;white-space:nowrap;transform:rotate(-25deg);font-weight:700;font-size:15px;color:#ff8a3d;font-family:'Inter','Cairo',sans-serif}
 .spin{text-align:center;padding:40px;color:var(--muted)}
 @media print{body{display:none}}
+/* ---------- quiz game ---------- */
+.g-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.g-chip{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:800;font-size:14px}
+.g-chip .ic{width:18px;height:18px;color:var(--y)}
+.g-chip.fire{border-color:#ff6a3d;color:#ffb38a}
+.g-chip.fire.hot{animation:pop .4s}
+.g-bar{flex:1 1 100%;height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.g-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--o),var(--y));transition:width .4s}
+.g-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;animation:slide .35s ease}
+.g-n{color:var(--muted);font-size:13px;margin-bottom:6px}
+.g-q{font-size:19px;font-weight:800;margin:0 0 14px;line-height:1.6}
+.g-opt{display:flex;align-items:center;gap:12px;width:100%;font-family:inherit;font-size:16px;background:var(--bg2);color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin:8px 0;cursor:pointer;text-align:start;transition:.15s}
+.g-opt:hover:not(:disabled){border-color:var(--o);transform:translateY(-1px)}
+.g-opt .k{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.07);font-weight:900;font-family:Inter,sans-serif}
+.g-opt.ok{background:rgba(34,197,94,.16);border-color:var(--ok);animation:pop .35s}
+.g-opt.ok .k{background:var(--ok);color:#fff}
+.g-opt.bad{background:rgba(244,63,94,.16);border-color:var(--bad);animation:shake .4s}
+.g-opt.bad .k{background:var(--bad);color:#fff}
+.g-opt:disabled{cursor:default}
+.g-fb{margin-top:12px;border-radius:14px;padding:12px 14px;font-weight:700;display:none}
+.g-fb.show{display:block;animation:slide .3s}
+.g-fb.ok{background:rgba(34,197,94,.12);color:#86efac}
+.g-fb.bad{background:rgba(244,63,94,.12);color:#fda4af}
+.g-fb p{margin:6px 0 0;color:var(--ink);font-weight:500}
+.g-next{margin-top:14px;width:100%}
+.g-type{display:flex;gap:8px;margin-top:6px}
+.g-type input{direction:rtl}
+.g-type input.ltr{direction:ltr}
+.g-type input{flex:1;font-size:17px;letter-spacing:0;text-transform:none;text-align:start;padding:12px 14px;border-radius:14px;user-select:text;-webkit-user-select:text}
+.g-type input.ok{border-color:var(--ok);background:rgba(34,197,94,.12)}
+.g-type input.bad{border-color:var(--bad);background:rgba(244,63,94,.12);animation:shake .4s}
+.g-end{text-align:center;background:linear-gradient(135deg,#3a1d6e,#7a2e3a);border-radius:22px;padding:28px 20px;position:relative;overflow:hidden;animation:slide .4s}
+.g-stars{display:flex;justify-content:center;gap:8px;margin:6px 0 10px}
+.g-stars .ic{width:44px;height:44px;color:rgba(255,255,255,.2)}
+.g-stars .ic.on{color:var(--y);animation:pop .5s backwards}
+.g-pct{font-size:52px;font-weight:900;color:var(--y);font-family:Inter,sans-serif;line-height:1}
+.g-stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0}
+.g-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.g-best{color:#ffd0d0;font-size:14px}
+.conf{position:absolute;width:8px;height:14px;top:-20px;border-radius:2px;animation:fall 2.2s linear forwards}
+@keyframes fall{to{transform:translateY(520px) rotate(720deg);opacity:0}}
+@keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.05)}100%{transform:scale(1)}}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes slide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.g-card,.g-opt,.g-end,.conf,.g-stars .ic.on{animation:none!important}}
 svg.uic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
 .aud svg.uic{width:18px;height:18px}
 .rev .stars svg.uic{width:16px;height:16px}
@@ -149,11 +194,7 @@ h1 .ic{color:var(--y)}
     <div class="tabs" id="tabs"></div>
     <div id="tPdf" class="hide"><div id="pdfMsg" class="spin"></div><div id="pages"></div></div>
     <div id="tSum"></div>
-    <div id="tQuiz" class="hide">
-      <div class="score"><span>الدرجة: <b id="sc">0</b> من <span id="tot">0</span></span><button class="btn ghost small" id="redo">↺ من الأول</button></div>
-      <div id="qs"></div>
-      <div class="final" id="final"><div>خلصت الأسئلة</div><div class="big" id="pct"></div><div id="fmsg"></div></div>
-    </div>
+    <div id="tQuiz" class="hide"><div id="game"></div></div>
   </div>
 </div>
 
@@ -162,7 +203,7 @@ h1 .ic{color:var(--y)}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager, getDocFromCache, doc, getDoc, setDoc, updateDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 
 const $=id=>document.getElementById(id);
@@ -174,7 +215,10 @@ document.addEventListener('copy',e=>e.preventDefault());
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['p','s','c'].includes(e.key.toLowerCase()))e.preventDefault();});
 
 if(!firebaseConfig.apiKey){ $('loading').textContent='الموقع لسه بيتجهز، جرب كمان شوية'; throw 0; }
-const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+const app=initializeApp(firebaseConfig), auth=getAuth(app);
+let db; try{ db=initializeFirestore(app,{localCache:persistentLocalCache({tabManager:persistentMultipleTabManager()})}); }catch(e){ db=getFirestore(app); }
+/* file pages: use the copy saved on this device first, download only if missing */
+async function getPage(ref){ try{ const s=await getDocFromCache(ref); if(s.exists()) return s; }catch(e){} return getDoc(ref); }
 let freeMode=false;
 const LS={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const isDone=id=>!!LS.get('dp_done',{})[id];
@@ -280,7 +324,7 @@ async function openLec(id){
     if(!c.exists()) throw 0;
     const d=c.data();
     $('tSum').innerHTML='<div class="sum">'+md(d.summary||'')+'</div>';
-    QS=d.questions||[]; renderQuiz(); curPdfs=d.pdfs||{}; curId=id;
+    lecQS=d.questions||[]; curExams=d.exams||{}; QS=lecQS; curPdfs=d.pdfs||{}; curId=id;
     if(!freeMode) LS.set('dp_last',{id}); doneUI();
     const T=[];
     SLOTS.forEach(s=>{ if(curPdfs[s.k]) T.push({t:'pdf:'+s.k,l:s.t}); });
@@ -308,7 +352,7 @@ function stamp(c){
 async function loadPdf(id,k,meta){
   const n=meta.n, tok=++pdfToken; $('pages').innerHTML=''; $('pdfMsg').textContent='جاري تحميل الملف...'; $('pdfMsg').style.display='';
   try{
-    const parts=await Promise.all(Array.from({length:n},(_,i)=>getDoc(doc(db,'chunks',`${id}_${k}_${i}`))));
+    const parts=await Promise.all(Array.from({length:n},(_,i)=>getPage(doc(db,'chunks',`${id}_${k}_${i}`))));
     if(meta.type==='img'){
       for(let i=0;i<parts.length;i++){
         if(tok!==pdfToken) return;
@@ -354,31 +398,96 @@ function md(src){
   return h;
 }
 
-let QS=[], score=0, done=0;
-function renderQuiz(){
-  score=0;done=0;$('final').classList.remove('show');$('tot').textContent=QS.length;$('sc').textContent=0;
-  $('qs').innerHTML=QS.map((q,i)=>{const L=/[؀-ۿ]/.test(q.q)?'':' ltr';
-    return `<div class="q" data-i="${i}"><div class="qn">سؤال ${i+1} من ${QS.length}</div><div class="qt${L}">${esc(q.q)}</div>
-    ${(q.options||[]).map((o,k)=>`<button class="opt${L}" data-k="${k}">${String.fromCharCode(65+k)}. ${esc(o)}</button>`).join('')}
-    ${q.explanation?`<div class="why${L}">${esc(q.explanation)}</div>`:''}</div>`}).join('');
+let QS=[], lecQS=[], curExams={}, quizKey='quiz';
+const G={list:[],i:0,pts:0,streak:0,maxStreak:0,right:0,wrong:[],answered:false};
+const isAr=s=>/[؀-ۿ]/.test(s||'');
+function renderQuiz(onlyWrong){
+  const src=onlyWrong?G.wrong.slice():QS.map((_,i)=>i);
+  Object.assign(G,{list:src,i:0,pts:0,streak:0,maxStreak:0,right:0,wrong:[],answered:false,retry:!!onlyWrong});
+  gShow();
 }
-$('qs').onclick=e=>{
-  const b=e.target.closest('.opt'); if(!b||b.disabled) return;
-  const box=b.closest('.q'), q=QS[+box.dataset.i], k=+b.dataset.k;
-  box.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(+o.dataset.k===q.answer)o.classList.add('ok');});
-  if(k===q.answer)score++; else b.classList.add('bad');
-  const w=box.querySelector('.why'); if(w) w.classList.add('show');
-  done++; $('sc').textContent=score;
-  if(done===QS.length){const p=Math.round(score*100/QS.length);$('pct').textContent=p+'%';
-    $('fmsg').textContent=p>=85?'ممتاز، إنت جاهز':p>=65?'كويس، راجع اللي غلطت فيه':'راجع الملخص تاني وحل من الأول';$('final').classList.add('show');}
-};
-$('redo').onclick=renderQuiz;
+function gTop(){
+  const n=G.list.length;
+  return `<div class="g-top">
+    <span class="g-chip"><i class="ic" data-i="star"></i>${G.pts} نقطة</span>
+    <span class="g-chip fire${G.streak>=2?' hot':''}" ${G.streak<2?'style="opacity:.55"':''}><i class="ic" data-i="spark"></i>سلسلة ${G.streak}</span>
+    <span class="g-chip"><i class="ic" data-i="target"></i>${Math.min(G.i+1,n)} / ${n}</span>
+    <div class="g-bar"><i style="width:${Math.round(G.i*100/n)}%"></i></div></div>`;
+}
+function gShow(){
+  if(!G.list.length){ $('game').innerHTML='<div class="card muted">مفيش أسئلة هنا</div>'; return; }
+  if(G.i>=G.list.length) return gEnd();
+  const q=QS[G.list[G.i]], L=isAr(q.q)?'':' ltr';
+  $('game').innerHTML=gTop()+`<div class="g-card">
+    <div class="g-n">${G.retry?'بنعيد الغلط · ':''}سؤال ${G.i+1}</div>
+    <div class="g-q${L}">${esc(q.q)}</div>
+    ${q.type==='type'?`<div class="g-type"><input id="gin" class="${L?'ltr':''}" placeholder="اكتب الإجابة هنا" autocomplete="off"><button class="btn" id="gcheck">تأكيد</button></div>`
+      :(q.options||[]).map((o,k)=>`<button class="g-opt${isAr(o)?'':' ltr'}" data-k="${k}"><span class="k">${String.fromCharCode(65+k)}</span><span>${esc(o)}</span></button>`).join('')}
+    <div class="g-fb" id="gfb"></div>
+    <button class="btn g-next hide" id="gnext">${G.i+1<G.list.length?'اللي بعده ←':'شوف نتيجتك'}</button></div>`;
+  G.answered=false; fillIcons($('game'));
+  const gi=$('gin'); if(gi) setTimeout(()=>gi.focus({preventScroll:true}),50);
+}
+const norm=s=>String(s||'').toLowerCase().normalize('NFKD').replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/[^a-z0-9\u0600-\u06FF]+/g,' ').trim();
+function lev(a,b){ const m=a.length,n=b.length; if(Math.abs(m-n)>2) return 9; const d=Array.from({length:m+1},(_,i)=>[i]); for(let j=1;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1)); return d[m][n]; }
+function typedOk(v,answers){ const x=norm(v); if(!x) return false; return answers.some(a=>{ const y=norm(a); return x===y||(y.length>=5&&lev(x,y)<=1); }); }
+function gTyped(){
+  if(G.answered) return; const v=$('gin').value; if(!v.trim()) return;
+  const q=QS[G.list[G.i]]; gResolve(typedOk(v,q.answers), q, q.answers[0]);
+  $('gin').disabled=true; $('gcheck').disabled=true; $('gin').classList.add(typedOk(v,q.answers)?'ok':'bad');
+}
+function gAnswer(k){
+  if(G.answered) return;
+  const q=QS[G.list[G.i]];
+  document.querySelectorAll('#game .g-opt').forEach(b=>{ b.disabled=true; const kk=+b.dataset.k; if(kk===q.answer) b.classList.add('ok'); else if(kk===k) b.classList.add('bad'); });
+  gResolve(k===q.answer, q, q.options[q.answer]);
+}
+function gResolve(ok,q,correct){
+  G.answered=true; const qi=G.list[G.i];
+  if(ok){ G.right++; G.streak++; G.maxStreak=Math.max(G.maxStreak,G.streak); G.pts+=10+Math.min(G.streak-1,5)*2; }
+  else { G.streak=0; G.wrong.push(qi); }
+  const msgs=ok?(G.streak>=3?['نار عليك 🔥','مكمّل صح!','ولا غلطة!']:['صح ✓','برافو!','كده بالظبط']):['لأ، مش دي','قريبة، بس لأ','ركّز في دي'];
+  const fb=$('gfb'); fb.className='g-fb show '+(ok?'ok':'bad');
+  fb.innerHTML=`${msgs[Math.floor(Math.random()*msgs.length)]}${ok?` <span style="opacity:.8">+${10+Math.min(G.streak-1,5)*2}</span>`:` · الصح: <span class="${isAr(correct)?'':'ltr'}" style="display:inline-block">${esc(correct)}</span>`}${q.explanation?`<p class="${isAr(q.explanation)?'':'ltr'}">${esc(q.explanation)}</p>`:''}`;
+  $('gnext').classList.remove('hide');
+  const top=document.querySelector('#game .g-top'); if(top){ top.outerHTML=gTop(); fillIcons($('game')); }
+}
+function gEnd(){
+  const n=G.list.length, pct=Math.round(G.right*100/n), stars=pct>=90?3:pct>=70?2:pct>=50?1:0;
+  const key='dp_best_'+curId+'_'+quizKey; let best=LS.get(key,0); const nb=!G.retry&&pct>best; if(nb){ best=pct; LS.set(key,pct); }
+  const msg=pct>=90?'ممتاز! إنت جاهز للامتحان':pct>=70?'كويس جدًا، راجع اللي غلطت فيه':pct>=50?'مش وحش، بس محتاج مراجعة':'راجع الملخص وحاول تاني';
+  $('game').innerHTML=`<div class="g-end" id="gend">
+    <div class="g-stars">${[1,2,3].map(s=>`<i class="ic${s<=stars?' on':''}" data-i="star" style="animation-delay:${s*.15}s"></i>`).join('')}</div>
+    <div class="g-pct">${pct}%</div>
+    <div style="margin-top:6px;font-weight:800">${msg}</div>
+    <div class="g-stats"><span class="g-chip"><i class="ic" data-i="check"></i>${G.right} صح من ${n}</span><span class="g-chip"><i class="ic" data-i="star"></i>${G.pts} نقطة</span><span class="g-chip fire"><i class="ic" data-i="spark"></i>أطول سلسلة ${G.maxStreak}</span></div>
+    ${!G.retry?`<div class="g-best">${nb?'🏆 دي أحسن درجة ليك في المحاضرة دي!':`أحسن درجة ليك: ${best}%`}</div>`:''}
+    <div class="g-btns">${G.wrong.length?`<button class="btn" id="gwrong">حل الغلط بس (${G.wrong.length})</button>`:''}<button class="btn ghost" id="gagain">من الأول</button></div></div>`;
+  fillIcons($('game'));
+  if(pct>=70&&!matchMedia('(prefers-reduced-motion: reduce)').matches){ const e=$('gend'), C=['#ffc94d','#ff8a3d','#22c55e','#ff6aa2','#7b8cff'];
+    for(let i=0;i<40;i++){ const s=document.createElement('i'); s.className='conf'; s.style.left=Math.random()*100+'%'; s.style.background=C[i%5]; s.style.animationDelay=Math.random()*.6+'s'; e.appendChild(s); } }
+}
+$('game').addEventListener('click',e=>{
+  const o=e.target.closest('.g-opt'); if(o&&!o.disabled) return gAnswer(+o.dataset.k);
+  if(e.target.closest('#gcheck')) return gTyped();
+  if(e.target.closest('#gnext')){ G.i++; gShow(); $('game').scrollIntoView({behavior:'smooth',block:'start'}); return; }
+  if(e.target.closest('#gwrong')) return renderQuiz(true);
+  if(e.target.closest('#gagain')) return renderQuiz(false);
+});
+document.addEventListener('keydown',e=>{
+  if($('tQuiz').classList.contains('hide')) return;
+  if(e.target&&e.target.id==='gin'){ if(e.key==='Enter'){ e.preventDefault(); gTyped(); } return; }
+  if(!G.answered&&/^[1-6a-fA-F]$/.test(e.key)){ const k=/\d/.test(e.key)?+e.key-1:e.key.toLowerCase().charCodeAt(0)-97; const b=document.querySelector(`#game .g-opt[data-k="${k}"]`); if(b) gAnswer(k); }
+  else if(G.answered&&e.key==='Enter'){ const n=$('gnext'); if(n) n.click(); }
+});
 function tab(t){
   document.querySelectorAll('#tabs [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
-  const isPdf=t.startsWith('pdf:');
-  $('tPdf').classList.toggle('hide',!isPdf);$('tSum').classList.toggle('hide',t!=='sum');$('tQuiz').classList.toggle('hide',t!=='quiz');
+  const k0=t.startsWith('pdf:')?t.slice(4):null, isExam=k0&&curPdfs[k0]&&curPdfs[k0].type==='exam', isPdf=k0&&!isExam, isQuiz=t==='quiz'||isExam;
+  $('tPdf').classList.toggle('hide',!isPdf);$('tSum').classList.toggle('hide',t!=='sum');$('tQuiz').classList.toggle('hide',!isQuiz);
+  if(isQuiz){ QS=isExam?(curExams[k0]||[]):lecQS; quizKey=isExam?k0:'quiz'; renderQuiz(false); }
   $('wm').style.display=isPdf?'none':'block';
-  if(isPdf){ const k=t.slice(4); loadPdf(curId,k,curPdfs[k]); }
+  if(isPdf){ loadPdf(curId,k0,curPdfs[k0]); }
 }
 $('tabs').onclick=e=>{const b=e.target.closest('[data-t]'); if(b) tab(b.dataset.t);};
 </script>
