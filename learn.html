@@ -222,7 +222,7 @@ async function openLec(id){
     if(T.length) tab(T[0].t); else { $('tabs').innerHTML='<div class="card muted">المحتوى هينزل هنا قريب</div>'; ['tPdf','tSum','tQuiz'].forEach(x=>$(x).classList.add('hide')); }
   }catch(e){ alertBox('مش قادر يفتح المحاضرة دي. لو الكود بتاعك شغال، كلّمنا على واتساب'); show('vSub'); }
 }
-const SLOTS=[{k:'summary',t:'📘 الملخص'},{k:'explain',t:'🧑‍🏫 الشرح'},{k:'tf',t:'✅ صح وغلط'},{k:'mcq',t:'🔘 اختيار من متعدد'},{k:'written',t:'✍️ كتابي'}];
+const SLOTS=[{k:'summary',t:'📘 الملخص'},{k:'explain',t:'🧑‍🏫 الشرح'},{k:'tf',t:'✅ صح وغلط'},{k:'mcq',t:'🔘 اختيار من متعدد'},{k:'written',t:'✍️ كتابي'},{k:'complete',t:'🧩 كومبليت'}];
 let curPdfs={}, curId=null;
 let pdfToken=0;
 async function loadPdf(id,k,n){

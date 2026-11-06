@@ -182,7 +182,7 @@ footer.foot{border-top:none;margin-top:50px;padding:0;text-align:start;backgroun
   <svg class="tooth-hero" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="tg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc94d"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs><path fill="url(#tg2)" d="M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z"/><path fill="#fff" opacity=".35" d="M18 13c-4 1-6 4-6 8 0 2 1 3 2 3s2-1 2-3c0-3 1-4 3-5 1-1 1-3-1-3z"/></svg>
   <h1 id="sName"></h1>
   <p id="sSlogan"></p>
-  <div class="chips"><span class="chip">📘 ملخصات</span><span class="chip">🧑‍🏫 شرح</span><span class="chip">✅ صح وغلط</span><span class="chip">🔘 اختيار من متعدد</span><span class="chip">✍️ كتابي</span></div>
+  <div class="chips"><span class="chip">📘 ملخصات</span><span class="chip">🧑‍🏫 شرح</span><span class="chip">✅ صح وغلط</span><span class="chip">🔘 اختيار من متعدد</span><span class="chip">✍️ كتابي</span><span class="chip">🧩 كومبليت</span></div>
   <div class="btns">
     <a class="btn" href="#subjects">شوف المواد</a>
     <a class="btn ghost" href="learn.html">🔐 عندي كود</a>
@@ -191,13 +191,14 @@ footer.foot{border-top:none;margin-top:50px;padding:0;text-align:start;backgroun
 
 <div class="wrap">
   <h2 class="reveal"><span class="em">🎁</span>هتاخد إيه في كل مادة؟</h2>
-  <p class="sec-sub reveal">كل محاضرة فيها خمس حاجات، تذاكرها كلها من مكان واحد</p>
+  <p class="sec-sub reveal">كل محاضرة فيها ست حاجات، تذاكرها كلها من مكان واحد</p>
   <div class="feats reveal">
     <div class="feat"><div class="fi">📘</div><b>ملخص</b><span>أهم النقط مركزة</span></div>
     <div class="feat"><div class="fi">🧑‍🏫</div><b>شرح</b><span>تفهم مش بس تحفظ</span></div>
     <div class="feat"><div class="fi">✅</div><b>صح وغلط</b><span>بنك أسئلة كامل</span></div>
     <div class="feat"><div class="fi">🔘</div><b>اختيار من متعدد</b><span>زي الامتحان بالظبط</span></div>
     <div class="feat"><div class="fi">✍️</div><b>كتابي</b><span>تدريب على الإجابة</span></div>
+    <div class="feat"><div class="fi">🧩</div><b>كومبليت</b><span>كمّل الجملة صح</span></div>
   </div>
 
   <h2 id="subjects" class="reveal"><span class="em">📚</span>المواد</h2>
@@ -328,7 +329,7 @@ $('totop').onclick=()=>scrollTo({top:0,behavior:'smooth'});
 
 $('grid').innerHTML=SUBJECTS.map((s,i)=>`<div class="card reveal">
   <div class="ic">${subjectIcon(s.name,s.icon)}</div><h3>${esc(s.name)}</h3><div class="d">${esc(s.desc)}</div>
-  <div class="inc"><span>ملخص</span><span>شرح</span><span>صح وغلط</span><span>اختيار من متعدد</span><span>كتابي</span></div>
+  <div class="inc"><span>ملخص</span><span>شرح</span><span>صح وغلط</span><span>اختيار من متعدد</span><span>كتابي</span><span>كومبليت</span></div>
   <div class="price">${money(s.price)}</div>
   <button class="btn small" data-buy="${i}">اطلب دلوقتي</button></div>`).join('');
 
