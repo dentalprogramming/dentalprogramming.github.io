@@ -41,7 +41,8 @@
       "name": "dental anatomy",
       "desc": "ملخص كامل + بنك أسئلة",
       "price": 50,
-      "icon": "🔐"
+      "icon": "🔐",
+      "avail": " متاح محاضرتين والباقي هينزل اول باول"
     },
     {
       "name": "dental biomaterials",
