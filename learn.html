@@ -32,8 +32,8 @@ input:focus{outline:none;border-color:var(--o)}
 .lec{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:8px 0;cursor:pointer}
 .lec:hover{border-color:var(--o)}
 .lec .n{width:34px;height:34px;border-radius:10px;background:var(--o);color:#2a1300;font-weight:900;display:grid;place-items:center;flex:none}
-.tabs{display:flex;gap:8px;margin:14px 0}
-.tabs button{flex:1;font-family:inherit;font-weight:800;font-size:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px;cursor:pointer}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.tabs button{flex:1;min-width:130px;font-family:inherit;font-weight:800;font-size:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px;cursor:pointer}
 .tabs button.on{background:linear-gradient(90deg,var(--o),var(--y));color:#2a1300;border-color:transparent}
 .sum{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 22px}
 .sum h2{color:var(--y);font-size:20px;margin:18px 0 6px}
@@ -61,6 +61,7 @@ input:focus{outline:none;border-color:var(--o)}
 #wm span{position:absolute;white-space:nowrap;transform:rotate(-25deg);font-weight:800;font-size:18px;color:#fff;font-family:'Inter','Cairo',sans-serif}
 .spin{text-align:center;padding:40px;color:var(--muted)}
 @media print{body{display:none}}
+#pages canvas{display:block;width:100%;height:auto;margin:0 0 12px;border-radius:10px;background:#fff;pointer-events:none}
 </style>
 </head>
 <body>
@@ -105,7 +106,8 @@ input:focus{outline:none;border-color:var(--o)}
   <div id="vLec" class="hide">
     <button class="back" data-go="sub">→ رجوع للمحاضرات</button>
     <h1 id="lecTitle"></h1>
-    <div class="tabs"><button data-t="sum" class="on">📘 الملخص</button><button data-t="quiz">📝 الأسئلة</button></div>
+    <div class="tabs" id="tabs"></div>
+    <div id="tPdf" class="hide"><div id="pdfMsg" class="spin"></div><div id="pages"></div></div>
     <div id="tSum"></div>
     <div id="tQuiz" class="hide">
       <div class="score"><span>الدرجة: <b id="sc">0</b> من <span id="tot">0</span></span><button class="btn ghost small" id="redo">↺ من الأول</button></div>
@@ -115,6 +117,7 @@ input:focus{outline:none;border-color:var(--o)}
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -203,12 +206,37 @@ async function openLec(id){
     if(!c.exists()) throw 0;
     const d=c.data();
     $('tSum').innerHTML='<div class="sum">'+md(d.summary||'')+'</div>';
-    QS=d.questions||[]; renderQuiz();
-    tab(QS.length&&!(d.summary||'').trim()?'quiz':'sum');
-    document.querySelector('[data-t=quiz]').style.display=QS.length?'':'none';
-    document.querySelector('[data-t=sum]').style.display=(d.summary||'').trim()?'':'none';
+    QS=d.questions||[]; renderQuiz(); curPdfs=d.pdfs||{}; curId=id;
+    const T=[];
+    SLOTS.forEach(s=>{ if(curPdfs[s.k]) T.push({t:'pdf:'+s.k,l:s.t}); });
+    if((d.summary||'').trim()) T.push({t:'sum',l:'📝 ملخص مكتوب'});
+    if(QS.length) T.push({t:'quiz',l:'🎯 اختبر نفسك'});
+    $('tabs').innerHTML=T.map(x=>`<button data-t="${x.t}">${x.l}</button>`).join('');
     show('vLec');
+    if(T.length) tab(T[0].t); else { $('tabs').innerHTML='<div class="card muted">المحتوى هينزل هنا قريب</div>'; ['tPdf','tSum','tQuiz'].forEach(x=>$(x).classList.add('hide')); }
   }catch(e){ alertBox('مش قادر يفتح المحاضرة دي. لو الكود بتاعك شغال، كلّمنا على واتساب'); show('vSub'); }
+}
+const SLOTS=[{k:'summary',t:'📘 الملخص'},{k:'explain',t:'🧑‍🏫 الشرح'},{k:'tf',t:'✅ صح وغلط'},{k:'mcq',t:'🔘 اختيار من متعدد'},{k:'written',t:'✍️ كتابي'}];
+let curPdfs={}, curId=null;
+let pdfToken=0;
+async function loadPdf(id,k,n){
+  const tok=++pdfToken; $('pages').innerHTML=''; $('pdfMsg').textContent='جاري تحميل الملف...'; $('pdfMsg').style.display='';
+  try{
+    const parts=await Promise.all(Array.from({length:n},(_,i)=>getDoc(doc(db,'chunks',`${id}_${k}_${i}`))));
+    const bins=parts.map(p=>{const s=atob(p.data().data);const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u;});
+    const all=new Uint8Array(bins.reduce((a,b)=>a+b.length,0)); let o=0; bins.forEach(b=>{all.set(b,o);o+=b.length;});
+    const lib=window.pdfjsLib; lib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const pdf=await lib.getDocument({data:all}).promise;
+    for(let p=1;p<=pdf.numPages;p++){
+      if(tok!==pdfToken) return;
+      $('pdfMsg').textContent=`جاري عرض الصفحات... ${p} من ${pdf.numPages}`;
+      const page=await pdf.getPage(p), vp=page.getViewport({scale:1.6});
+      const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
+      await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+      $('pages').appendChild(c);
+    }
+    $('pdfMsg').style.display='none';
+  }catch(e){ if(tok===pdfToken) $('pdfMsg').textContent='مش قادر يفتح الملف، حدّث الصفحة وجرب تاني'; }
 }
 function alertBox(t){ $('lecs').insertAdjacentHTML('afterbegin',`<div class="card" style="color:var(--bad)">${esc(t)}</div>`); }
 
@@ -249,8 +277,13 @@ $('qs').onclick=e=>{
     $('fmsg').textContent=p>=85?'ممتاز، إنت جاهز':p>=65?'كويس، راجع اللي غلطت فيه':'راجع الملخص تاني وحل من الأول';$('final').classList.add('show');}
 };
 $('redo').onclick=renderQuiz;
-function tab(t){document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$('tSum').classList.toggle('hide',t!=='sum');$('tQuiz').classList.toggle('hide',t!=='quiz');}
-document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+function tab(t){
+  document.querySelectorAll('#tabs [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  const isPdf=t.startsWith('pdf:');
+  $('tPdf').classList.toggle('hide',!isPdf);$('tSum').classList.toggle('hide',t!=='sum');$('tQuiz').classList.toggle('hide',t!=='quiz');
+  if(isPdf){ const k=t.slice(4); loadPdf(curId,k,curPdfs[k].n); }
+}
+$('tabs').onclick=e=>{const b=e.target.closest('[data-t]'); if(b) tab(b.dataset.t);};
 </script>
 </body>
 </html>
