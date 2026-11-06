@@ -34,6 +34,15 @@ input:focus{outline:none;border-color:var(--o)}
 .msg.ok{color:var(--ok)}.msg.err{color:var(--bad)}
 .hide{display:none}
 a{color:var(--y)}
+.cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.col{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:8px}
+.col input[type=color]{width:44px;height:36px;padding:0;border:none;background:none;cursor:pointer}
+.col span{font-size:14px;font-weight:700}
+.chk{display:flex;align-items:center;gap:10px;padding:8px 4px;font-weight:700;cursor:pointer}
+.chk input{width:20px;height:20px;accent-color:var(--o)}
+.tx{border-top:1px solid var(--line);padding:8px 0}
+.tx .orig{font-size:13px;color:var(--muted);margin-bottom:4px}
+.tx.changed .orig{color:var(--y)}
 </style>
 </head>
 <body>
@@ -89,6 +98,28 @@ a{color:var(--y)}
       <button class="btn ghost small" id="addS">＋ ضيف مادة</button>
     </div>
     <div class="card">
+      <h2>🎨 الألوان</h2>
+      <p class="sub">اختار أي لون، وهيتغيّر في الموقع كله. ولو اللون مطلعش حلو، دوس "رجّع الألوان الأصلية".</p>
+      <div id="colors" class="cols"></div>
+      <button class="btn ghost small" id="resetC" style="margin-top:10px">↩️ رجّع الألوان الأصلية</button>
+    </div>
+    <div class="card">
+      <h2>👁️ إظهار وإخفاء الأقسام</h2>
+      <p class="sub">شيل العلامة من أي حاجة مش عايزها تظهر في الموقع.</p>
+      <div id="secs"></div>
+    </div>
+    <div class="card">
+      <h2>✏️ كل الكلام اللي في الصفحة</h2>
+      <p class="sub">كل جملة في الموقع مكتوبة هنا. اكتب الجديد في الخانة اللي تحتها، ولو سبتها فاضية هيفضل الكلام الأصلي.</p>
+      <input id="tSearch" placeholder="🔎 دوّر على كلمة..." style="margin-bottom:6px">
+      <div id="texts" class="sub">جاري تحميل الكلام...</div>
+    </div>
+    <div class="card">
+      <h2>❓ أسئلة زيادة في "أسئلة بتتكرر"</h2>
+      <label>كل سؤال في سطر لوحده، بالشكل ده: السؤال | الإجابة</label>
+      <textarea id="f_faqExtra" rows="4" style="font-family:inherit;font-size:15px;width:100%;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg2);color:var(--ink)" placeholder="هل فيه مراجعة قبل الامتحان؟ | أيوه، بتنزل قبل الامتحان بأسبوع"></textarea>
+    </div>
+    <div class="card">
       <button class="btn ghost small" id="logout">خروج من الجهاز ده</button>
     </div>
   </div>
@@ -106,7 +137,7 @@ const OWNER = host.endsWith('.github.io') ? host.split('.')[0] : 'dentalprogramm
 const REPO  = host.endsWith('.github.io') ? host : 'dentalprogramming.github.io';
 const API = `https://api.github.com/repos/${OWNER}/${REPO}/contents/data.json`;
 const $=id=>document.getElementById(id);
-const FIELDS=['name','slogan','currency','audience','vodafoneCash','vodafoneName','instapay','instapayLink','whatsapp','bundlePrice','reviews'];
+const FIELDS=['name','slogan','currency','audience','vodafoneCash','vodafoneName','instapay','instapayLink','whatsapp','bundlePrice','reviews','faqExtra'];
 const NUMS=['bundlePrice'];
 let token='', sha='', data=null;
 const store={get(){try{return localStorage.getItem('dp_tok')||''}catch(e){return ''}},set(v){try{localStorage.setItem('dp_tok',v)}catch(e){}},del(){try{localStorage.removeItem('dp_tok')}catch(e){}}};
@@ -133,7 +164,7 @@ async function login(t){
 }
 function fill(){
   FIELDS.forEach(k=>$('f_'+k).value=data.site[k]??'');
-  renderSubs();
+  renderSubs(); renderExtra();
 }
 function renderSubs(){
   $('subs').innerHTML=data.subjects.map((s,i)=>`<div class="subj" data-i="${i}">
@@ -152,7 +183,34 @@ $('subs').addEventListener('click',e=>{const d=e.target.closest('[data-del]'); i
   else{d.dataset.sure='1';d.textContent='متأكد؟ دوس تاني';setTimeout(()=>{if(d.isConnected){delete d.dataset.sure;d.textContent='🗑️ امسح';}},3000);}});
 $('addS').onclick=()=>{data.subjects.push({name:'مادة جديدة',desc:'ملخص كامل + بنك أسئلة',price:100,icon:'📘'});renderSubs();};
 
+
+const CDEF={o:['اللون الأساسي','#ff8a3d'],y:['اللون التاني','#ffc94d'],bg:['الخلفية','#0e1630'],bg2:['الخلفية التانية','#141f42'],card:['الكروت','#18254f'],ink:['لون الكلام','#f3f5ff'],muted:['الكلام الباهت','#a9b3d6'],line:['الخطوط والحدود','#26356b']};
+const SECS={chips:'الكلمات الصغيرة تحت الاسم',btnFree:'زرار "جرّب ببلاش" فوق',btnSub:'زرار "مشترك؟ ادخل بالكود" فوق',feats:'قسم "هتاخد إيه في كل مادة"',free:'قسم "جرّب قبل ما تشتري"',how:'قسم "إزاي تطلب وتذاكر"',pay:'قسم "طرق الدفع"',student:'قسم "عندك كود بالفعل"',faq:'قسم "أسئلة بتتكرر"',wa:'زرار الواتساب العايم'};
+function renderExtra(){
+  const th=data.site.theme||{};
+  $('colors').innerHTML=Object.entries(CDEF).map(([k,[n,d]])=>`<label class="col"><input type="color" data-c="${k}" value="${th[k]||d}"><span>${n}</span></label>`).join('');
+  const hid=data.site.hide||[];
+  $('secs').innerHTML=Object.entries(SECS).map(([k,n])=>`<label class="chk"><input type="checkbox" data-s="${k}" ${hid.includes(k)?'':'checked'}> ${n}</label>`).join('');
+  loadTexts();
+}
+$('resetC').onclick=()=>{ document.querySelectorAll('[data-c]').forEach(i=>i.value=CDEF[i.dataset.c][1]); };
+async function loadTexts(){
+  try{
+    const h=await fetch('index.html?t='+Date.now(),{cache:'no-store'}).then(r=>r.text());
+    const d=new DOMParser().parseFromString(h,'text/html'); const seen=new Set(), list=[];
+    d.querySelectorAll('[data-t]').forEach(e=>{const k=e.textContent.trim(); if(k&&!seen.has(k)){seen.add(k);list.push(k);}});
+    const tx=data.site.texts||{};
+    $('texts').className=''; $('texts').innerHTML=list.map(k=>`<div class="tx${tx[k]?' changed':''}"><div class="orig">${attr(k)}</div><input data-tx="${attr(k)}" value="${attr(tx[k]||'')}" placeholder="اكتب الجديد هنا"></div>`).join('');
+  }catch(e){ $('texts').textContent='مقدرتش أحمّل الكلام، حدّث الصفحة'; }
+}
+$('tSearch').oninput=()=>{const q=$('tSearch').value.trim(); document.querySelectorAll('.tx').forEach(x=>x.style.display=!q||x.textContent.includes(q)||x.querySelector('input').value.includes(q)?'':'none');};
+function collectExtra(){
+  const th={}; document.querySelectorAll('[data-c]').forEach(i=>{ if(i.value.toLowerCase()!==CDEF[i.dataset.c][1]) th[i.dataset.c]=i.value; }); data.site.theme=th;
+  data.site.hide=[...document.querySelectorAll('[data-s]')].filter(i=>!i.checked).map(i=>i.dataset.s);
+  if(document.querySelector('[data-tx]')){ const tx={}; document.querySelectorAll('[data-tx]').forEach(i=>{ const v=i.value.trim(); if(v) tx[i.dataset.tx]=v; }); data.site.texts=tx; }
+}
 $('save').onclick=async()=>{
+  collectExtra();
   FIELDS.forEach(k=>data.site[k]= NUMS.includes(k)?Number($('f_'+k).value||0):k==='reviews'?$('f_'+k).value.split('\n').map(s=>s.trim()).filter(Boolean).join('\n'):$('f_'+k).value.trim());
   data.site.whatsapp=data.site.whatsapp.replace(/\D/g,'').replace(/^0/,'20');
   $('f_whatsapp').value=data.site.whatsapp;

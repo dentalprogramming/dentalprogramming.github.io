@@ -12,7 +12,7 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:'Cairo',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75}
 a{color:inherit}
-.hero{padding:56px 20px 40px;text-align:center;background:radial-gradient(800px 400px at 50% -20%,rgba(255,138,61,.35),transparent 70%)}
+.hero{padding:56px 20px 40px;text-align:center;background:radial-gradient(800px 400px at 50% -20%,color-mix(in srgb,var(--o) 35%,transparent),transparent 70%)}
 .hero h1{margin:0;font-size:clamp(30px,6vw,48px);font-weight:900;background:linear-gradient(90deg,var(--y),var(--o));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{color:var(--muted);font-size:18px;margin:6px 0 22px}
 .btn{font-family:inherit;font-weight:800;font-size:16px;border:none;border-radius:14px;padding:12px 22px;cursor:pointer;background:linear-gradient(90deg,var(--o),var(--y));color:#2a1300;text-decoration:none;display:inline-block}
@@ -32,7 +32,7 @@ h2{font-size:26px;text-align:center;margin:40px 0 18px}
 .bundle h3{margin:0;font-size:22px}
 .bundle .old{text-decoration:line-through;color:#ffd0d0;opacity:.8}
 .offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:16px}
-.offer{background:var(--card);border:1px dashed rgba(255,201,77,.5);border-radius:20px;padding:18px}
+.offer{background:var(--card);border:1px dashed color-mix(in srgb,var(--y) 50%,transparent);border-radius:20px;padding:18px}
 .offer h3{margin:0 0 4px;font-size:19px}
 .offer p{margin:0 0 10px;color:var(--muted);font-size:14px}
 .offer .big{font-size:24px;font-weight:900;color:var(--y)}
@@ -43,7 +43,7 @@ h2{font-size:26px;text-align:center;margin:40px 0 18px}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--y),#ff3d6e)}
 .pick{display:grid;gap:8px;margin:12px 0}
 .pick label{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;font-weight:700}
-.pick label.on{border-color:var(--o);background:rgba(255,138,61,.12)}
+.pick label.on{border-color:var(--o);background:color-mix(in srgb,var(--o) 12%,transparent)}
 .pick input{width:18px;height:18px;accent-color:var(--o)}
 .pays{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .pay{border-radius:20px;padding:20px;color:#fff}
@@ -76,10 +76,10 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:24px;border-t
 /* ---------- design layer ---------- */
 html{scroll-behavior:smooth}
 body{background:
-  radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),transparent 60%),
+  radial-gradient(900px 500px at 100% 0%,color-mix(in srgb,var(--o) 10%,transparent),transparent 60%),
   radial-gradient(700px 500px at 0% 30%,rgba(123,44,191,.12),transparent 60%),
   var(--bg)}
-.nav{position:sticky;top:0;z-index:15;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 20px;background:rgba(14,22,48,.8);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{position:sticky;top:0;z-index:15;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 20px;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:19px;text-decoration:none}
 .logo svg{width:32px;height:32px}
 .nav .links{display:flex;gap:6px;flex-wrap:wrap}
@@ -90,7 +90,7 @@ body{background:
 .hero{position:relative;overflow:hidden;padding:70px 20px 60px}
 .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:40px 40px;mask-image:radial-gradient(circle at 50% 40%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(circle at 50% 40%,#000 30%,transparent 75%)}
 .hero>*{position:relative}
-.tooth-hero{width:96px;height:96px;margin:0 auto 10px;display:block;filter:drop-shadow(0 10px 30px rgba(255,138,61,.45));animation:float 4s ease-in-out infinite}
+.tooth-hero{width:96px;height:96px;margin:0 auto 10px;display:block;filter:drop-shadow(0 10px 30px color-mix(in srgb,var(--o) 45%,transparent));animation:float 4s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-10px)}}
 .blob{position:absolute;border-radius:50%;filter:blur(50px);opacity:.35;z-index:0}
 .blob.a{width:260px;height:260px;background:var(--o);top:-60px;left:-60px}
@@ -107,12 +107,12 @@ h2 .em{display:inline-grid;place-items:center;width:44px;height:44px;border-radi
 .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
 .feat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center;transition:.2s}
 .feat:hover{border-color:var(--o);transform:translateY(-3px)}
-.feat .fi{width:54px;height:54px;margin:0 auto 8px;border-radius:16px;display:grid;place-items:center;font-size:26px;background:rgba(255,201,77,.12);border:1px solid rgba(255,201,77,.3)}
+.feat .fi{width:54px;height:54px;margin:0 auto 8px;border-radius:16px;display:grid;place-items:center;font-size:26px;background:color-mix(in srgb,var(--y) 12%,transparent);border:1px solid color-mix(in srgb,var(--y) 30%,transparent)}
 .feat b{display:block;font-size:16px}
 .feat span{color:var(--muted);font-size:13px}
 .card{position:relative;overflow:hidden}
 .card::after{content:"";position:absolute;width:140px;height:140px;left:-30px;bottom:-30px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23ffffff' d='M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z'/%3E%3C/svg%3E") no-repeat center/contain;opacity:.04;pointer-events:none}
-.card .ic{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;font-size:32px;background:linear-gradient(135deg,rgba(255,138,61,.25),rgba(255,201,77,.15));border:1px solid rgba(255,201,77,.35);margin-bottom:6px}
+.card .ic{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;font-size:32px;background:linear-gradient(135deg,color-mix(in srgb,var(--o) 25%,transparent),color-mix(in srgb,var(--y) 15%,transparent));border:1px solid color-mix(in srgb,var(--y) 35%,transparent);margin-bottom:6px}
 .card .inc{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}
 .card .inc span{font-size:12px;font-weight:700;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--muted)}
 .card .btn{margin-top:auto}
@@ -202,8 +202,8 @@ svg.uic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
 .chip .ic{color:var(--y)}
 .wa .ic{width:28px;height:28px;color:#fff}
 .foot-links .ic{color:var(--o)}
-.aud{display:inline-flex;align-items:center;gap:6px;background:rgba(255,201,77,.12);border:1px solid rgba(255,201,77,.4);color:var(--y);border-radius:999px;padding:5px 14px;font-weight:800;font-size:14px;margin-bottom:6px}
-.free{margin-top:40px;border-radius:24px;padding:26px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;background:linear-gradient(120deg,rgba(255,138,61,.18),rgba(255,201,77,.08));border:1px dashed rgba(255,201,77,.55)}
+.aud{display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--y) 12%,transparent);border:1px solid color-mix(in srgb,var(--y) 40%,transparent);color:var(--y);border-radius:999px;padding:5px 14px;font-weight:800;font-size:14px;margin-bottom:6px}
+.free{margin-top:40px;border-radius:24px;padding:26px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;background:linear-gradient(120deg,color-mix(in srgb,var(--o) 18%,transparent),color-mix(in srgb,var(--y) 8%,transparent));border:1px dashed color-mix(in srgb,var(--y) 55%,transparent)}
 .free h3{margin:0;font-size:22px;display:flex;align-items:center;gap:8px}
 .free h3 .ic{width:28px;height:28px;color:var(--y)}
 .free p{margin:4px 0 0;color:var(--muted)}
@@ -218,10 +218,10 @@ svg.uic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
 <body>
 
 <nav class="nav">
-  <a class="logo" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc94d"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs><path fill="url(#tg)" d="M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z"/><path fill="#fff" opacity=".35" d="M18 13c-4 1-6 4-6 8 0 2 1 3 2 3s2-1 2-3c0-3 1-4 3-5 1-1 1-3-1-3z"/></svg><span id="navName"></span></a>
+  <a class="logo" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--y)"/><stop offset="1" style="stop-color:var(--o)"/></linearGradient></defs><path fill="url(#tg)" d="M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z"/><path fill="#fff" opacity=".35" d="M18 13c-4 1-6 4-6 8 0 2 1 3 2 3s2-1 2-3c0-3 1-4 3-5 1-1 1-3-1-3z"/></svg><span id="navName"></span></a>
   <div class="links">
-    <a href="#subjects">المواد</a><a href="#how">إزاي تطلب</a><a href="#pay">الدفع</a><a href="#faq">أسئلة</a>
-    <a class="cta" href="learn.html"><i class="ic" data-i="lock"></i> دخول المشتركين</a>
+    <a href="#subjects"><span data-t>المواد</span></a><a href="#how"><span data-t>إزاي تطلب</span></a><a href="#pay"><span data-t>الدفع</span></a><a href="#faq"><span data-t>أسئلة</span></a>
+    <a class="cta" href="learn.html"><i class="ic" data-i="lock"></i> <span data-t>دخول المشتركين</span></a>
   </div>
 </nav>
 
@@ -233,82 +233,82 @@ svg.uic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
   <span class="ht" style="top:66%;left:9%;width:52px;--d:-1s"></span>
   <span class="ht" style="top:45%;left:30%;width:22px;--d:-3s"></span>
   <span class="ht" style="top:40%;right:32%;width:24px;--d:-5s"></span>
-  <svg class="tooth-hero" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="tg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc94d"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs><path fill="url(#tg2)" d="M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z"/><path fill="#fff" opacity=".35" d="M18 13c-4 1-6 4-6 8 0 2 1 3 2 3s2-1 2-3c0-3 1-4 3-5 1-1 1-3-1-3z"/></svg>
+  <svg class="tooth-hero" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="tg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--y)"/><stop offset="1" style="stop-color:var(--o)"/></linearGradient></defs><path fill="url(#tg2)" d="M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z"/><path fill="#fff" opacity=".35" d="M18 13c-4 1-6 4-6 8 0 2 1 3 2 3s2-1 2-3c0-3 1-4 3-5 1-1 1-3-1-3z"/></svg>
   <div id="aud"></div>
   <h1 id="sName"></h1>
   <p id="sSlogan"></p>
-  <div class="chips"><span class="chip"><i class="ic" data-i="book"></i> ملخصات</span><span class="chip"><i class="ic" data-i="teach"></i> شرح</span><span class="chip"><i class="ic" data-i="tf"></i> صح وغلط</span><span class="chip"><i class="ic" data-i="mcq"></i> اختيار من متعدد</span><span class="chip"><i class="ic" data-i="pen"></i> كتابي</span><span class="chip"><i class="ic" data-i="puzzle"></i> كومبليت</span></div>
+  <div data-sec="chips" class="chips"><span class="chip"><i class="ic" data-i="book"></i> <span data-t>ملخصات</span></span><span class="chip"><i class="ic" data-i="teach"></i> <span data-t>شرح</span></span><span class="chip"><i class="ic" data-i="tf"></i> <span data-t>صح وغلط</span></span><span class="chip"><i class="ic" data-i="mcq"></i> <span data-t>اختيار من متعدد</span></span><span class="chip"><i class="ic" data-i="pen"></i> <span data-t>كتابي</span></span><span class="chip"><i class="ic" data-i="puzzle"></i> <span data-t>كومبليت</span></span></div>
   <div class="btns">
-    <a class="btn" href="#subjects">شوف المواد</a>
-    <a class="btn ghost" href="learn.html#free"><i class="ic" data-i="eye"></i> جرّب ببلاش</a>
-    <a class="btn ghost sub" href="learn.html"><i class="ic" data-i="lock"></i> مشترك؟ ادخل بالكود بتاعك</a>
+    <a class="btn" href="#subjects"><span data-t>شوف المواد</span></a>
+    <a data-sec="btnFree" class="btn ghost" href="learn.html#free"><i class="ic" data-i="eye"></i> <span data-t>جرّب ببلاش</span></a>
+    <a data-sec="btnSub" class="btn ghost sub" href="learn.html"><i class="ic" data-i="lock"></i> <span data-t>مشترك؟ ادخل بالكود بتاعك</span></a>
   </div>
 </section>
 
 <div class="wrap">
-  <h2 class="reveal"><span class="em"><i class="ic" data-i="gift"></i></span>هتاخد إيه في كل مادة؟</h2>
-  <p class="sec-sub reveal">كل محاضرة فيها ست حاجات، تذاكرها كلها من مكان واحد</p>
-  <div class="feats reveal">
-    <div class="feat"><div class="fi"><i class="ic" data-i="book"></i></div><b>ملخص</b><span>أهم النقط مركزة</span></div>
-    <div class="feat"><div class="fi"><i class="ic" data-i="teach"></i></div><b>شرح</b><span>تفهم مش بس تحفظ</span></div>
-    <div class="feat"><div class="fi"><i class="ic" data-i="tf"></i></div><b>صح وغلط</b><span>بنك أسئلة كامل</span></div>
-    <div class="feat"><div class="fi"><i class="ic" data-i="mcq"></i></div><b>اختيار من متعدد</b><span>زي الامتحان بالظبط</span></div>
-    <div class="feat"><div class="fi"><i class="ic" data-i="pen"></i></div><b>كتابي</b><span>تدريب على الإجابة</span></div>
-    <div class="feat"><div class="fi"><i class="ic" data-i="puzzle"></i></div><b>كومبليت</b><span>كمّل الجملة صح</span></div>
+  <h2 data-sec="feats" class="reveal"><span class="em"><i class="ic" data-i="gift"></i></span><span data-t>هتاخد إيه في كل مادة؟</span></h2>
+  <p data-sec="feats" class="sec-sub reveal"><span data-t>كل محاضرة فيها ست حاجات، تذاكرها كلها من مكان واحد</span></p>
+  <div data-sec="feats" class="feats reveal">
+    <div class="feat"><div class="fi"><i class="ic" data-i="book"></i></div><b><span data-t>ملخص</span></b><span><span data-t>أهم النقط مركزة</span></span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="teach"></i></div><b><span data-t>شرح</span></b><span><span data-t>تفهم مش بس تحفظ</span></span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="tf"></i></div><b><span data-t>صح وغلط</span></b><span><span data-t>بنك أسئلة كامل</span></span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="mcq"></i></div><b><span data-t>اختيار من متعدد</span></b><span><span data-t>زي الامتحان بالظبط</span></span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="pen"></i></div><b><span data-t>كتابي</span></b><span><span data-t>تدريب على الإجابة</span></span></div>
+    <div class="feat"><div class="fi"><i class="ic" data-i="puzzle"></i></div><b><span data-t>كومبليت</span></b><span><span data-t>كمّل الجملة صح</span></span></div>
   </div>
 
-  <div class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ff8a3d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
-  <h2 id="subjects" class="reveal"><span class="em"><i class="ic" data-i="book"></i></span>المواد</h2>
+  <div class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="stroke:var(--o)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
+  <h2 id="subjects" class="reveal"><span class="em"><i class="ic" data-i="book"></i></span><span data-t>المواد</span></h2>
   <div class="grid" id="grid"></div>
   <div class="bundle reveal" id="bundle"></div>
   <div class="offers reveal" id="offers"></div>
 
-  <div class="free reveal">
-    <div><h3><i class="ic" data-i="eye"></i> جرّب قبل ما تشتري</h3><p>فيه محاضرات مفتوحة ببلاش، شوف المستوى بنفسك من غير كود.</p></div>
-    <a class="btn" href="learn.html#free"><i class="ic" data-i="play"></i> افتح محاضرة ببلاش</a>
+  <div data-sec="free" class="free reveal">
+    <div><h3><i class="ic" data-i="eye"></i> <span data-t>جرّب قبل ما تشتري</span></h3><p><span data-t>فيه محاضرات مفتوحة ببلاش، شوف المستوى بنفسك من غير كود.</span></p></div>
+    <a class="btn" href="learn.html#free"><i class="ic" data-i="play"></i> <span data-t>افتح محاضرة ببلاش</span></a>
   </div>
-  <div class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ff8a3d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
-  <h2 id="how" class="reveal"><span class="em"><i class="ic" data-i="check"></i></span>إزاي تطلب وتذاكر؟</h2>
-  <div class="steps reveal">
-    <div class="step"><div class="si"><i class="ic" data-i="cart"></i></div><h4>اختار المادة</h4><p>دوس "اطلب دلوقتي" على المادة اللي محتاجها، أو خد العرض الكامل.</p></div>
-    <div class="step"><div class="si"><i class="ic" data-i="cash"></i></div><h4>حوّل المبلغ</h4><p>حوّل بفودافون كاش أو انستاباي على البيانات اللي تحت.</p></div>
-    <div class="step"><div class="si"><i class="ic" data-i="camera"></i></div><h4>ابعت صورة التحويل</h4><p>على واتساب، والزرار هيكتبلك الرسالة جاهزة.</p></div>
-    <div class="step"><div class="si"><i class="ic" data-i="ticket"></i></div><h4>استلم الكود بتاعك</h4><p>بعد التأكد من التحويل، هيوصلك كود خاص بيك على واتساب.</p></div>
-    <div class="step"><div class="si"><i class="ic" data-i="lock"></i></div><h4>ادخل وذاكر</h4><p>افتح "دخول الطلبة" وحط الكود من الجهاز اللي هتذاكر عليه، وهتلاقي موادك كلها.</p></div>
+  <div data-sec="how" class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="stroke:var(--o)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
+  <h2 data-sec="how" id="how" class="reveal"><span class="em"><i class="ic" data-i="check"></i></span><span data-t>إزاي تطلب وتذاكر؟</span></h2>
+  <div data-sec="how" class="steps reveal">
+    <div class="step"><div class="si"><i class="ic" data-i="cart"></i></div><h4><span data-t>اختار المادة</span></h4><p><span data-t>دوس "اطلب دلوقتي" على المادة اللي محتاجها، أو خد العرض الكامل.</span></p></div>
+    <div class="step"><div class="si"><i class="ic" data-i="cash"></i></div><h4><span data-t>حوّل المبلغ</span></h4><p><span data-t>حوّل بفودافون كاش أو انستاباي على البيانات اللي تحت.</span></p></div>
+    <div class="step"><div class="si"><i class="ic" data-i="camera"></i></div><h4><span data-t>ابعت صورة التحويل</span></h4><p><span data-t>على واتساب، والزرار هيكتبلك الرسالة جاهزة.</span></p></div>
+    <div class="step"><div class="si"><i class="ic" data-i="ticket"></i></div><h4><span data-t>استلم الكود بتاعك</span></h4><p><span data-t>بعد التأكد من التحويل، هيوصلك كود خاص بيك على واتساب.</span></p></div>
+    <div class="step"><div class="si"><i class="ic" data-i="lock"></i></div><h4><span data-t>ادخل وذاكر</span></h4><p><span data-t>افتح "دخول المشتركين" وحط الكود من الجهاز اللي هتذاكر عليه، وهتلاقي موادك كلها.</span></p></div>
   </div>
 
-  <div class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ff8a3d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
-  <h2 id="pay" class="reveal"><span class="em"><i class="ic" data-i="card"></i></span>طرق الدفع</h2>
-  <div class="pays reveal">
+  <div data-sec="pay" class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="stroke:var(--o)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
+  <h2 data-sec="pay" id="pay" class="reveal"><span class="em"><i class="ic" data-i="card"></i></span><span data-t>طرق الدفع</span></h2>
+  <div data-sec="pay" class="pays reveal">
     <div class="pay vf">
-      <h3><i class="ic" data-i="phone"></i> فودافون كاش</h3>
-      <div>حوّل على الرقم ده</div>
-      <div class="num"><b id="vfNum"></b><button class="copy" data-copy="vf">نسخ</button></div>
+      <h3><i class="ic" data-i="phone"></i> <span data-t>فودافون كاش</span></h3>
+      <div><span data-t>حوّل على الرقم ده</span></div>
+      <div class="num"><b id="vfNum"></b><button class="copy" data-copy="vf"><span data-t>نسخ</span></button></div>
       <div id="vfName" style="opacity:.9"></div>
     </div>
     <div class="pay ip">
-      <h3><i class="ic" data-i="bank"></i> انستاباي</h3>
-      <div>حوّل على العنوان ده</div>
-      <div class="num"><b id="ipNum"></b><button class="copy" data-copy="ip">نسخ</button></div>
-      <a id="ipLink" class="copy" style="display:none;text-decoration:none;width:fit-content" target="_blank" rel="noopener">افتح انستاباي</a>
+      <h3><i class="ic" data-i="bank"></i> <span data-t>انستاباي</span></h3>
+      <div><span data-t>حوّل على العنوان ده</span></div>
+      <div class="num"><b id="ipNum"></b><button class="copy" data-copy="ip"><span data-t>نسخ</span></button></div>
+      <a id="ipLink" class="copy" style="display:none;text-decoration:none;width:fit-content" target="_blank" rel="noopener"><span data-t>افتح انستاباي</span></a>
     </div>
   </div>
 
-  <div class="student reveal">
-    <div><h3><i class="ic" data-i="lock"></i> عندك كود بالفعل؟</h3><p>ادخل منطقة الطلبة وكمّل مذاكرة من مكان ما وقفت.</p></div>
-    <a class="btn" href="learn.html">دخول المشتركين</a>
+  <div data-sec="student" class="student reveal">
+    <div><h3><i class="ic" data-i="lock"></i> <span data-t>عندك كود بالفعل؟</span></h3><p><span data-t>ادخل منطقة الطلبة وكمّل مذاكرة من مكان ما وقفت.</span></p></div>
+    <a class="btn" href="learn.html"><span data-t>دخول المشتركين</span></a>
   </div>
 
-  <div class="sep" id="revSep" style="display:none" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ff8a3d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
-  <h2 id="reviews" class="reveal" style="display:none"><span class="em"><i class="ic" data-i="star"></i></span>قالوا عننا</h2>
+  <div class="sep" id="revSep" style="display:none" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="stroke:var(--o)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
+  <h2 id="reviews" class="reveal" style="display:none"><span class="em"><i class="ic" data-i="star"></i></span><span data-t>قالوا عننا</span></h2>
   <div class="revs reveal" id="revs"></div>
-  <div class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ff8a3d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
-  <h2 id="faq" class="reveal"><span class="em"><i class="ic" data-i="help"></i></span>أسئلة بتتكرر</h2>
-  <div class="faq reveal">
-    <details><summary>الكود بيشتغل على كام جهاز؟</summary><p>على جهاز واحد بس، أول جهاز تدخل منه. فادخله من الموبايل أو اللابتوب اللي هتذاكر عليه، ومن متصفح عادي مش متخفي.</p></details>
-    <details><summary>لو غيّرت موبايلي أعمل إيه؟</summary><p>كلّمنا على واتساب، وهنفك الكود من الجهاز القديم عشان تدخل من الجديد.</p></details>
-    <details><summary>أقدر أنزّل الملفات؟</summary><p>المذاكرة بتبقى جوه الموقع، ومتاحة ليك في أي وقت طول ما الكود شغال.</p></details>
-    <details><summary>الكود بيوصل إمتى؟</summary><p>أول ما نتأكد إن التحويل وصل، هنبعتلك الكود على واتساب.</p></details>
+  <div data-sec="faq" class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="stroke:var(--o)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z"/></svg></div>
+  <h2 data-sec="faq" id="faq" class="reveal"><span class="em"><i class="ic" data-i="help"></i></span><span data-t>أسئلة بتتكرر</span></h2>
+  <div data-sec="faq" class="faq reveal" id="faqBox">
+    <details><summary><span data-t>الكود بيشتغل على كام جهاز؟</span></summary><p><span data-t>على جهاز واحد بس، أول جهاز تدخل منه. فادخله من الموبايل أو اللابتوب اللي هتذاكر عليه، ومن متصفح عادي مش متخفي.</span></p></details>
+    <details><summary><span data-t>لو غيّرت موبايلي أعمل إيه؟</span></summary><p><span data-t>كلّمنا على واتساب، وهنفك الكود من الجهاز القديم عشان تدخل من الجديد.</span></p></details>
+    <details><summary><span data-t>أقدر أنزّل الملفات؟</span></summary><p><span data-t>المذاكرة بتبقى جوه الموقع، ومتاحة ليك في أي وقت طول ما الكود شغال.</span></p></details>
+    <details><summary><span data-t>الكود بيوصل إمتى؟</span></summary><p><span data-t>أول ما نتأكد إن التحويل وصل، هنبعتلك الكود على واتساب.</span></p></details>
   </div>
 </div>
 
@@ -316,57 +316,58 @@ svg.uic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
   <div class="foot-top"></div>
   <div class="foot-in">
     <div>
-      <a class="logo" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc94d"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs><path fill="url(#tg)" d="M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z"/><path fill="#fff" opacity=".35" d="M18 13c-4 1-6 4-6 8 0 2 1 3 2 3s2-1 2-3c0-3 1-4 3-5 1-1 1-3-1-3z"/></svg><span id="footName"></span></a>
+      <a class="logo" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--y)"/><stop offset="1" style="stop-color:var(--o)"/></linearGradient></defs><path fill="url(#tg)" d="M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z"/><path fill="#fff" opacity=".35" d="M18 13c-4 1-6 4-6 8 0 2 1 3 2 3s2-1 2-3c0-3 1-4 3-5 1-1 1-3-1-3z"/></svg><span id="footName"></span></a>
       <p id="footSlogan"></p>
-      <div class="foot-pay"><span style="background:#e60000">فودافون كاش</span><span style="background:#7b2cbf">انستاباي</span></div>
+      <div class="foot-pay"><span style="background:#e60000"><span data-t>فودافون كاش</span></span><span style="background:#7b2cbf"><span data-t>انستاباي</span></span></div>
     </div>
     <div>
-      <h5>روابط سريعة</h5>
+      <h5><span data-t>روابط سريعة</span></h5>
       <div class="foot-links">
-        <a href="#subjects"><i class="ic" data-i="book"></i> المواد</a><a href="#how"><i class="ic" data-i="check"></i> إزاي تطلب</a><a href="#pay"><i class="ic" data-i="card"></i> طرق الدفع</a><a href="#faq"><i class="ic" data-i="help"></i> أسئلة بتتكرر</a><a href="learn.html#free"><i class="ic" data-i="eye"></i> جرّب ببلاش</a><a href="learn.html"><i class="ic" data-i="lock"></i> دخول المشتركين</a>
+        <a href="#subjects"><i class="ic" data-i="book"></i> <span data-t>المواد</span></a><a href="#how"><i class="ic" data-i="check"></i> <span data-t>إزاي تطلب</span></a><a href="#pay"><i class="ic" data-i="card"></i> <span data-t>طرق الدفع</span></a><a href="#faq"><i class="ic" data-i="help"></i> <span data-t>أسئلة بتتكرر</span></a><a href="learn.html#free"><i class="ic" data-i="eye"></i> <span data-t>جرّب ببلاش</span></a><a href="learn.html"><i class="ic" data-i="lock"></i> <span data-t>دخول المشتركين</span></a>
       </div>
     </div>
     <div>
-      <h5>تواصل معانا</h5>
-      <p style="margin-bottom:10px">عندك سؤال قبل ما تشترك؟ كلّمنا وهنرد عليك بسرعة.</p>
-      <a class="foot-wa" id="footWa" target="_blank" rel="noopener"><i class="ic" data-i="chat"></i> كلّمنا على واتساب</a>
+      <h5><span data-t>تواصل معانا</span></h5>
+      <p style="margin-bottom:10px"><span data-t>عندك سؤال قبل ما تشترك؟ كلّمنا وهنرد عليك بسرعة.</span></p>
+      <a class="foot-wa" id="footWa" target="_blank" rel="noopener"><i class="ic" data-i="chat"></i> <span data-t>كلّمنا على واتساب</span></a>
     </div>
   </div>
-  <div class="foot-bot"><span id="foot"></span><span>صُنع بحب لطلبة طب الأسنان</span></div>
+  <div class="foot-bot"><span id="foot"></span><span><span data-t>صُنع بحب لطلبة طب الأسنان</span></span></div>
 </footer>
 <button class="totop" id="totop" aria-label="لفوق">↑</button>
-<a class="wa" id="waFloat" target="_blank" rel="noopener" title="واتساب"><i class="ic" data-i="chat"></i></a>
+<a data-sec="wa" class="wa" id="waFloat" target="_blank" rel="noopener" title="واتساب"><i class="ic" data-i="chat"></i></a>
 
 <div class="modal" id="m"><div class="box">
   <button class="close" id="mClose">✕</button>
   <h3 id="mTitle"></h3>
-  <div style="color:var(--muted)">اختار طريقة الدفع</div>
+  <div style="color:var(--muted)"><span data-t>اختار طريقة الدفع</span></div>
   <div class="opts">
-    <button class="opt vf on" data-m="vf"><i class="ic" data-i="phone"></i> فودافون كاش</button>
-    <button class="opt ip" data-m="ip"><i class="ic" data-i="bank"></i> انستاباي</button>
+    <button class="opt vf on" data-m="vf"><i class="ic" data-i="phone"></i> <span data-t>فودافون كاش</span></button>
+    <button class="opt ip" data-m="ip"><i class="ic" data-i="bank"></i> <span data-t>انستاباي</span></button>
   </div>
   <div class="payinfo on" id="pi-vf">
-    <div>حوّل على الرقم ده</div>
-    <div class="num" style="background:var(--card)"><b id="mVf"></b><button class="copy" data-copy="vf">نسخ</button></div>
+    <div><span data-t>حوّل على الرقم ده</span></div>
+    <div class="num" style="background:var(--card)"><b id="mVf"></b><button class="copy" data-copy="vf"><span data-t>نسخ</span></button></div>
   </div>
   <div class="payinfo" id="pi-ip">
-    <div>حوّل على العنوان ده</div>
-    <div class="num" style="background:var(--card)"><b id="mIp"></b><button class="copy" data-copy="ip">نسخ</button></div>
+    <div><span data-t>حوّل على العنوان ده</span></div>
+    <div class="num" style="background:var(--card)"><b id="mIp"></b><button class="copy" data-copy="ip"><span data-t>نسخ</span></button></div>
   </div>
-  <div class="total"><span>المطلوب</span><span id="mPrice"></span></div>
-  <p style="color:var(--muted);font-size:14px">بعد ما تحوّل، دوس الزرار اللي تحت وابعت صورة التحويل في نفس المحادثة، وهيوصلك كود الدخول بعد التأكد.</p>
-  <a class="btn" id="mWa" target="_blank" rel="noopener" style="width:100%;text-align:center;background:#25d366;color:#fff"><i class="ic" data-i="chat"></i> ابعت صورة التحويل على واتساب</a>
+  <div class="total"><span><span data-t>المطلوب</span></span><span id="mPrice"></span></div>
+  <p style="color:var(--muted);font-size:14px"><span data-t>بعد ما تحوّل، دوس الزرار اللي تحت وابعت صورة التحويل في نفس المحادثة، وهيوصلك كود الدخول بعد التأكد.</span></p>
+  <a class="btn" id="mWa" target="_blank" rel="noopener" style="width:100%;text-align:center;background:#25d366;color:#fff"><i class="ic" data-i="chat"></i> <span data-t>ابعت صورة التحويل على واتساب</span></a>
 </div></div>
 
 <div class="modal" id="mPick"><div class="box">
   <button class="close" id="pClose">✕</button>
-  <h3>اختار ٣ مواد</h3>
+  <h3><span data-t>اختار ٣ مواد</span></h3>
   <div style="color:var(--muted)" id="pHint"></div>
   <div class="pick" id="pList"></div>
-  <button class="btn" id="pGo" style="width:100%" disabled>كمّل للدفع</button>
+  <button class="btn" id="pGo" style="width:100%" disabled><span data-t>كمّل للدفع</span></button>
 </div></div>
 
-<div class="toast" id="toast">اتنسخ ✓</div>
+<div hidden id="dynT"><span data-t>اطلب دلوقتي</span><span data-t>المواد الست مع بعض</span><span data-t>خد العرض</span><span data-t>هتوفّر</span></div>
+<div class="toast" id="toast"><span data-t>اتنسخ ✓</span></div>
 
 <script src="icons.js"></script>
 <script>
@@ -383,6 +384,13 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>`${n} <small>${esc(SITE.currency)}</small>`;
 document.title=SITE.name;
+const TX=SITE.texts||{}, T=k=>esc(TX[k]||k);
+const TH=SITE.theme||{}; for(const k of ['o','y','bg','bg2','card','ink','muted','line']) if(TH[k]) document.documentElement.style.setProperty('--'+k,TH[k]);
+if(TH.bg){ const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=TH.bg; }
+document.querySelectorAll('[data-t]').forEach(el=>{ const k=el.textContent.trim(); if(TX[k]) el.textContent=TX[k]; });
+(SITE.hide||[]).forEach(sec=>document.querySelectorAll(`[data-sec="${sec}"]`).forEach(e=>e.style.display='none'));
+const FX=String(SITE.faqExtra||'').split('\n').map(l=>l.split('|')).filter(x=>x.length>=2&&x[0].trim()&&x[1].trim());
+if(FX.length) $('faqBox').insertAdjacentHTML('beforeend',FX.map(([q,...a])=>`<details><summary>${esc(q.trim())}</summary><p>${esc(a.join('|').trim())}</p></details>`).join(''));
 $('sName').textContent=SITE.name;
 if(SITE.audience) $('aud').innerHTML=`<span class="aud">${UI('users')} ${esc(SITE.audience)}</span>`;
 const RV=String(SITE.reviews||'').split('\n').map(l=>l.split('|')).filter(x=>x.length>=2&&x[1].trim());
@@ -400,20 +408,20 @@ $('totop').onclick=()=>scrollTo({top:0,behavior:'smooth'});
 
 $('grid').innerHTML=SUBJECTS.map((s,i)=>`<div class="card reveal">
   <div class="ic">${subjectIcon(s.name,s.icon)}</div><h3>${esc(s.name)}</h3><div class="d">${esc(s.desc)}</div>${s.avail?`<div class="avail">${UI('check')} ${esc(s.avail)}</div>`:''}
-  <div class="inc"><span>ملخص</span><span>شرح</span><span>صح وغلط</span><span>اختيار من متعدد</span><span>كتابي</span><span>كومبليت</span></div>
+  <div class="inc">${['ملخص','شرح','صح وغلط','اختيار من متعدد','كتابي','كومبليت'].map(x=>`<span>${T(x)}</span>`).join('')}</div>
   <div class="price">${money(s.price)}</div>
-  <button class="btn small" data-buy="${i}">اطلب دلوقتي</button></div>`).join('');
+  <button class="btn small" data-buy="${i}">${T('اطلب دلوقتي')}</button></div>`).join('');
 
 const total=SUBJECTS.reduce((a,s)=>a+Number(s.price||0),0);
 const cur=esc(SITE.currency), launchOn=Number(SITE.launchPrice)>0&&Number(SITE.launchLeft)>0;
 const bundleNow=launchOn?Number(SITE.launchPrice):Number(SITE.bundlePrice);
 if(SITE.bundlePrice>0){
   const spots=Number(SITE.launchSpots)||0, left=Number(SITE.launchLeft)||0;
-  $('bundle').innerHTML=`<div>${launchOn?'<span class="launch">🔥 عرض الافتتاح</span>':''}<h3><i class="ic" data-i="gift"></i> المواد الست مع بعض</h3>
-    <div>بدل <span class="old">${total} ${cur}</span> بس <b style="color:var(--y);font-size:26px">${bundleNow} ${cur}</b> <span style="font-size:14px;opacity:.85">هتوفّر ${total-bundleNow} ${cur}</span></div>
+  $('bundle').innerHTML=`<div>${launchOn?'<span class="launch">🔥 عرض الافتتاح</span>':''}<h3><i class="ic" data-i="gift"></i> ${T('المواد الست مع بعض')}</h3>
+    <div>بدل <span class="old">${total} ${cur}</span> بس <b style="color:var(--y);font-size:26px">${bundleNow} ${cur}</b> <span style="font-size:14px;opacity:.85">${T('هتوفّر')} ${total-bundleNow} ${cur}</span></div>
     ${launchOn?`<div style="font-size:13px;opacity:.8">بعد العرض هيبقى ${SITE.bundlePrice} ${cur}</div>`:''}
     ${launchOn?`<div class="left">فاضل ${left} مكان بس بالسعر ده</div>${spots>left?`<div class="bar"><i style="width:${Math.round((spots-left)*100/spots)}%"></i></div>`:''}`:''}</div>
-    <button class="btn" data-buy="all">خد العرض</button>`;
+    <button class="btn" data-buy="all">${T('خد العرض')}</button>`;
 } else $('bundle').style.display='none';
 const offs=[];
 if(Number(SITE.trioPrice)>0) offs.push(`<div class="offer"><h3>🧩 أي ٣ مواد</h3><p>اختار التلات مواد اللي محتاجهم بس</p><div class="big">${SITE.trioPrice} ${cur} <span style="font-size:14px;color:var(--muted);text-decoration:line-through">${3*Math.round(total/Math.max(SUBJECTS.length,1))}</span></div><button class="btn small" data-trio="1" style="margin-top:8px">اختار موادك</button></div>`);
