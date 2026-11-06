@@ -200,7 +200,7 @@ $('sList').onclick=e=>{const b=e.target.closest('[data-sdel]'); if(!b) return; c
 /* ---------- lectures ---------- */
 const SLOTS=[{k:'summary',t:'📘 الملخص'},{k:'explain',t:'🧑‍🏫 الشرح'},{k:'tf',t:'✅ أسئلة صح وغلط'},{k:'mcq',t:'🔘 أسئلة اختيار من متعدد'},{k:'written',t:'✍️ أسئلة كتابي'},{k:'complete',t:'🧩 أسئلة كومبليت'}];
 let curPdfs={}, removed={}, curExams={};
-const EX=['tf','mcq','complete'];
+const EX=['tf','mcq','complete','written'];
 $('slots').innerHTML=SLOTS.map(s=>`<div class="item"><b>${s.t}</b>
   ${EX.includes(s.k)?'<div class="muted" style="font-size:12px;margin-top:4px">ارفع بي دي إف عشان يظهر كملف، أو ملف الامتحان الجاهز اللي بعمله ليك عشان يبقى امتحان إلكتروني</div>':''}
   <input type="file" id="f_${s.k}" accept="${EX.includes(s.k)?'application/pdf,.pdf,.txt,text/plain':'application/pdf,.pdf'}" style="margin-top:8px">
@@ -243,22 +243,24 @@ function parseQ(src){
   const out=[]; const blocks=String(src||'').replace(/\r/g,'').split(/\n\s*\n/);
   for(const b of blocks){
     const lines=b.split('\n').map(s=>s.trim()).filter(Boolean); if(lines.length<2) continue;
-    let q=lines[0].replace(/^(q\s*[:.)-]|\d+\s*[.)-])\s*/i,''), opts=[], ans=-1, exp='', typed=null;
+    let q=lines[0].replace(/^(q\s*[:.)-]|\d+\s*[.)-])\s*/i,''), opts=[], ans=-1, exp='', blanks=[], model=[];
     for(const l of lines.slice(1)){
       const m=l.match(/^(explanation|الشرح|تفسير)\s*[:：-]\s*(.*)$/i); if(m){ exp=m[2]; continue; }
-      if(l.startsWith('=')){ typed=l.slice(1).split('|').map(s=>s.trim()).filter(Boolean); continue; }
+      if(l.startsWith('=')){ const a=l.slice(1).split('|').map(s=>s.trim()).filter(Boolean); if(a.length) blanks.push(a); continue; }
+      if(l.startsWith('~')){ model.push(l.slice(1).trim()); continue; }
       let t=l, star=false;
       if(t.startsWith('*')){ star=true; t=t.slice(1).trim(); }
       t=t.replace(/^([a-hA-H]|[أ-ي])\s*(\)\s*|[.-]\s+)/,'').replace(/^[-•]\s*/,'');
       if(t.startsWith('*')){ star=true; t=t.slice(1).trim(); }
       if(star) ans=opts.length; opts.push(t);
     }
-    if(typed&&typed.length) out.push({q,type:'type',answers:typed,explanation:exp});
+    if(model.length) out.push({q,type:'open',model:model.join('\n'),explanation:exp});
+    else if(blanks.length) out.push({q,type:'type',blanks,explanation:exp});
     else if(opts.length>=2&&ans>=0) out.push({q,options:opts,answer:ans,explanation:exp});
   }
   return out;
 }
-function serQ(qs){ return (qs||[]).map(x=>[x.q,...(x.type==='type'?['= '+x.answers.join(' | ')]:x.options.map((o,i)=>(i===x.answer?'*':'')+o)),...(x.explanation?['Explanation: '+x.explanation]:[])].join('\n')).join('\n\n'); }
+function serQ(qs){ return (qs||[]).map(x=>[x.q,...(x.type==='open'?x.model.split('\n').map(m=>'~ '+m):x.type==='type'?(x.blanks||[x.answers]).map(b=>'= '+b.join(' | ')):x.options.map((o,i)=>(i===x.answer?'*':'')+o)),...(x.explanation?['Explanation: '+x.explanation]:[])].join('\n')).join('\n\n'); }
 function qCount(){ const n=parseQ($('lQtext').value).length, raw=$('lQtext').value.trim();
   const blocks=raw?raw.split(/\n\s*\n/).filter(b=>b.trim()).length:0;
   $('lQcount').textContent= raw ? `اتقرا ${n} سؤال`+(blocks>n?`، و${blocks-n} سؤال مش مظبوطين، اتأكد إن فيهم علامة * قدام الإجابة الصح`:'') : ''; }

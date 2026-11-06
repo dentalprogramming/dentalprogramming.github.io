@@ -94,6 +94,20 @@ body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),tran
 .g-fb p{margin:6px 0 0;color:var(--ink);font-weight:500}
 .g-next{margin-top:14px;width:100%}
 .g-type{display:flex;gap:8px;margin-top:6px}
+.g-fill .g-bl{display:inline-block;width:9.5em!important;vertical-align:middle}
+.g-bl{font-family:inherit;font-size:16px;letter-spacing:0;text-transform:none;text-align:center;padding:6px 10px;border-radius:10px;border:2px dashed rgba(255,201,77,.5);background:var(--bg2);color:var(--ink);min-width:120px;max-width:100%;user-select:text;-webkit-user-select:text;direction:rtl;margin:3px 4px}
+.g-bl.ltr{direction:ltr}
+.g-bl:focus{outline:none;border-style:solid;border-color:var(--o)}
+.g-bl.ok{border:2px solid var(--ok);background:rgba(34,197,94,.12)}
+.g-bl.bad{border:2px solid var(--bad);background:rgba(244,63,94,.12);animation:shake .4s}
+.g-fill{line-height:2.4}
+.g-type .g-bl{width:100%;text-align:start;margin:0}
+.g-open{width:100%;font-family:inherit;font-size:15px;letter-spacing:0;text-transform:none;text-align:start;padding:12px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg2);color:var(--ink);resize:vertical;direction:rtl;user-select:text;-webkit-user-select:text}
+.g-open.ltr{direction:ltr}
+.g-model{margin-top:10px;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.4);border-radius:14px;padding:12px 14px;line-height:1.8}
+.g-model b{color:var(--t);display:block;margin-bottom:4px}
+.g-model.ltr b{direction:rtl}
+.g-self{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;font-weight:800}
 .g-type input{direction:rtl}
 .g-type input.ltr{direction:ltr}
 .g-type input{flex:1;font-size:17px;letter-spacing:0;text-transform:none;text-align:start;padding:12px 14px;border-radius:14px;user-select:text;-webkit-user-select:text}
@@ -420,22 +434,44 @@ function gShow(){
   const q=QS[G.list[G.i]], L=isAr(q.q)?'':' ltr';
   $('game').innerHTML=gTop()+`<div class="g-card">
     <div class="g-n">${G.retry?'بنعيد الغلط · ':''}سؤال ${G.i+1}</div>
-    <div class="g-q${L}">${esc(q.q)}</div>
-    ${q.type==='type'?`<div class="g-type"><input id="gin" class="${L?'ltr':''}" placeholder="اكتب الإجابة هنا" autocomplete="off"><button class="btn" id="gcheck">تأكيد</button></div>`
+    ${q.type==='type'&&inlineOK(q)?'':`<div class="g-q${L}">${esc(q.q)}</div>`}
+    ${q.type==='open'?`<textarea id="gopen" class="g-open${L?' ltr':''}" rows="3" placeholder="اكتب إجابتك هنا لو حابب، أو جاوب في دماغك"></textarea><button class="btn ghost" id="gshow" style="width:100%;margin-top:8px">شوف الإجابة النموذجية</button>`
+     :q.type==='type'?gBlanksHTML(q,L)
       :(q.options||[]).map((o,k)=>`<button class="g-opt${isAr(o)?'':' ltr'}" data-k="${k}"><span class="k">${String.fromCharCode(65+k)}</span><span>${esc(o)}</span></button>`).join('')}
     <div class="g-fb" id="gfb"></div>
     <button class="btn g-next hide" id="gnext">${G.i+1<G.list.length?'اللي بعده ←':'شوف نتيجتك'}</button></div>`;
   G.answered=false; fillIcons($('game'));
-  const gi=$('gin'); if(gi) setTimeout(()=>gi.focus({preventScroll:true}),50);
+  const gi=document.querySelector('#game .g-bl'); if(gi) setTimeout(()=>gi.focus({preventScroll:true}),50);
+}
+const blanksOf=q=>q.blanks||[q.answers||[]];
+const inlineOK=q=>(q.q.match(/_{3,}/g)||[]).length===blanksOf(q).length&&blanksOf(q).length>0;
+function gBlanksHTML(q,L){
+  const B=blanksOf(q);
+  const inp=i=>`<input class="g-bl${L?' ltr':''}" data-b="${i}" autocomplete="off" aria-label="الفراغ ${i+1}">`;
+  if(inlineOK(q)){ let i=0; const parts=esc(q.q).split(/_{3,}/); return `<div class="g-q g-fill${L}">${parts.map((p,j)=>p+(j<parts.length-1?inp(i++):'')).join('')}</div><button class="btn" id="gcheck" style="width:100%;margin-top:4px">تأكيد</button>`; }
+  return `<div class="g-type" style="flex-direction:column">${B.map((_,i)=>inp(i)).join('')}<button class="btn" id="gcheck">تأكيد</button></div>`;
 }
 const norm=s=>String(s||'').toLowerCase().normalize('NFKD').replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/[^a-z0-9\u0600-\u06FF]+/g,' ').trim();
 function lev(a,b){ const m=a.length,n=b.length; if(Math.abs(m-n)>2) return 9; const d=Array.from({length:m+1},(_,i)=>[i]); for(let j=1;j<=n;j++)d[0][j]=j;
   for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1)); return d[m][n]; }
 function typedOk(v,answers){ const x=norm(v); if(!x) return false; return answers.some(a=>{ const y=norm(a); return x===y||(y.length>=5&&lev(x,y)<=1); }); }
 function gTyped(){
-  if(G.answered) return; const v=$('gin').value; if(!v.trim()) return;
-  const q=QS[G.list[G.i]]; gResolve(typedOk(v,q.answers), q, q.answers[0]);
-  $('gin').disabled=true; $('gcheck').disabled=true; $('gin').classList.add(typedOk(v,q.answers)?'ok':'bad');
+  if(G.answered) return; const q=QS[G.list[G.i]], B=blanksOf(q);
+  const ins=[...document.querySelectorAll('#game .g-bl')], vals=ins.map(x=>x.value);
+  if(!vals.some(v=>v.trim())) return;
+  let pos=vals.map((v,i)=>typedOk(v,B[i]));
+  if(!pos.every(Boolean)&&B.length>1){ // accept any order for lists
+    const used=new Set(), any=vals.map(v=>{ const j=B.findIndex((b,j)=>!used.has(j)&&typedOk(v,b)); if(j>=0){used.add(j);return true;} return false; });
+    if(any.every(Boolean)) pos=any;
+  }
+  ins.forEach((x,i)=>{ x.disabled=true; x.classList.add(pos[i]?'ok':'bad'); });
+  $('gcheck').disabled=true;
+  gResolve(pos.every(Boolean), q, B.map(b=>b[0]).join(' – '));
+}
+function gReveal(){
+  const q=QS[G.list[G.i]], b=$('gshow'); b.outerHTML=`<div class="g-model${isAr(q.model)?'':' ltr'}"><b>الإجابة النموذجية:</b><div>${esc(q.model).replace(/\n/g,'<br>')}</div></div>
+    <div class="g-self"><span>جاوبت صح؟</span><button class="btn small" id="gyes">أيوه ✓</button><button class="btn ghost small" id="gno">محتاج أراجعها</button></div>`;
+  const t=$('gopen'); if(t) t.disabled=true;
 }
 function gAnswer(k){
   if(G.answered) return;
@@ -449,7 +485,7 @@ function gResolve(ok,q,correct){
   else { G.streak=0; G.wrong.push(qi); }
   const msgs=ok?(G.streak>=3?['نار عليك 🔥','مكمّل صح!','ولا غلطة!']:['صح ✓','برافو!','كده بالظبط']):['لأ، مش دي','قريبة، بس لأ','ركّز في دي'];
   const fb=$('gfb'); fb.className='g-fb show '+(ok?'ok':'bad');
-  fb.innerHTML=`${msgs[Math.floor(Math.random()*msgs.length)]}${ok?` <span style="opacity:.8">+${10+Math.min(G.streak-1,5)*2}</span>`:` · الصح: <span class="${isAr(correct)?'':'ltr'}" style="display:inline-block">${esc(correct)}</span>`}${q.explanation?`<p class="${isAr(q.explanation)?'':'ltr'}">${esc(q.explanation)}</p>`:''}`;
+  fb.innerHTML=`${msgs[Math.floor(Math.random()*msgs.length)]}${ok?` <span style="opacity:.8">+${10+Math.min(G.streak-1,5)*2}</span>`:!correct?' · راجعها تاني':` · الصح: <span class="${isAr(correct)?'':'ltr'}" style="display:inline-block">${esc(correct)}</span>`}${q.explanation?`<p class="${isAr(q.explanation)?'':'ltr'}">${esc(q.explanation)}</p>`:''}`;
   $('gnext').classList.remove('hide');
   const top=document.querySelector('#game .g-top'); if(top){ top.outerHTML=gTop(); fillIcons($('game')); }
 }
@@ -471,13 +507,16 @@ function gEnd(){
 $('game').addEventListener('click',e=>{
   const o=e.target.closest('.g-opt'); if(o&&!o.disabled) return gAnswer(+o.dataset.k);
   if(e.target.closest('#gcheck')) return gTyped();
+  if(e.target.closest('#gshow')) return gReveal();
+  if(e.target.closest('#gyes')||e.target.closest('#gno')){ const q=QS[G.list[G.i]], ok=!!e.target.closest('#gyes'); document.querySelector('#game .g-self').remove(); return gResolve(ok,q,''); }
   if(e.target.closest('#gnext')){ G.i++; gShow(); $('game').scrollIntoView({behavior:'smooth',block:'start'}); return; }
   if(e.target.closest('#gwrong')) return renderQuiz(true);
   if(e.target.closest('#gagain')) return renderQuiz(false);
 });
 document.addEventListener('keydown',e=>{
   if($('tQuiz').classList.contains('hide')) return;
-  if(e.target&&e.target.id==='gin'){ if(e.key==='Enter'){ e.preventDefault(); gTyped(); } return; }
+  if(e.target&&e.target.classList&&e.target.classList.contains('g-bl')){ if(e.key==='Enter'){ e.preventDefault(); const all=[...document.querySelectorAll('#game .g-bl')], i=all.indexOf(e.target); if(i<all.length-1&&!all[i+1].value) all[i+1].focus(); else gTyped(); } return; }
+  if(e.target&&e.target.id==='gopen') return;
   if(!G.answered&&/^[1-6a-fA-F]$/.test(e.key)){ const k=/\d/.test(e.key)?+e.key-1:e.key.toLowerCase().charCodeAt(0)-97; const b=document.querySelector(`#game .g-opt[data-k="${k}"]`); if(b) gAnswer(k); }
   else if(G.answered&&e.key==='Enter'){ const n=$('gnext'); if(n) n.click(); }
 });
