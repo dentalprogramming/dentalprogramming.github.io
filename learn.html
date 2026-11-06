@@ -260,7 +260,7 @@ async function loadPdf(id,k,meta){
       for(let p=1;p<=pdf.numPages;p++){
         if(tok!==pdfToken) return;
         $('pdfMsg').textContent=`جاري عرض الصفحات... ${p} من ${pdf.numPages}`;
-        const page=await pdf.getPage(p), vp=page.getViewport({scale:1.6});
+        const page=await pdf.getPage(p), cw=($('pages').clientWidth||900)*(window.devicePixelRatio||1), vp=page.getViewport({scale:Math.min(3.5,Math.max(1.5,cw/page.getViewport({scale:1}).width))});
         const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
         await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
         stamp(c); $('pages').appendChild(c);

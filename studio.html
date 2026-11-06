@@ -214,11 +214,16 @@ async function pdfToImages(file,label){
   const pdf=await lib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise, out=[];
   for(let p=1;p<=pdf.numPages;p++){
     say('lmsg2',`جاري تجهيز ${label}... صفحة ${p} من ${pdf.numPages}`,true);
-    const page=await pdf.getPage(p), base=page.getViewport({scale:1}), vp=page.getViewport({scale:Math.min(2.2,1300/base.width)});
+    const page=await pdf.getPage(p), base=page.getViewport({scale:1});
+    let target=2000, url='';
+    for(let tries=0;tries<4;tries++){
+    const vp=page.getViewport({scale:Math.min(4,target/base.width)});
     const c=document.createElement('canvas'); c.width=Math.round(vp.width); c.height=Math.round(vp.height);
     const ctx=c.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);
     await page.render({canvasContext:ctx,viewport:vp}).promise; burnBrand(c);
-    let q=.78, url=c.toDataURL('image/jpeg',q); while(url.length>950000&&q>.3){ q-=.12; url=c.toDataURL('image/jpeg',q); }
+    let q=.9; url=c.toDataURL('image/jpeg',q); while(url.length>990000&&q>.5){ q-=.08; url=c.toDataURL('image/jpeg',q); }
+    if(url.length<=990000) break; target=Math.round(target*.8);
+    }
     out.push(url.slice(url.indexOf(',')+1));
   }
   return out;
