@@ -246,7 +246,7 @@ function parseQ(src){
     let q=lines[0].replace(/^(q\s*[:.)-]|\d+\s*[.)-])\s*/i,''), opts=[], ans=-1, exp='', blanks=[], model=[];
     for(const l of lines.slice(1)){
       const m=l.match(/^(explanation|الشرح|تفسير)\s*[:：-]\s*(.*)$/i); if(m){ exp=m[2]; continue; }
-      if(l.startsWith('=')){ const a=l.slice(1).split('|').map(s=>s.trim()).filter(Boolean); if(a.length) blanks.push(a); continue; }
+      if(l.startsWith('=')){ const a=l.slice(1).split('|').map(s=>s.trim()).filter(Boolean); if(a.length) blanks.push(a.join(' | ')); continue; }
       if(l.startsWith('~')){ model.push(l.slice(1).trim()); continue; }
       let t=l, star=false;
       if(t.startsWith('*')){ star=true; t=t.slice(1).trim(); }
@@ -260,7 +260,7 @@ function parseQ(src){
   }
   return out;
 }
-function serQ(qs){ return (qs||[]).map(x=>[x.q,...(x.type==='open'?x.model.split('\n').map(m=>'~ '+m):x.type==='type'?(x.blanks||[x.answers]).map(b=>'= '+b.join(' | ')):x.options.map((o,i)=>(i===x.answer?'*':'')+o)),...(x.explanation?['Explanation: '+x.explanation]:[])].join('\n')).join('\n\n'); }
+function serQ(qs){ return (qs||[]).map(x=>[x.q,...(x.type==='open'?x.model.split('\n').map(m=>'~ '+m):x.type==='type'?(x.blanks||[x.answers]).map(b=>'= '+(Array.isArray(b)?b.join(' | '):b)):x.options.map((o,i)=>(i===x.answer?'*':'')+o)),...(x.explanation?['Explanation: '+x.explanation]:[])].join('\n')).join('\n\n'); }
 function qCount(){ const n=parseQ($('lQtext').value).length, raw=$('lQtext').value.trim();
   const blocks=raw?raw.split(/\n\s*\n/).filter(b=>b.trim()).length:0;
   $('lQcount').textContent= raw ? `اتقرا ${n} سؤال`+(blocks>n?`، و${blocks-n} سؤال مش مظبوطين، اتأكد إن فيهم علامة * قدام الإجابة الصح`:'') : ''; }

@@ -443,7 +443,7 @@ function gShow(){
   G.answered=false; fillIcons($('game'));
   const gi=document.querySelector('#game .g-bl'); if(gi) setTimeout(()=>gi.focus({preventScroll:true}),50);
 }
-const blanksOf=q=>q.blanks||[q.answers||[]];
+const blanksOf=q=>(q.blanks||[q.answers||[]]).map(b=>Array.isArray(b)?b:String(b).split('|').map(x=>x.trim()).filter(Boolean));
 const inlineOK=q=>(q.q.match(/_{3,}/g)||[]).length===blanksOf(q).length&&blanksOf(q).length>0;
 function gBlanksHTML(q,L){
   const B=blanksOf(q);
