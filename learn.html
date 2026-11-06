@@ -27,7 +27,9 @@ input:focus{outline:none;border-color:var(--o)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .tile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;cursor:pointer;transition:.15s}
 .tile:hover{border-color:var(--o);transform:translateY(-3px)}
-.tile .ic{font-size:32px}
+.tile .ic{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,rgba(255,138,61,.25),rgba(255,201,77,.15));border:1px solid rgba(255,201,77,.35);margin-bottom:6px}
+body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),transparent 60%),radial-gradient(700px 500px at 0% 40%,rgba(123,44,191,.12),transparent 60%),var(--bg)}
+.lec .n{background:linear-gradient(135deg,var(--o),var(--y))}
 .tile h3{margin:4px 0;font-size:18px}
 .lec{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:8px 0;cursor:pointer}
 .lec:hover{border-color:var(--o)}
@@ -66,7 +68,7 @@ input:focus{outline:none;border-color:var(--o)}
 </head>
 <body>
 <header>
-  <b id="brand">منطقة الطلبة</b>
+  <b id="brand" style="display:flex;align-items:center;gap:8px"><svg viewBox="0 0 64 64" width="28" height="28"><path fill="#ff9f45" d="M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z"/></svg>منطقة الطلبة</b>
   <div style="display:flex;gap:12px;align-items:center">
     <span id="who" class="muted" style="font-size:14px"></span>
     <a href="./">الصفحة الرئيسية</a>
