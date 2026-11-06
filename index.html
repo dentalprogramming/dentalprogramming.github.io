@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23ffc94d'/><stop offset='1' stop-color='%23ff8a3d'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='%230e1630'/><path transform='translate(8 7) scale(.75)' fill='url(%23g)' d='M20 6c-8 0-14 6-14 15 0 7 3 11 5 17 2 7 2 20 8 20 5 0 5-12 9-12h8c4 0 4 12 9 12 6 0 6-13 8-20 2-6 5-10 5-17 0-9-6-15-14-15-5 0-8 3-12 3S25 6 20 6z'/></svg>">
+<meta name="theme-color" content="#0e1630">
 <title>Dental Programming</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -29,6 +31,20 @@ h2{font-size:26px;text-align:center;margin:40px 0 18px}
 .bundle{margin-top:20px;background:linear-gradient(120deg,#3a1d6e,#7a2e3a);border-radius:22px;padding:24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
 .bundle h3{margin:0;font-size:22px}
 .bundle .old{text-decoration:line-through;color:#ffd0d0;opacity:.8}
+.offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:16px}
+.offer{background:var(--card);border:1px dashed rgba(255,201,77,.5);border-radius:20px;padding:18px}
+.offer h3{margin:0 0 4px;font-size:19px}
+.offer p{margin:0 0 10px;color:var(--muted);font-size:14px}
+.offer .big{font-size:24px;font-weight:900;color:var(--y)}
+.launch{display:inline-block;background:#ff3d6e;color:#fff;font-weight:900;font-size:13px;border-radius:999px;padding:3px 12px;margin-bottom:8px;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.left{font-size:13px;color:#ffd0d0;margin-top:4px}
+.bar{height:8px;border-radius:999px;background:rgba(255,255,255,.15);overflow:hidden;margin-top:6px;max-width:260px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--y),#ff3d6e)}
+.pick{display:grid;gap:8px;margin:12px 0}
+.pick label{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;font-weight:700}
+.pick label.on{border-color:var(--o);background:rgba(255,138,61,.12)}
+.pick input{width:18px;height:18px;accent-color:var(--o)}
 .pays{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .pay{border-radius:20px;padding:20px;color:#fff}
 .pay.vf{background:linear-gradient(135deg,#b30000,var(--vf))}
@@ -149,6 +165,7 @@ footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
   <h2 id="subjects" class="reveal"><span class="em">📚</span>المواد</h2>
   <div class="grid" id="grid"></div>
   <div class="bundle reveal" id="bundle"></div>
+  <div class="offers reveal" id="offers"></div>
 
   <h2 id="how" class="reveal"><span class="em">✅</span>إزاي تطلب وتذاكر؟</h2>
   <div class="steps reveal">
@@ -213,6 +230,14 @@ footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
   <a class="btn" id="mWa" target="_blank" rel="noopener" style="width:100%;text-align:center;background:#25d366;color:#fff">💬 ابعت صورة التحويل على واتساب</a>
 </div></div>
 
+<div class="modal" id="mPick"><div class="box">
+  <button class="close" id="pClose">✕</button>
+  <h3>اختار ٣ مواد</h3>
+  <div style="color:var(--muted)" id="pHint"></div>
+  <div class="pick" id="pList"></div>
+  <button class="btn" id="pGo" style="width:100%" disabled>كمّل للدفع</button>
+</div></div>
+
 <div class="toast" id="toast">اتنسخ ✓</div>
 
 <script src="icons.js"></script>
@@ -246,15 +271,35 @@ $('grid').innerHTML=SUBJECTS.map((s,i)=>`<div class="card reveal">
   <button class="btn small" data-buy="${i}">اطلب دلوقتي</button></div>`).join('');
 
 const total=SUBJECTS.reduce((a,s)=>a+Number(s.price||0),0);
+const cur=esc(SITE.currency), launchOn=Number(SITE.launchPrice)>0&&Number(SITE.launchLeft)>0;
+const bundleNow=launchOn?Number(SITE.launchPrice):Number(SITE.bundlePrice);
 if(SITE.bundlePrice>0){
-  $('bundle').innerHTML=`<div><h3>🎁 عرض المواد الست مع بعض</h3>
-    <div>بدل <span class="old">${total} ${esc(SITE.currency)}</span> بس <b style="color:var(--y);font-size:22px">${SITE.bundlePrice} ${esc(SITE.currency)}</b></div></div>
+  const spots=Number(SITE.launchSpots)||0, left=Number(SITE.launchLeft)||0;
+  $('bundle').innerHTML=`<div>${launchOn?'<span class="launch">🔥 عرض الافتتاح</span>':''}<h3>🎁 المواد الست مع بعض</h3>
+    <div>بدل <span class="old">${total} ${cur}</span> بس <b style="color:var(--y);font-size:26px">${bundleNow} ${cur}</b> <span style="font-size:14px;opacity:.85">هتوفّر ${total-bundleNow} ${cur}</span></div>
+    ${launchOn?`<div style="font-size:13px;opacity:.8">بعد العرض هيبقى ${SITE.bundlePrice} ${cur}</div>`:''}
+    ${launchOn?`<div class="left">فاضل ${left} مكان بس بالسعر ده</div>${spots>left?`<div class="bar"><i style="width:${Math.round((spots-left)*100/spots)}%"></i></div>`:''}`:''}</div>
     <button class="btn" data-buy="all">خد العرض</button>`;
 } else $('bundle').style.display='none';
+const offs=[];
+if(Number(SITE.trioPrice)>0) offs.push(`<div class="offer"><h3>🧩 أي ٣ مواد</h3><p>اختار التلات مواد اللي محتاجهم بس</p><div class="big">${SITE.trioPrice} ${cur} <span style="font-size:14px;color:var(--muted);text-decoration:line-through">${3*Math.round(total/Math.max(SUBJECTS.length,1))}</span></div><button class="btn small" data-trio="1" style="margin-top:8px">اختار موادك</button></div>`);
+if(Number(SITE.friendDiscount)>0) offs.push(`<div class="offer"><h3>🤝 هات صاحبك</h3><p>لو صاحبك اشترى وقال اسمك، تاخد خصم ${SITE.friendDiscount} ${cur} على طلبك الجاي.</p></div>`);
+if(Number(SITE.groupPrice)>0) offs.push(`<div class="offer"><h3>👥 عرض الشلة</h3><p>لو ${Number(SITE.groupSize)||4} أصحاب أو أكتر اشتروا العرض الكامل مع بعض، كل واحد يدفع:</p><div class="big">${SITE.groupPrice} ${cur}</div><p style="margin-top:6px">ابعتولنا على واتساب بأسماءكم.</p></div>`);
+$('offers').innerHTML=offs.join(''); if(!offs.length) $('offers').style.display='none';
+let picked=[];
+function openPick(){ picked=[]; $('pList').innerHTML=SUBJECTS.map((s,i)=>`<label data-i="${i}"><input type="checkbox">${esc(s.name)}</label>`).join(''); pickUpd(); $('mPick').classList.add('on'); }
+function pickUpd(){ $('pHint').textContent=`اخترت ${picked.length} من ٣`; $('pGo').disabled=picked.length!==3;
+  $('pList').querySelectorAll('label').forEach(l=>{const on=picked.includes(+l.dataset.i);l.classList.toggle('on',on);l.querySelector('input').checked=on;}); }
+$('pList').onclick=e=>{const l=e.target.closest('label'); if(!l) return; e.preventDefault(); const i=+l.dataset.i;
+  if(picked.includes(i)) picked=picked.filter(x=>x!==i); else if(picked.length<3) picked.push(i); pickUpd();};
+$('pClose').onclick=()=>$('mPick').classList.remove('on');
+$('pGo').onclick=()=>{ $('mPick').classList.remove('on'); openBuy('trio'); };
 
 let method='vf', item=null;
 function openBuy(k){
-  item = k==='all' ? {name:'المواد الست (العرض الكامل)',price:SITE.bundlePrice} : SUBJECTS[+k];
+  item = k==='all' ? {name:launchOn?'المواد الست (عرض الافتتاح)':'المواد الست (العرض الكامل)',price:bundleNow}
+       : k==='trio' ? {name:'٣ مواد: '+picked.map(i=>SUBJECTS[i].name).join('، '),price:SITE.trioPrice}
+       : SUBJECTS[+k];
   $('mTitle').textContent=item.name;
   $('mPrice').innerHTML=money(item.price);
   setMethod('vf'); $('m').classList.add('on');
@@ -268,6 +313,7 @@ function setMethod(m){
 }
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-buy]'); if(b) openBuy(b.dataset.buy);
+  if(e.target.closest('[data-trio]')) openPick();
   const o=e.target.closest('.opt'); if(o) setMethod(o.dataset.m);
   const c=e.target.closest('[data-copy]');
   if(c){const t=c.dataset.copy==='vf'?SITE.vodafoneCash:SITE.instapay;
