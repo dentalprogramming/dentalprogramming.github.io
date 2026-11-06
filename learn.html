@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>منطقة الطلبة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1630;--bg2:#141f42;--card:#18254f;--ink:#f3f5ff;--muted:#a9b3d6;--line:#26356b;--o:#ff8a3d;--y:#ffc94d;--ok:#22c55e;--bad:#f43f5e;--t:#2dd4bf}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Cairo',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;-webkit-user-select:none;user-select:none}
+.wrap{max-width:900px;margin:0 auto;padding:18px 16px 60px;position:relative;z-index:1}
+header{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--bg2);position:sticky;top:0;z-index:5}
+header b{font-size:19px;background:linear-gradient(90deg,var(--y),var(--o));-webkit-background-clip:text;background-clip:text;color:transparent}
+header a{color:var(--muted);text-decoration:none;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin:14px 0}
+h1{font-size:26px;margin:6px 0}
+.muted{color:var(--muted)}
+input{font-family:'Inter',sans-serif;font-size:20px;letter-spacing:2px;text-align:center;text-transform:uppercase;width:100%;padding:12px;border-radius:14px;border:2px solid var(--line);background:var(--bg2);color:var(--ink);direction:ltr;-webkit-user-select:text;user-select:text}
+input:focus{outline:none;border-color:var(--o)}
+.btn{font-family:inherit;font-weight:800;font-size:16px;border:none;border-radius:14px;padding:12px 20px;cursor:pointer;background:linear-gradient(90deg,var(--o),var(--y));color:#2a1300}
+.btn.ghost{background:var(--bg2);color:var(--ink);border:1px solid var(--line)}
+.btn.small{font-size:14px;padding:7px 14px}
+.btn:disabled{opacity:.5}
+.msg{margin-top:10px;font-weight:700;min-height:1.5em}.msg.err{color:var(--bad)}.msg.ok{color:var(--ok)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;cursor:pointer;transition:.15s}
+.tile:hover{border-color:var(--o);transform:translateY(-3px)}
+.tile .ic{font-size:32px}
+.tile h3{margin:4px 0;font-size:18px}
+.lec{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:8px 0;cursor:pointer}
+.lec:hover{border-color:var(--o)}
+.lec .n{width:34px;height:34px;border-radius:10px;background:var(--o);color:#2a1300;font-weight:900;display:grid;place-items:center;flex:none}
+.tabs{display:flex;gap:8px;margin:14px 0}
+.tabs button{flex:1;font-family:inherit;font-weight:800;font-size:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px;cursor:pointer}
+.tabs button.on{background:linear-gradient(90deg,var(--o),var(--y));color:#2a1300;border-color:transparent}
+.sum{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 22px}
+.sum h2{color:var(--y);font-size:20px;margin:18px 0 6px}
+.sum h3{color:var(--t);font-size:17px;margin:14px 0 4px}
+.sum p{margin:6px 0}
+.sum ul{margin:6px 0;padding-inline-start:22px}
+.sum .en{direction:ltr;text-align:left;font-family:'Inter',sans-serif}
+.q{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.qn{color:var(--muted);font-size:13px}
+.qt{font-weight:700;font-size:17px;margin:4px 0 10px}
+.opt{display:block;width:100%;font-family:inherit;font-size:15px;background:var(--bg2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:7px 0;cursor:pointer;text-align:start}
+.opt.ok{background:rgba(34,197,94,.18);border-color:var(--ok)}
+.opt.bad{background:rgba(244,63,94,.18);border-color:var(--bad)}
+.why{display:none;margin-top:8px;font-size:14px;background:var(--bg2);border-inline-start:4px solid var(--t);padding:8px 12px;border-radius:8px}
+.why.show{display:block}
+.ltr{direction:ltr;text-align:left;font-family:'Inter',sans-serif}
+.score{position:sticky;top:64px;z-index:4;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;font-weight:800}
+.score b{color:var(--ok)}
+.final{display:none;text-align:center;background:linear-gradient(135deg,#3a1d6e,#7a2e3a);border-radius:18px;padding:22px;margin-top:16px}
+.final.show{display:block}
+.final .big{font-size:40px;font-weight:900;color:var(--y)}
+.back{background:none;border:none;color:var(--muted);font-family:inherit;font-size:15px;cursor:pointer;padding:0;margin-bottom:6px}
+.hide{display:none!important}
+#wm{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden;opacity:.09;display:none}
+#wm span{position:absolute;white-space:nowrap;transform:rotate(-25deg);font-weight:800;font-size:18px;color:#fff;font-family:'Inter','Cairo',sans-serif}
+.spin{text-align:center;padding:40px;color:var(--muted)}
+@media print{body{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <b id="brand">منطقة الطلبة</b>
+  <div style="display:flex;gap:12px;align-items:center">
+    <span id="who" class="muted" style="font-size:14px"></span>
+    <a href="./">الصفحة الرئيسية</a>
+  </div>
+</header>
+<div id="wm"></div>
+
+<div class="wrap">
+  <div id="loading" class="spin">جاري التحميل...</div>
+
+  <!-- code entry -->
+  <div id="vCode" class="hide">
+    <div class="card" style="max-width:460px;margin:30px auto;text-align:center">
+      <div style="font-size:46px">🔐</div>
+      <h1>ادخل الكود بتاعك</h1>
+      <p class="muted">الكود ده وصلك على واتساب بعد ما دفعت. الكود بيشتغل على جهاز واحد بس، فادخله من الجهاز اللي هتذاكر عليه.</p>
+      <input id="code" placeholder="DP-XXXX-XXXX" autocomplete="off" maxlength="20">
+      <div style="margin-top:14px"><button class="btn" id="go" style="width:100%">دخول</button></div>
+      <div class="msg" id="cmsg"></div>
+    </div>
+  </div>
+
+  <!-- subjects -->
+  <div id="vHome" class="hide">
+    <h1>📚 موادك</h1>
+    <div class="grid" id="subs"></div>
+  </div>
+
+  <!-- lectures -->
+  <div id="vSub" class="hide">
+    <button class="back" data-go="home">→ رجوع للمواد</button>
+    <h1 id="subTitle"></h1>
+    <div id="lecs"></div>
+  </div>
+
+  <!-- lecture -->
+  <div id="vLec" class="hide">
+    <button class="back" data-go="sub">→ رجوع للمحاضرات</button>
+    <h1 id="lecTitle"></h1>
+    <div class="tabs"><button data-t="sum" class="on">📘 الملخص</button><button data-t="quiz">📝 الأسئلة</button></div>
+    <div id="tSum"></div>
+    <div id="tQuiz" class="hide">
+      <div class="score"><span>الدرجة: <b id="sc">0</b> من <span id="tot">0</span></span><button class="btn ghost small" id="redo">↺ من الأول</button></div>
+      <div id="qs"></div>
+      <div class="final" id="final"><div>خلصت الأسئلة</div><div class="big" id="pct"></div><div id="fmsg"></div></div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { firebaseConfig } from "./firebase-config.js";
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const show=v=>{['loading','vCode','vHome','vSub','vLec'].forEach(x=>$(x).classList.toggle('hide',x!==v));window.scrollTo(0,0);};
+
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['p','s','c'].includes(e.key.toLowerCase()))e.preventDefault();});
+
+if(!firebaseConfig.apiKey){ $('loading').textContent='الموقع لسه بيتجهز، جرب كمان شوية'; throw 0; }
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+let me=null, code=null, codeInfo=null, subjects=[], lectures=[], curSub=null, curLec=null;
+
+onAuthStateChanged(auth, async u=>{
+  if(!u){ try{ await signInAnonymously(auth); }catch(e){ $('loading').textContent='مش قادر يوصل، اتأكد من النت وحدّث الصفحة'; } return; }
+  me=u.uid; await boot();
+});
+
+async function boot(){
+  try{
+    const ud=await getDoc(doc(db,'users',me));
+    if(ud.exists()){
+      const c=ud.data().code, cd=await getDoc(doc(db,'codes',c));
+      if(cd.exists() && cd.data().active && cd.data().uid===me){ code=c; codeInfo=cd.data(); return home(); }
+      if(cd.exists() && cd.data().uid){ $('cmsg').className='msg err'; $('cmsg').textContent='الكود بتاعك اتوقف، كلّمنا على واتساب'; }
+    }
+  }catch(e){}
+  show('vCode');
+}
+
+$('go').onclick=async()=>{
+  const c=$('code').value.trim().toUpperCase().replace(/\s+/g,'');
+  if(!c) return;
+  $('go').disabled=true; $('cmsg').className='msg'; $('cmsg').textContent='جاري التأكد...';
+  try{
+    const ref=doc(db,'codes',c), cd=await getDoc(ref);
+    if(!cd.exists()) throw 'الكود ده غلط، اتأكد منه وجرب تاني';
+    const d=cd.data();
+    if(!d.active) throw 'الكود ده متوقف، كلّمنا على واتساب';
+    if(d.uid && d.uid!==me) throw 'الكود ده متسجل على جهاز تاني. لو غيّرت جهازك كلّمنا على واتساب';
+    if(!d.uid) await updateDoc(ref,{uid:me,claimedAt:serverTimestamp()});
+    await setDoc(doc(db,'users',me),{code:c});
+    code=c; codeInfo={...d,uid:me}; home();
+  }catch(e){ $('cmsg').className='msg err'; $('cmsg').textContent= typeof e==='string'?e:'حصلت مشكلة، جرب تاني'; }
+  $('go').disabled=false;
+};
+$('code').addEventListener('keydown',e=>{if(e.key==='Enter')$('go').click();});
+
+function watermark(){
+  const t=`${codeInfo.name||''}  ${codeInfo.phone||''}  ${code}`;
+  $('who').textContent='أهلًا '+(codeInfo.name||'');
+  let h='';for(let y=-100;y<window.innerHeight+300;y+=130)for(let x=-200;x<window.innerWidth+200;x+=330)h+=`<span style="top:${y}px;left:${x+(y/130%2)*160}px">${esc(t)}</span>`;
+  $('wm').innerHTML=h; $('wm').style.display='block';
+}
+window.addEventListener('resize',()=>{if(codeInfo)watermark();});
+
+async function home(){
+  watermark(); show('loading');
+  try{
+    const [s,l]=await Promise.all([getDocs(collection(db,'subjects')),getDocs(collection(db,'lectures'))]);
+    subjects=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>codeInfo.subjects.includes(x.id)).sort((a,b)=>(a.order||0)-(b.order||0));
+    lectures=l.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
+  }catch(e){}
+  $('subs').innerHTML=subjects.length?subjects.map(s=>`<div class="tile" data-s="${esc(s.id)}"><div class="ic">${esc(s.icon||'📘')}</div><h3>${esc(s.name)}</h3><div class="muted">${lectures.filter(l=>l.subjectId===s.id).length} محاضرة</div></div>`).join(''):'<div class="card muted">لسه مفيش مواد متاحة ليك</div>';
+  show('vHome');
+}
+$('subs').onclick=e=>{const t=e.target.closest('[data-s]');if(t)openSub(t.dataset.s);};
+function openSub(id){
+  curSub=subjects.find(s=>s.id===id); $('subTitle').textContent=(curSub.icon||'📘')+' '+curSub.name;
+  const ls=lectures.filter(l=>l.subjectId===id);
+  $('lecs').innerHTML=ls.length?ls.map((l,i)=>`<div class="lec" data-l="${esc(l.id)}"><span class="n">${i+1}</span><div>${esc(l.title)}</div></div>`).join(''):'<div class="card muted">المحاضرات هتنزل هنا قريب</div>';
+  show('vSub');
+}
+$('lecs').onclick=e=>{const t=e.target.closest('[data-l]');if(t)openLec(t.dataset.l);};
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>b.dataset.go==='home'?show('vHome'):openSub(curSub.id));
+
+async function openLec(id){
+  curLec=lectures.find(l=>l.id===id); $('lecTitle').textContent=curLec.title; show('loading');
+  try{
+    const c=await getDoc(doc(db,'content',id));
+    if(!c.exists()) throw 0;
+    const d=c.data();
+    $('tSum').innerHTML='<div class="sum">'+md(d.summary||'')+'</div>';
+    QS=d.questions||[]; renderQuiz();
+    tab(QS.length&&!(d.summary||'').trim()?'quiz':'sum');
+    document.querySelector('[data-t=quiz]').style.display=QS.length?'':'none';
+    document.querySelector('[data-t=sum]').style.display=(d.summary||'').trim()?'':'none';
+    show('vLec');
+  }catch(e){ alertBox('مش قادر يفتح المحاضرة دي. لو الكود بتاعك شغال، كلّمنا على واتساب'); show('vSub'); }
+}
+function alertBox(t){ $('lecs').insertAdjacentHTML('afterbegin',`<div class="card" style="color:var(--bad)">${esc(t)}</div>`); }
+
+/* simple text formatting: # heading, ## subheading, - bullet, **bold**, lines with latin letters only shown LTR */
+function md(src){
+  const lines=esc(src).split(/\r?\n/); let h='', inList=false;
+  const fmt=s=>s.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+  const cls=s=>/[؀-ۿ]/.test(s)?'':' class="en"';
+  for(const raw of lines){
+    const l=raw.trim();
+    if(l.startsWith('- ')){ if(!inList){h+='<ul>';inList=true;} h+=`<li${cls(l)}>${fmt(l.slice(2))}</li>`; continue; }
+    if(inList){h+='</ul>';inList=false;}
+    if(!l) continue;
+    if(l.startsWith('## ')) h+=`<h3${cls(l)}>${fmt(l.slice(3))}</h3>`;
+    else if(l.startsWith('# ')) h+=`<h2${cls(l)}>${fmt(l.slice(2))}</h2>`;
+    else h+=`<p${cls(l)}>${fmt(l)}</p>`;
+  }
+  if(inList)h+='</ul>';
+  return h;
+}
+
+let QS=[], score=0, done=0;
+function renderQuiz(){
+  score=0;done=0;$('final').classList.remove('show');$('tot').textContent=QS.length;$('sc').textContent=0;
+  $('qs').innerHTML=QS.map((q,i)=>{const L=/[؀-ۿ]/.test(q.q)?'':' ltr';
+    return `<div class="q" data-i="${i}"><div class="qn">سؤال ${i+1} من ${QS.length}</div><div class="qt${L}">${esc(q.q)}</div>
+    ${(q.options||[]).map((o,k)=>`<button class="opt${L}" data-k="${k}">${String.fromCharCode(65+k)}. ${esc(o)}</button>`).join('')}
+    ${q.explanation?`<div class="why${L}">${esc(q.explanation)}</div>`:''}</div>`}).join('');
+}
+$('qs').onclick=e=>{
+  const b=e.target.closest('.opt'); if(!b||b.disabled) return;
+  const box=b.closest('.q'), q=QS[+box.dataset.i], k=+b.dataset.k;
+  box.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(+o.dataset.k===q.answer)o.classList.add('ok');});
+  if(k===q.answer)score++; else b.classList.add('bad');
+  const w=box.querySelector('.why'); if(w) w.classList.add('show');
+  done++; $('sc').textContent=score;
+  if(done===QS.length){const p=Math.round(score*100/QS.length);$('pct').textContent=p+'%';
+    $('fmsg').textContent=p>=85?'ممتاز، إنت جاهز':p>=65?'كويس، راجع اللي غلطت فيه':'راجع الملخص تاني وحل من الأول';$('final').classList.add('show');}
+};
+$('redo').onclick=renderQuiz;
+function tab(t){document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$('tSum').classList.toggle('hide',t!=='sum');$('tQuiz').classList.toggle('hide',t!=='quiz');}
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+</script>
+</body>
+</html>

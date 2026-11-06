@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>إدارة الطلبة والمحاضرات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1630;--bg2:#141f42;--card:#18254f;--ink:#f3f5ff;--muted:#a9b3d6;--line:#26356b;--o:#ff8a3d;--y:#ffc94d;--ok:#22c55e;--bad:#f43f5e}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Cairo',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+.wrap{max-width:860px;margin:0 auto;padding:18px 16px 80px}
+h1{font-size:24px;margin:6px 0;background:linear-gradient(90deg,var(--y),var(--o));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muted{color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:14px 0}
+.card h2{margin:0 0 8px;font-size:19px}
+label{display:block;font-weight:700;font-size:14px;margin:10px 0 4px;color:var(--muted)}
+input,select,textarea{font-family:inherit;font-size:15px;width:100%;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg2);color:var(--ink)}
+textarea{min-height:160px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--o)}
+.ltr{direction:ltr;text-align:left}
+.btn{font-family:inherit;font-weight:800;font-size:15px;border:none;border-radius:12px;padding:10px 18px;cursor:pointer;background:linear-gradient(90deg,var(--o),var(--y));color:#2a1300}
+.btn.ghost{background:var(--bg2);color:var(--ink);border:1px solid var(--line)}
+.btn.red{background:var(--bad);color:#fff}
+.btn.small{font-size:13px;padding:6px 11px}
+.btn:disabled{opacity:.5}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.tabs button{flex:1;min-width:120px;font-family:inherit;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px;cursor:pointer}
+.tabs button.on{background:linear-gradient(90deg,var(--o),var(--y));color:#2a1300;border-color:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{display:flex;align-items:center;gap:6px;margin:0;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--ink);cursor:pointer}
+.chips input{width:auto}
+.item{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:12px;margin:8px 0}
+.item .top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.item .acts{display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:12px;font-weight:800;border-radius:999px;padding:1px 10px}
+.b-ok{background:rgba(34,197,94,.2);color:#86efac}.b-off{background:rgba(244,63,94,.2);color:#fda4af}.b-wait{background:rgba(255,201,77,.2);color:var(--y)}
+.code{font-family:'Inter',monospace;font-weight:700;letter-spacing:1px;direction:ltr;display:inline-block}
+.msg{font-weight:700;margin-top:8px;min-height:1.4em}.msg.ok{color:var(--ok)}.msg.err{color:var(--bad)}
+.hide{display:none!important}
+.newcode{background:linear-gradient(135deg,#1f3b5a,#2a2350);border-radius:14px;padding:14px;margin-top:12px}
+.newcode .big{font-size:26px}
+pre{white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:10px;font-family:inherit;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎓 إدارة الطلبة والمحاضرات</h1>
+  <p class="muted">الصفحة دي ليك إنت بس.</p>
+
+  <div class="card" id="login">
+    <h2>🔐 الدخول</h2>
+    <label>الإيميل</label><input id="em" type="email" class="ltr" autocomplete="username">
+    <label>الباسورد</label><input id="pw" type="password" class="ltr" autocomplete="current-password">
+    <div style="margin-top:12px"><button class="btn" id="li">دخول</button></div>
+    <div class="msg" id="lmsg"></div>
+  </div>
+
+  <div id="app" class="hide">
+    <div class="tabs">
+      <button data-t="codes" class="on">🎟️ الأكواد</button>
+      <button data-t="lecs">📚 المحاضرات</button>
+      <button data-t="subs">🗂️ المواد</button>
+    </div>
+
+    <!-- CODES -->
+    <div id="t-codes">
+      <div class="card">
+        <h2>➕ كود لطالب جديد</h2>
+        <label>اسم الطالب</label><input id="cName">
+        <label>رقم موبايله</label><input id="cPhone" class="ltr" inputmode="tel">
+        <label>المواد اللي اشتراها</label><div class="chips" id="cSubs"></div>
+        <div style="margin-top:12px"><button class="btn" id="cMake">اعمل الكود</button></div>
+        <div class="msg" id="cmsg"></div>
+        <div id="cOut"></div>
+      </div>
+      <div class="card">
+        <h2>📋 الأكواد</h2>
+        <input id="cSearch" placeholder="🔎 دوّر باسم أو رقم أو كود">
+        <div id="cList"></div>
+      </div>
+    </div>
+
+    <!-- LECTURES -->
+    <div id="t-lecs" class="hide">
+      <div class="card">
+        <h2 id="lFormTitle">➕ محاضرة جديدة</h2>
+        <label>المادة</label><select id="lSub"></select>
+        <label>اسم المحاضرة</label><input id="lTitle">
+        <label>ترتيبها</label><input id="lOrder" type="number" inputmode="numeric" value="1">
+        <label>ملف المحاضرة الجاهز، لو عندك ملف بعتهولك</label>
+        <input type="file" id="lFile" accept=".json,application/json">
+        <label>الملخص</label>
+        <textarea id="lSum" placeholder="اكتب الملخص هنا. السطر اللي يبدأ بعلامة # يبقى عنوان، واللي يبدأ بشرطة - يبقى نقطة"></textarea>
+        <div class="muted" id="lQinfo" style="margin-top:6px">مفيش أسئلة</div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="lSave">حفظ المحاضرة</button>
+          <button class="btn ghost" id="lCancel">إلغاء</button>
+        </div>
+        <div class="msg" id="lmsg2"></div>
+      </div>
+      <div class="card"><h2>📚 المحاضرات</h2><div id="lList"></div></div>
+    </div>
+
+    <!-- SUBJECTS -->
+    <div id="t-subs" class="hide">
+      <div class="card">
+        <h2>➕ مادة جديدة</h2>
+        <div style="display:grid;grid-template-columns:80px 1fr;gap:8px">
+          <div><label>إيموجي</label><input id="sIcon" value="📘"></div>
+          <div><label>اسم المادة</label><input id="sName"></div>
+        </div>
+        <div style="margin-top:12px"><button class="btn" id="sAdd">ضيف المادة</button></div>
+        <div class="msg" id="smsg"></div>
+      </div>
+      <div class="card"><h2>🗂️ المواد</h2><div id="sList"></div></div>
+    </div>
+
+    <div style="text-align:center"><button class="btn ghost small" id="lo">خروج</button></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { firebaseConfig } from "./firebase-config.js";
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const say=(id,t,ok)=>{$(id).className='msg '+(ok?'ok':'err');$(id).textContent=t;};
+if(!firebaseConfig.apiKey){ $('lmsg').textContent='لسه إعدادات فايربيز مش متحطوطة'; throw 0; }
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+let subjects=[], lectures=[], codes=[], editLec=null, pendingQ=[];
+
+$('li').onclick=async()=>{
+  say('lmsg','جاري الدخول...',true);
+  try{ await signInWithEmailAndPassword(auth,$('em').value.trim(),$('pw').value); }
+  catch(e){ say('lmsg','الإيميل أو الباسورد غلط'); }
+};
+$('pw').addEventListener('keydown',e=>{if(e.key==='Enter')$('li').click();});
+$('lo').onclick=()=>signOut(auth);
+onAuthStateChanged(auth,async u=>{
+  if(!u||u.isAnonymous){ $('login').classList.remove('hide'); $('app').classList.add('hide'); return; }
+  try{ await loadAll(); $('login').classList.add('hide'); $('app').classList.remove('hide'); }
+  catch(e){ say('lmsg','الحساب ده مش هو حساب الأدمن'); signOut(auth); }
+});
+
+async function loadAll(){
+  const [s,l,c]=await Promise.all([getDocs(collection(db,'subjects')),getDocs(collection(db,'lectures')),getDocs(collection(db,'codes'))]);
+  subjects=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
+  lectures=l.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
+  codes=c.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.created?.seconds||0)-(a.created?.seconds||0));
+  renderAll();
+}
+function renderAll(){ renderSubs(); renderLecs(); renderCodes(); }
+const subName=id=>{const s=subjects.find(x=>x.id===id);return s?s.icon+' '+s.name:'مادة اتمسحت';};
+
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));
+  ['codes','lecs','subs'].forEach(t=>$('t-'+t).classList.toggle('hide',t!==b.dataset.t));
+});
+
+/* ---------- subjects ---------- */
+function renderSubs(){
+  $('sList').innerHTML=subjects.map(s=>`<div class="item"><div class="top"><b>${esc(s.icon)} ${esc(s.name)}</b>
+    <div class="acts"><span class="muted">${lectures.filter(l=>l.subjectId===s.id).length} محاضرة</span><button class="btn red small" data-sdel="${s.id}">مسح</button></div></div></div>`).join('')||'<div class="muted">لسه مفيش مواد</div>';
+  $('cSubs').innerHTML=subjects.map(s=>`<label><input type="checkbox" value="${s.id}">${esc(s.icon)} ${esc(s.name)}</label>`).join('')+(subjects.length>1?`<label><input type="checkbox" id="cAll">الكل</label>`:'');
+  const all=$('cAll'); if(all) all.onchange=()=>$('cSubs').querySelectorAll('input[value]').forEach(x=>x.checked=all.checked);
+  $('lSub').innerHTML=subjects.map(s=>`<option value="${s.id}">${esc(s.icon)} ${esc(s.name)}</option>`).join('');
+}
+$('sAdd').onclick=async()=>{
+  const name=$('sName').value.trim(); if(!name) return say('smsg','اكتب اسم المادة');
+  const id='s'+Date.now().toString(36);
+  try{ await setDoc(doc(db,'subjects',id),{name,icon:$('sIcon').value.trim()||'📘',order:subjects.length+1});
+    $('sName').value=''; say('smsg','اتضافت ✓',true); await loadAll(); }catch(e){ say('smsg','حصلت مشكلة'); }
+};
+$('sList').onclick=e=>{const b=e.target.closest('[data-sdel]'); if(!b) return; confirm2(b,async()=>{
+  await deleteDoc(doc(db,'subjects',b.dataset.sdel)); await loadAll(); });};
+
+/* ---------- lectures ---------- */
+function renderLecs(){
+  $('lList').innerHTML=subjects.map(s=>{const ls=lectures.filter(l=>l.subjectId===s.id);
+    return `<div style="margin-top:10px;font-weight:800">${esc(s.icon)} ${esc(s.name)}</div>`+(ls.map(l=>`<div class="item"><div class="top"><span>${esc(l.order)}. ${esc(l.title)}</span>
+      <div class="acts"><button class="btn ghost small" data-ledit="${l.id}">تعديل</button><button class="btn red small" data-ldel="${l.id}">مسح</button></div></div></div>`).join('')||'<div class="muted">مفيش محاضرات</div>');}).join('')||'<div class="muted">ضيف مادة الأول</div>';
+}
+function resetLec(){ editLec=null; pendingQ=[]; $('lTitle').value=''; $('lSum').value=''; $('lFile').value=''; $('lQinfo').textContent='مفيش أسئلة'; $('lFormTitle').textContent='➕ محاضرة جديدة';
+  $('lOrder').value=lectures.filter(l=>l.subjectId===$('lSub').value).length+1; }
+$('lCancel').onclick=resetLec;
+$('lSub').onchange=()=>{ if(!editLec) $('lOrder').value=lectures.filter(l=>l.subjectId===$('lSub').value).length+1; };
+$('lFile').onchange=async()=>{
+  const f=$('lFile').files[0]; if(!f) return;
+  try{ const d=JSON.parse(await f.text());
+    if(d.title&&!$('lTitle').value) $('lTitle').value=d.title;
+    if(d.summary) $('lSum').value=d.summary;
+    pendingQ=Array.isArray(d.questions)?d.questions:[];
+    $('lQinfo').textContent=pendingQ.length?`فيه ${pendingQ.length} سؤال جاهزين`:'مفيش أسئلة';
+    say('lmsg2','الملف اتقرا ✓ راجع ودوس حفظ',true);
+  }catch(e){ say('lmsg2','الملف ده مش مظبوط'); }
+};
+$('lSave').onclick=async()=>{
+  const title=$('lTitle').value.trim(), subjectId=$('lSub').value;
+  if(!subjectId) return say('lmsg2','ضيف مادة الأول');
+  if(!title) return say('lmsg2','اكتب اسم المحاضرة');
+  const id=editLec||('l'+Date.now().toString(36)), order=Number($('lOrder').value||1);
+  $('lSave').disabled=true; say('lmsg2','جاري الحفظ...',true);
+  try{
+    await setDoc(doc(db,'lectures',id),{subjectId,title,order});
+    await setDoc(doc(db,'content',id),{subjectId,summary:$('lSum').value,questions:pendingQ});
+    say('lmsg2','اتحفظت ✓',true); resetLec(); await loadAll();
+  }catch(e){ say('lmsg2','الحفظ ما نجحش، ممكن تكون المحاضرة كبيرة أوي'); }
+  $('lSave').disabled=false;
+};
+$('lList').onclick=async e=>{
+  const ed=e.target.closest('[data-ledit]'), dl=e.target.closest('[data-ldel]');
+  if(ed){ const l=lectures.find(x=>x.id===ed.dataset.ledit); const c=await getDoc(doc(db,'content',l.id)); const d=c.exists()?c.data():{};
+    editLec=l.id; $('lSub').value=l.subjectId; $('lTitle').value=l.title; $('lOrder').value=l.order; $('lSum').value=d.summary||''; pendingQ=d.questions||[];
+    $('lQinfo').textContent=pendingQ.length?`فيه ${pendingQ.length} سؤال`:'مفيش أسئلة'; $('lFormTitle').textContent='✏️ تعديل المحاضرة'; window.scrollTo({top:0,behavior:'smooth'}); }
+  if(dl) confirm2(dl,async()=>{ await deleteDoc(doc(db,'content',dl.dataset.ldel)); await deleteDoc(doc(db,'lectures',dl.dataset.ldel)); await loadAll(); });
+};
+
+/* ---------- codes ---------- */
+function genCode(){ const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789'; const r=n=>Array.from(crypto.getRandomValues(new Uint32Array(n)),x=>A[x%A.length]).join(''); return 'DP-'+r(4)+'-'+r(4); }
+const site=location.origin+location.pathname.replace(/[^/]*$/,'')+'learn.html';
+function message(c){ return `أهلًا ${c.name} 👋\nده الكود بتاعك: ${c.id}\nادخل من هنا: ${site}\nالكود بيشتغل على جهاز واحد بس، فادخله من الجهاز اللي هتذاكر عليه.`; }
+$('cMake').onclick=async()=>{
+  const name=$('cName').value.trim(), phone=$('cPhone').value.trim();
+  const subs=[...$('cSubs').querySelectorAll('input[value]:checked')].map(x=>x.value);
+  if(!name) return say('cmsg','اكتب اسم الطالب');
+  if(!subs.length) return say('cmsg','اختار مادة واحدة على الأقل');
+  $('cMake').disabled=true;
+  try{
+    const id=genCode();
+    await setDoc(doc(db,'codes',id),{name,phone,subjects:subs,active:true,uid:null,created:serverTimestamp()});
+    const c={id,name}; const m=message(c);
+    $('cOut').innerHTML=`<div class="newcode"><div>الكود:</div><div class="big code">${id}</div><pre>${esc(m)}</pre>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" id="cCopy">نسخ الرسالة</button>
+      ${phone?`<a class="btn small" style="background:#25d366;color:#fff;text-decoration:none" target="_blank" href="https://wa.me/${phone.replace(/\D/g,'').replace(/^0/,'20')}?text=${encodeURIComponent(m)}">ابعتها واتساب</a>`:''}</div></div>`;
+    $('cCopy').onclick=()=>navigator.clipboard.writeText(m).then(()=>say('cmsg','اتنسخت ✓',true),()=>{});
+    $('cName').value='';$('cPhone').value='';$('cSubs').querySelectorAll('input').forEach(x=>x.checked=false);
+    say('cmsg','الكود اتعمل ✓',true); await loadAll();
+  }catch(e){ say('cmsg','حصلت مشكلة'); }
+  $('cMake').disabled=false;
+};
+function renderCodes(){
+  const q=$('cSearch').value.trim().toLowerCase();
+  const list=codes.filter(c=>!q||(c.id+' '+c.name+' '+c.phone).toLowerCase().includes(q));
+  $('cList').innerHTML=list.map(c=>{
+    const st=!c.active?'<span class="badge b-off">متوقف</span>':c.uid?'<span class="badge b-ok">شغال على جهاز</span>':'<span class="badge b-wait">لسه ما دخلش</span>';
+    return `<div class="item"><div class="top"><div><b>${esc(c.name)}</b> ${st}<br><span class="code">${c.id}</span> <span class="muted ltr" style="display:inline-block">${esc(c.phone||'')}</span>
+      <div class="muted" style="font-size:13px">${(c.subjects||[]).map(subName).map(esc).join(' · ')}</div></div>
+      <div class="acts">
+        ${c.uid?`<button class="btn ghost small" data-reset="${c.id}">فك الجهاز</button>`:''}
+        <button class="btn ghost small" data-tog="${c.id}">${c.active?'إيقاف':'تشغيل'}</button>
+        <button class="btn ghost small" data-msg="${c.id}">نسخ الرسالة</button>
+        <button class="btn red small" data-cdel="${c.id}">مسح</button>
+      </div></div></div>`}).join('')||'<div class="muted">مفيش أكواد</div>';
+}
+$('cSearch').oninput=renderCodes;
+$('cList').onclick=async e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  const id=b.dataset.reset||b.dataset.tog||b.dataset.msg||b.dataset.cdel, c=codes.find(x=>x.id===id); if(!c) return;
+  try{
+    if(b.dataset.reset) confirm2(b,async()=>{ if(c.uid) await deleteDoc(doc(db,'users',c.uid)).catch(()=>{}); await updateDoc(doc(db,'codes',id),{uid:null}); await loadAll(); });
+    if(b.dataset.tog){ await updateDoc(doc(db,'codes',id),{active:!c.active}); await loadAll(); }
+    if(b.dataset.msg) navigator.clipboard.writeText(message(c)).then(()=>{b.textContent='اتنسخت ✓';});
+    if(b.dataset.cdel) confirm2(b,async()=>{ if(c.uid) await deleteDoc(doc(db,'users',c.uid)).catch(()=>{}); await deleteDoc(doc(db,'codes',id)); await loadAll(); });
+  }catch(err){ alertMsg(); }
+};
+function alertMsg(){ say('cmsg','حصلت مشكلة، حدّث الصفحة'); }
+function confirm2(btn,fn){
+  if(btn.dataset.sure){ fn().catch(()=>alertMsg()); return; }
+  const old=btn.textContent; btn.dataset.sure='1'; btn.textContent='متأكد؟ دوس تاني';
+  setTimeout(()=>{ if(btn.isConnected){ delete btn.dataset.sure; btn.textContent=old; } },3000);
+}
+</script>
+</body>
+</html>
