@@ -230,21 +230,41 @@ async function openLec(id){
 const SLOTS=[{k:'summary',t:'📘 الملخص'},{k:'explain',t:'🧑‍🏫 الشرح'},{k:'tf',t:'✅ صح وغلط'},{k:'mcq',t:'🔘 اختيار من متعدد'},{k:'written',t:'✍️ كتابي'},{k:'complete',t:'🧩 كومبليت'}];
 let curPdfs={}, curId=null;
 let pdfToken=0;
-async function loadPdf(id,k,n){
-  const tok=++pdfToken; $('pages').innerHTML=''; $('pdfMsg').textContent='جاري تحميل الملف...'; $('pdfMsg').style.display='';
+function stamp(c){
+  const ctx=c.getContext('2d'), w=c.width, H=c.height;
+  const t=`${codeInfo.name||''}   ${codeInfo.phone||''}   ${code}`;
+  const fs=Math.max(14,Math.round(w/42));
+  ctx.save(); ctx.globalAlpha=.11; ctx.fillStyle='#e8681f'; ctx.font=`700 ${fs}px Inter, Cairo, sans-serif`;
+  ctx.translate(w/2,H/2); ctx.rotate(-25*Math.PI/180);
+  const stepX=ctx.measureText(t).width+fs*6, stepY=fs*9, R=Math.hypot(w,H);
+  for(let y=-R;y<R;y+=stepY){ const off=(Math.round(y/stepY)%2)*stepX/2; for(let x=-R;x<R;x+=stepX) ctx.fillText(t,x+off,y); }
+  ctx.restore();
+}
+async function loadPdf(id,k,meta){
+  const n=meta.n, tok=++pdfToken; $('pages').innerHTML=''; $('pdfMsg').textContent='جاري تحميل الملف...'; $('pdfMsg').style.display='';
   try{
     const parts=await Promise.all(Array.from({length:n},(_,i)=>getDoc(doc(db,'chunks',`${id}_${k}_${i}`))));
-    const bins=parts.map(p=>{const s=atob(p.data().data);const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u;});
-    const all=new Uint8Array(bins.reduce((a,b)=>a+b.length,0)); let o=0; bins.forEach(b=>{all.set(b,o);o+=b.length;});
-    const lib=window.pdfjsLib; lib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    const pdf=await lib.getDocument({data:all}).promise;
-    for(let p=1;p<=pdf.numPages;p++){
-      if(tok!==pdfToken) return;
-      $('pdfMsg').textContent=`جاري عرض الصفحات... ${p} من ${pdf.numPages}`;
-      const page=await pdf.getPage(p), vp=page.getViewport({scale:1.6});
-      const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
-      await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
-      $('pages').appendChild(c);
+    if(meta.type==='img'){
+      for(let i=0;i<parts.length;i++){
+        if(tok!==pdfToken) return;
+        $('pdfMsg').textContent=`جاري عرض الصفحات... ${i+1} من ${parts.length}`;
+        const img=new Image(); img.src='data:image/jpeg;base64,'+parts[i].data().data; await img.decode();
+        const c=document.createElement('canvas'); c.width=img.naturalWidth; c.height=img.naturalHeight;
+        c.getContext('2d').drawImage(img,0,0); stamp(c); $('pages').appendChild(c);
+      }
+    } else {
+      const bins=parts.map(p=>{const s=atob(p.data().data);const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u;});
+      const all=new Uint8Array(bins.reduce((a,b)=>a+b.length,0)); let o=0; bins.forEach(b=>{all.set(b,o);o+=b.length;});
+      const lib=window.pdfjsLib; lib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const pdf=await lib.getDocument({data:all}).promise;
+      for(let p=1;p<=pdf.numPages;p++){
+        if(tok!==pdfToken) return;
+        $('pdfMsg').textContent=`جاري عرض الصفحات... ${p} من ${pdf.numPages}`;
+        const page=await pdf.getPage(p), vp=page.getViewport({scale:1.6});
+        const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
+        await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+        stamp(c); $('pages').appendChild(c);
+      }
     }
     $('pdfMsg').style.display='none';
   }catch(e){ if(tok===pdfToken) $('pdfMsg').textContent='مش قادر يفتح الملف، حدّث الصفحة وجرب تاني'; }
@@ -292,7 +312,7 @@ function tab(t){
   document.querySelectorAll('#tabs [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
   const isPdf=t.startsWith('pdf:');
   $('tPdf').classList.toggle('hide',!isPdf);$('tSum').classList.toggle('hide',t!=='sum');$('tQuiz').classList.toggle('hide',t!=='quiz');
-  if(isPdf){ const k=t.slice(4); loadPdf(curId,k,curPdfs[k].n); }
+  if(isPdf){ const k=t.slice(4); loadPdf(curId,k,curPdfs[k]); }
 }
 $('tabs').onclick=e=>{const b=e.target.closest('[data-t]'); if(b) tab(b.dataset.t);};
 </script>

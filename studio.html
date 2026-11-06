@@ -91,7 +91,7 @@ pre{white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:10px;fo
         <label>المادة</label><select id="lSub"></select>
         <label>اسم المحاضرة</label><input id="lTitle">
         <label>ترتيبها</label><input id="lOrder" type="number" inputmode="numeric" value="1">
-        <div class="muted" style="margin-top:10px">ارفع ملف بي دي إف في كل خانة عايزها، والخانة اللي تسيبها فاضية مش هتظهر للطالب. الطالب هيشوف الملفات جوه الموقع بس ومش هيقدر ينزّلها.</div>
+        <div class="muted" style="margin-top:10px">ارفع ملف بي دي إف في كل خانة عايزها، والخانة اللي تسيبها فاضية مش هتظهر للطالب. الملف بيتحوّل لصور عليها اسم الموقع محفور جواها، والطالب بيشوفها واسمه مرسوم عليها.</div>
         <div id="slots"></div>
         <details style="margin-top:12px"><summary class="muted" style="cursor:pointer">إضافات اختيارية: ملخص مكتوب أو أسئلة تفاعلية</summary>
         <label>📦 ملف الأسئلة التفاعلية اللي بعمله ليك</label>
@@ -127,6 +127,7 @@ pre{white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:10px;fo
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -198,6 +199,30 @@ SLOTS.forEach(s=>{ $('r_'+s.k).onclick=()=>{ removed[s.k]=true; $('f_'+s.k).valu
 function slotInfo(){ SLOTS.forEach(s=>{ const cur=curPdfs[s.k], f=$('f_'+s.k).files[0];
   $('i_'+s.k).textContent= f?'هيترفع: '+f.name : (cur&&!removed[s.k])?'الملف الحالي: '+cur.name:'مفيش ملف';
   $('r_'+s.k).classList.toggle('hide',!(cur&&!removed[s.k]&&!f)); }); }
+function burnBrand(c){
+  const ctx=c.getContext('2d'), w=c.width, H=c.height, fs=Math.round(w/26), t='Dental Programming';
+  ctx.save(); ctx.globalAlpha=.07; ctx.fillStyle='#e8681f'; ctx.font=`800 ${fs}px Inter, Cairo, sans-serif`;
+  ctx.translate(w/2,H/2); ctx.rotate(-25*Math.PI/180);
+  const sx=ctx.measureText(t).width+fs*4, sy=fs*7, R=Math.hypot(w,H);
+  for(let y=-R;y<R;y+=sy){ const off=(Math.round(y/sy)%2)*sx/2; for(let x=-R;x<R;x+=sx) ctx.fillText(t,x+off,y); }
+  ctx.restore();
+  ctx.save(); ctx.globalAlpha=.35; ctx.fillStyle='#e8681f'; ctx.font=`700 ${Math.round(w/60)}px Inter, sans-serif`; ctx.textAlign='center';
+  ctx.fillText('Dental Programming',w/2,H-Math.round(w/80)); ctx.restore();
+}
+async function pdfToImages(file,label){
+  const lib=window.pdfjsLib; lib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf=await lib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise, out=[];
+  for(let p=1;p<=pdf.numPages;p++){
+    say('lmsg2',`جاري تجهيز ${label}... صفحة ${p} من ${pdf.numPages}`,true);
+    const page=await pdf.getPage(p), base=page.getViewport({scale:1}), vp=page.getViewport({scale:Math.min(2.2,1300/base.width)});
+    const c=document.createElement('canvas'); c.width=Math.round(vp.width); c.height=Math.round(vp.height);
+    const ctx=c.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);
+    await page.render({canvasContext:ctx,viewport:vp}).promise; burnBrand(c);
+    let q=.78, url=c.toDataURL('image/jpeg',q); while(url.length>950000&&q>.3){ q-=.12; url=c.toDataURL('image/jpeg',q); }
+    out.push(url.slice(url.indexOf(',')+1));
+  }
+  return out;
+}
 async function delChunks(id,k,n){ for(let i=0;i<n;i++) await deleteDoc(doc(db,'chunks',`${id}_${k}_${i}`)).catch(()=>{}); }
 function renderLecs(){
   $('lList').innerHTML=subjects.map(s=>{const ls=lectures.filter(l=>l.subjectId===s.id);
@@ -231,11 +256,11 @@ $('lSave').onclick=async()=>{
     for(const s of SLOTS){
       const cur=curPdfs[s.k], f=$('f_'+s.k).files[0];
       if(f){
-        const u8=new Uint8Array(await f.arrayBuffer()), n=Math.ceil(u8.length/CH);
+        const imgs=await pdfToImages(f,s.t), n=imgs.length;
         for(let i=0;i<n;i++){ say('lmsg2',`جاري رفع ${s.t}... ${Math.round((i+1)*100/n)}%`,true);
-          await setDoc(doc(db,'chunks',`${id}_${s.k}_${i}`),{subjectId,lecture:id,i,data:b64(u8.subarray(i*CH,(i+1)*CH))}); }
+          await setDoc(doc(db,'chunks',`${id}_${s.k}_${i}`),{subjectId,lecture:id,i,data:imgs[i]}); }
         if(cur&&cur.n>n) for(let i=n;i<cur.n;i++) await deleteDoc(doc(db,'chunks',`${id}_${s.k}_${i}`)).catch(()=>{});
-        pdfs[s.k]={n,name:f.name};
+        pdfs[s.k]={n,name:f.name,type:'img'};
       } else if(cur&&removed[s.k]){ await delChunks(id,s.k,cur.n); }
       else if(cur){ pdfs[s.k]=cur; }
     }
