@@ -66,6 +66,10 @@ body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),tran
 #wm span{position:absolute;white-space:nowrap;transform:rotate(-25deg);font-weight:700;font-size:15px;color:#ff8a3d;font-family:'Inter','Cairo',sans-serif}
 .spin{text-align:center;padding:40px;color:var(--muted)}
 @media print{body{display:none}}
+.bgt{position:fixed;inset:0;pointer-events:none;z-index:0}
+.bgt i{position:absolute;aspect-ratio:1;opacity:.07;animation:fl 8s ease-in-out infinite;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff8a3d' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7.5 3C5 3 3.5 5 3.5 7.5c0 2.2 1 3.4 1.6 5.4.7 2.3.8 7.6 2.6 7.6 1.7 0 1.6-4.3 3.1-4.3h2.4c1.5 0 1.4 4.3 3.1 4.3 1.8 0 1.9-5.3 2.6-7.6.6-2 1.6-3.2 1.6-5.4C20.5 5 19 3 16.5 3c-1.8 0-2.8 1-4.5 1S9.3 3 7.5 3z'/%3E%3C/svg%3E") no-repeat center/contain}
+.bgt i:nth-child(2n){animation-delay:-3s;transform:rotate(-15deg)}
+@keyframes fl{50%{translate:0 -12px}}
 #pages canvas{display:block;width:100%;height:auto;margin:0 0 12px;border-radius:10px;background:#fff;pointer-events:none}
 </style>
 </head>
@@ -78,6 +82,7 @@ body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),tran
   </div>
 </header>
 <div id="wm"></div>
+<div class="bgt" aria-hidden="true"><i style="top:14%;right:4%;width:70px"></i><i style="top:48%;left:3%;width:54px"></i><i style="bottom:10%;right:8%;width:46px"></i><i style="bottom:24%;left:12%;width:34px"></i><i style="top:30%;left:46%;width:26px"></i></div>
 
 <div class="wrap">
   <div id="loading" class="spin">جاري التحميل...</div>
