@@ -109,6 +109,7 @@ h2 .em{display:inline-grid;place-items:center;width:44px;height:44px;border-radi
 .faq p{margin:8px 0 0;color:var(--muted)}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
 .reveal.in{opacity:1;transform:none}
+.card .ic svg{width:36px;height:36px;color:var(--y)}
 footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
 </style>
 </head>
@@ -214,6 +215,7 @@ footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
 
 <div class="toast" id="toast">اتنسخ ✓</div>
 
+<script src="icons.js"></script>
 <script>
 let SITE, SUBJECTS;
 (async()=>{
@@ -238,7 +240,7 @@ const wa=t=>'https://wa.me/'+SITE.whatsapp+'?text='+encodeURIComponent(t);
 $('waFloat').href=wa('السلام عليكم، عندي استفسار عن الملخصات');
 
 $('grid').innerHTML=SUBJECTS.map((s,i)=>`<div class="card reveal">
-  <div class="ic">${esc(s.icon||'🦷')}</div><h3>${esc(s.name)}</h3><div class="d">${esc(s.desc)}</div>
+  <div class="ic">${subjectIcon(s.name,s.icon)}</div><h3>${esc(s.name)}</h3><div class="d">${esc(s.desc)}</div>
   <div class="inc"><span>ملخص</span><span>شرح</span><span>صح وغلط</span><span>اختيار من متعدد</span><span>كتابي</span></div>
   <div class="price">${money(s.price)}</div>
   <button class="btn small" data-buy="${i}">اطلب دلوقتي</button></div>`).join('');

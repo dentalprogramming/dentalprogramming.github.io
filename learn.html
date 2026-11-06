@@ -29,6 +29,7 @@ input:focus{outline:none;border-color:var(--o)}
 .tile:hover{border-color:var(--o);transform:translateY(-3px)}
 .tile .ic{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,rgba(255,138,61,.25),rgba(255,201,77,.15));border:1px solid rgba(255,201,77,.35);margin-bottom:6px}
 body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),transparent 60%),radial-gradient(700px 500px at 0% 40%,rgba(123,44,191,.12),transparent 60%),var(--bg)}
+.tile .ic svg{width:32px;height:32px;color:var(--y)}
 .lec .n{background:linear-gradient(135deg,var(--o),var(--y))}
 .tile h3{margin:4px 0;font-size:18px}
 .lec{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:8px 0;cursor:pointer}
@@ -119,6 +120,7 @@ body{background:radial-gradient(900px 500px at 100% 0%,rgba(255,138,61,.10),tran
   </div>
 </div>
 
+<script src="icons.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -188,12 +190,12 @@ async function home(){
     subjects=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>codeInfo.subjects.includes(x.id)).sort((a,b)=>(a.order||0)-(b.order||0));
     lectures=l.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
   }catch(e){}
-  $('subs').innerHTML=subjects.length?subjects.map(s=>`<div class="tile" data-s="${esc(s.id)}"><div class="ic">${esc(s.icon||'📘')}</div><h3>${esc(s.name)}</h3><div class="muted">${lectures.filter(l=>l.subjectId===s.id).length} محاضرة</div></div>`).join(''):'<div class="card muted">لسه مفيش مواد متاحة ليك</div>';
+  $('subs').innerHTML=subjects.length?subjects.map(s=>`<div class="tile" data-s="${esc(s.id)}"><div class="ic">${subjectIcon(s.name,s.icon)}</div><h3>${esc(s.name)}</h3><div class="muted">${lectures.filter(l=>l.subjectId===s.id).length} محاضرة</div></div>`).join(''):'<div class="card muted">لسه مفيش مواد متاحة ليك</div>';
   show('vHome');
 }
 $('subs').onclick=e=>{const t=e.target.closest('[data-s]');if(t)openSub(t.dataset.s);};
 function openSub(id){
-  curSub=subjects.find(s=>s.id===id); $('subTitle').textContent=(curSub.icon||'📘')+' '+curSub.name;
+  curSub=subjects.find(s=>s.id===id); $('subTitle').textContent=curSub.name;
   const ls=lectures.filter(l=>l.subjectId===id);
   $('lecs').innerHTML=ls.length?ls.map((l,i)=>`<div class="lec" data-l="${esc(l.id)}"><span class="n">${i+1}</span><div>${esc(l.title)}</div></div>`).join(''):'<div class="card muted">المحاضرات هتنزل هنا قريب</div>';
   show('vSub');
