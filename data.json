@@ -11,10 +11,7 @@
     "bundlePrice": 199,
     "audience": "for dental students level 1",
     "reviews": "",
-    "theme": {
-      "o": "#ff3d3d",
-      "y": "#4d52ff"
-    },
+    "theme": {},
     "hide": [],
     "texts": {},
     "faqExtra": ""
