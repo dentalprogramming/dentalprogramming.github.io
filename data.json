@@ -12,7 +12,8 @@
     "audience": "for dental students level 1",
     "reviews": "",
     "theme": {
-      "o": "#ff3d3d"
+      "o": "#ff3d3d",
+      "y": "#c64dff"
     },
     "hide": [],
     "texts": {},
