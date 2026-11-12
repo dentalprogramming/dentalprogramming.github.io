@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23ffc94d'/><stop offset='1' stop-color='%23ff8a3d'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='%230e1630'/><path transform='translate(7 1) scale(.78)' fill='url(%23g)' d='M15 31C10.5 25 9.5 17 11.5 11.5C13.5 6 19.5 4 23.5 6C27 7.8 29.5 8.5 32 7.6C34.5 8.5 37 7.8 40.5 6C44.5 4 50.5 6 52.5 11.5C54.5 17 53.5 25 49 31C48 35.5 47.8 40 47.2 45C46.2 56 44.5 67 41.5 72.5C40 75.5 37.2 75 36.8 71.5C36.2 64 35.6 55 33.6 50.6C32.8 49.2 31.2 49.2 30.4 50.6C28.4 55 27.8 64 27.2 71.5C26.8 75 24 75.5 22.5 72.5C19.5 67 17.8 56 16.8 45C16.2 40 16 35.5 15 31Z'/></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23ffc94d'/><stop offset='1' stop-color='%23ff8a3d'/></linearGradient></defs><circle cx='50' cy='50' r='45.5' fill='none' stroke='url(%23g)' stroke-width='8'/><path transform='translate(21.2 14.2) scale(.9)' fill='none' stroke='url(%23g)' stroke-width='10.5' stroke-linejoin='round' d='M15 31C10.5 25 9.5 17 11.5 11.5C13.5 6 19.5 4 23.5 6C27 7.8 29.5 8.5 32 7.6C34.5 8.5 37 7.8 40.5 6C44.5 4 50.5 6 52.5 11.5C54.5 17 53.5 25 49 31C48 35.5 47.8 40 47.2 45C46.2 56 44.5 67 41.5 72.5C40 75.5 37.2 75 36.8 71.5C36.2 64 35.6 55 33.6 50.6C32.8 49.2 31.2 49.2 30.4 50.6C28.4 55 27.8 64 27.2 71.5C26.8 75 24 75.5 22.5 72.5C19.5 67 17.8 56 16.8 45C16.2 40 16 35.5 15 31Z'/></svg>">
 <meta name="theme-color" content="#0e1630">
 <title>Dental Programming</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -81,7 +81,7 @@ body{background:
   var(--bg)}
 .nav{position:sticky;top:0;z-index:15;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 20px;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:19px;text-decoration:none}
-.logo svg{width:28px;height:35px}
+.logo svg{width:34px;height:34px}
 .nav .links{display:flex;gap:6px;flex-wrap:wrap}
 .nav .links a{text-decoration:none;color:var(--muted);font-weight:700;font-size:14px;padding:6px 10px;border-radius:10px}
 .nav .links a:hover{color:var(--ink);background:var(--card)}
@@ -90,7 +90,7 @@ body{background:
 .hero{position:relative;overflow:hidden;padding:70px 20px 60px}
 .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:40px 40px;mask-image:radial-gradient(circle at 50% 40%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(circle at 50% 40%,#000 30%,transparent 75%)}
 .hero>*{position:relative}
-.tooth-hero{width:84px;height:105px;margin:0 auto 10px;display:block;filter:drop-shadow(0 10px 30px color-mix(in srgb,var(--o) 45%,transparent));animation:float 4s ease-in-out infinite}
+.tooth-hero{width:112px;height:112px;margin:0 auto 10px;display:block;filter:drop-shadow(0 10px 30px color-mix(in srgb,var(--o) 45%,transparent));animation:float 4s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-10px)}}
 .blob{position:absolute;border-radius:50%;filter:blur(50px);opacity:.35;z-index:0}
 .blob.a{width:260px;height:260px;background:var(--o);top:-60px;left:-60px}
@@ -223,7 +223,7 @@ svg.uic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
 <body>
 
 <nav class="nav">
-  <a class="logo" href="#"><svg viewBox="0 0 64 80" aria-hidden="true"><defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--y)"/><stop offset="1" style="stop-color:var(--o)"/></linearGradient></defs><path fill="url(#tg)" d="M15 31C10.5 25 9.5 17 11.5 11.5C13.5 6 19.5 4 23.5 6C27 7.8 29.5 8.5 32 7.6C34.5 8.5 37 7.8 40.5 6C44.5 4 50.5 6 52.5 11.5C54.5 17 53.5 25 49 31C48 35.5 47.8 40 47.2 45C46.2 56 44.5 67 41.5 72.5C40 75.5 37.2 75 36.8 71.5C36.2 64 35.6 55 33.6 50.6C32.8 49.2 31.2 49.2 30.4 50.6C28.4 55 27.8 64 27.2 71.5C26.8 75 24 75.5 22.5 72.5C19.5 67 17.8 56 16.8 45C16.2 40 16 35.5 15 31Z"/><path fill="#fff" opacity=".35" d="M18.5 11.5C15.5 13 14.5 17 15.3 21.5C15.7 23.6 18 23.6 18.3 21.5C18.7 18.3 19.6 16 21.6 14.6C23.3 13.4 21.3 10.2 18.5 11.5Z"/></svg><span id="navName"></span></a>
+  <a class="logo" href="#"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--y)"/><stop offset="1" style="stop-color:var(--o)"/></linearGradient></defs><circle cx="50" cy="50" r="45" fill="none" stroke="url(#lg1)" stroke-width="7"/><path transform="translate(29.5 19) scale(.78)" fill="none" stroke="url(#lg1)" stroke-width="9" stroke-linejoin="round" d="M15 31C10.5 25 9.5 17 11.5 11.5C13.5 6 19.5 4 23.5 6C27 7.8 29.5 8.5 32 7.6C34.5 8.5 37 7.8 40.5 6C44.5 4 50.5 6 52.5 11.5C54.5 17 53.5 25 49 31C48 35.5 47.8 40 47.2 45C46.2 56 44.5 67 41.5 72.5C40 75.5 37.2 75 36.8 71.5C36.2 64 35.6 55 33.6 50.6C32.8 49.2 31.2 49.2 30.4 50.6C28.4 55 27.8 64 27.2 71.5C26.8 75 24 75.5 22.5 72.5C19.5 67 17.8 56 16.8 45C16.2 40 16 35.5 15 31Z"/><path fill="var(--y)" d="M74 22l2.2 5.3 5.3 2.2-5.3 2.2L74 37l-2.2-5.3-5.3-2.2 5.3-2.2z"/></svg><span id="navName"></span></a>
   <div class="links">
     <a href="#subjects"><span data-t>المواد</span></a><a href="#how"><span data-t>إزاي تطلب</span></a><a href="#pay"><span data-t>الدفع</span></a><a href="#faq"><span data-t>أسئلة</span></a>
     <a class="cta" href="learn.html"><i class="ic" data-i="lock"></i> <span data-t>دخول المشتركين</span></a>
@@ -237,7 +237,7 @@ svg.uic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
   <span class="ht" style="top:66%;left:9%;width:52px;--d:-1s"></span>
   <span class="ht" style="top:45%;left:30%;width:22px;--d:-3s"></span>
   <span class="ht" style="top:40%;right:32%;width:24px;--d:-5s"></span>
-  <svg class="tooth-hero" viewBox="0 0 64 80" aria-hidden="true"><defs><linearGradient id="tg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--y)"/><stop offset="1" style="stop-color:var(--o)"/></linearGradient></defs><path fill="url(#tg2)" d="M15 31C10.5 25 9.5 17 11.5 11.5C13.5 6 19.5 4 23.5 6C27 7.8 29.5 8.5 32 7.6C34.5 8.5 37 7.8 40.5 6C44.5 4 50.5 6 52.5 11.5C54.5 17 53.5 25 49 31C48 35.5 47.8 40 47.2 45C46.2 56 44.5 67 41.5 72.5C40 75.5 37.2 75 36.8 71.5C36.2 64 35.6 55 33.6 50.6C32.8 49.2 31.2 49.2 30.4 50.6C28.4 55 27.8 64 27.2 71.5C26.8 75 24 75.5 22.5 72.5C19.5 67 17.8 56 16.8 45C16.2 40 16 35.5 15 31Z"/><path fill="#fff" opacity=".35" d="M18.5 11.5C15.5 13 14.5 17 15.3 21.5C15.7 23.6 18 23.6 18.3 21.5C18.7 18.3 19.6 16 21.6 14.6C23.3 13.4 21.3 10.2 18.5 11.5Z"/></svg>
+  <svg class="tooth-hero" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--y)"/><stop offset="1" style="stop-color:var(--o)"/></linearGradient></defs><circle cx="50" cy="50" r="45" fill="none" stroke="url(#lg2)" stroke-width="4"/><path transform="translate(29.5 19) scale(.78)" fill="none" stroke="url(#lg2)" stroke-width="5.5" stroke-linejoin="round" d="M15 31C10.5 25 9.5 17 11.5 11.5C13.5 6 19.5 4 23.5 6C27 7.8 29.5 8.5 32 7.6C34.5 8.5 37 7.8 40.5 6C44.5 4 50.5 6 52.5 11.5C54.5 17 53.5 25 49 31C48 35.5 47.8 40 47.2 45C46.2 56 44.5 67 41.5 72.5C40 75.5 37.2 75 36.8 71.5C36.2 64 35.6 55 33.6 50.6C32.8 49.2 31.2 49.2 30.4 50.6C28.4 55 27.8 64 27.2 71.5C26.8 75 24 75.5 22.5 72.5C19.5 67 17.8 56 16.8 45C16.2 40 16 35.5 15 31Z"/><path fill="var(--y)" d="M74 22l2.2 5.3 5.3 2.2-5.3 2.2L74 37l-2.2-5.3-5.3-2.2 5.3-2.2z"/></svg>
   <div id="aud"></div>
   <h1 id="sName"></h1>
   <p id="sSlogan"></p>
@@ -320,7 +320,7 @@ svg.uic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
   <div class="foot-top"></div>
   <div class="foot-in">
     <div>
-      <a class="logo" href="#"><svg viewBox="0 0 64 80" aria-hidden="true"><defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--y)"/><stop offset="1" style="stop-color:var(--o)"/></linearGradient></defs><path fill="url(#tg)" d="M15 31C10.5 25 9.5 17 11.5 11.5C13.5 6 19.5 4 23.5 6C27 7.8 29.5 8.5 32 7.6C34.5 8.5 37 7.8 40.5 6C44.5 4 50.5 6 52.5 11.5C54.5 17 53.5 25 49 31C48 35.5 47.8 40 47.2 45C46.2 56 44.5 67 41.5 72.5C40 75.5 37.2 75 36.8 71.5C36.2 64 35.6 55 33.6 50.6C32.8 49.2 31.2 49.2 30.4 50.6C28.4 55 27.8 64 27.2 71.5C26.8 75 24 75.5 22.5 72.5C19.5 67 17.8 56 16.8 45C16.2 40 16 35.5 15 31Z"/><path fill="#fff" opacity=".35" d="M18.5 11.5C15.5 13 14.5 17 15.3 21.5C15.7 23.6 18 23.6 18.3 21.5C18.7 18.3 19.6 16 21.6 14.6C23.3 13.4 21.3 10.2 18.5 11.5Z"/></svg><span id="footName"></span></a>
+      <a class="logo" href="#"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="lg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--y)"/><stop offset="1" style="stop-color:var(--o)"/></linearGradient></defs><circle cx="50" cy="50" r="45" fill="none" stroke="url(#lg3)" stroke-width="7"/><path transform="translate(29.5 19) scale(.78)" fill="none" stroke="url(#lg3)" stroke-width="9" stroke-linejoin="round" d="M15 31C10.5 25 9.5 17 11.5 11.5C13.5 6 19.5 4 23.5 6C27 7.8 29.5 8.5 32 7.6C34.5 8.5 37 7.8 40.5 6C44.5 4 50.5 6 52.5 11.5C54.5 17 53.5 25 49 31C48 35.5 47.8 40 47.2 45C46.2 56 44.5 67 41.5 72.5C40 75.5 37.2 75 36.8 71.5C36.2 64 35.6 55 33.6 50.6C32.8 49.2 31.2 49.2 30.4 50.6C28.4 55 27.8 64 27.2 71.5C26.8 75 24 75.5 22.5 72.5C19.5 67 17.8 56 16.8 45C16.2 40 16 35.5 15 31Z"/><path fill="var(--y)" d="M74 22l2.2 5.3 5.3 2.2-5.3 2.2L74 37l-2.2-5.3-5.3-2.2 5.3-2.2z"/></svg><span id="footName"></span></a>
       <p id="footSlogan"></p>
       <div class="foot-pay"><span style="background:#e60000"><span data-t>فودافون كاش</span></span><span style="background:#7b2cbf"><span data-t>انستاباي</span></span></div>
     </div>
