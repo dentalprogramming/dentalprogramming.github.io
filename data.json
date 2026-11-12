@@ -8,7 +8,7 @@
     "instapay": "ibrahimali571975@instapay",
     "instapayLink": "",
     "whatsapp": "201043169689",
-    "bundlePrice": 199,
+    "bundlePrice": 1000,
     "audience": "for dental students level 1",
     "reviews": "",
     "theme": {},
@@ -18,40 +18,40 @@
   },
   "subjects": [
     {
-      "name": "histology",
+      "name": "Histology",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 50,
+      "price": 200,
       "icon": "🌐"
     },
     {
-      "name": "physiology",
+      "name": "Physiology",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 50,
+      "price": 200,
       "icon": "💻"
     },
     {
-      "name": "biophysics",
+      "name": "Biophysics",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 50,
+      "price": 200,
       "icon": "🧮"
     },
     {
-      "name": "general anatomy",
+      "name": "General Anatomy",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 50,
+      "price": 200,
       "icon": "📊"
     },
     {
-      "name": "dental anatomy",
+      "name": "Dental Anatomy",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 50,
+      "price": 200,
       "icon": "🔐",
       "avail": " متاح محاضرتين والباقي هينزل اول باول"
     },
     {
-      "name": "dental biomaterials",
+      "name": "Dental Biomaterials",
       "desc": "ملخص كامل + بنك أسئلة",
-      "price": 50,
+      "price": 200,
       "icon": "🧠"
     }
   ]
